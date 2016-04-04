@@ -45,7 +45,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
@@ -57,7 +66,52 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attachment.cs">
+      <DependentUpon>PublicationDatabaseModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AttachmentManager.cs" />
+    <Compile Include="Author.cs">
+      <DependentUpon>PublicationDatabaseModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AuthorManager.cs" />
+    <Compile Include="ConferenceArticle.cs">
+      <DependentUpon>PublicationDatabaseModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ConferenceArticleManager.cs" />
+    <Compile Include="JournalArticle.cs">
+      <DependentUpon>PublicationDatabaseModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Publication.cs">
+      <DependentUpon>PublicationDatabaseModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PublicationDatabaseModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PublicationDatabaseModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PublicationDatabaseModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PublicationDatabaseModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PublicationDatabaseModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PublicationDatabaseModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="PublicationManager.cs" />
+    <Compile Include="JournalArticleManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PublicationDatabaseManager.cs" />
+    <Compile Include="PublicationType.cs" />
+    <Compile Include="QualificationThesis.cs">
+      <DependentUpon>PublicationDatabaseModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="QualificationThesisManager.cs" />
+    <Compile Include="TechnicalReport.cs">
+      <DependentUpon>PublicationDatabaseModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TechnicalReportManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
@@ -75,10 +129,34 @@
     <Content Include="PublicationDatabase.mdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="PublicationDatabaseModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>PublicationDatabaseModel.edmx</DependentUpon>
+      <LastGenOutput>PublicationDatabaseModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="PublicationDatabaseModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>PublicationDatabaseModel.edmx</DependentUpon>
+      <LastGenOutput>PublicationDatabaseModel.cs</LastGenOutput>
+    </Content>
     <Content Include="PublicationDatabase_log.ldf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DependentUpon>PublicationDatabase.mdf</DependentUpon>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <None Include="packages.config" />
+    <EntityDeploy Include="PublicationDatabaseModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>PublicationDatabaseModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="PublicationDatabaseModel.edmx.diagram">
+      <DependentUpon>PublicationDatabaseModel.edmx</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -10,7 +10,7 @@ namespace ConsoleGUI
     {
         static void Main(string[] args)
         {
-
+            
         }
     }
 }

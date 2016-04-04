@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="325ed3cf7f5940599c6025936cec913d" Name="Diagram1">
+        <EntityTypeShape EntityType="PublicationDatabaseModel.Attachment" Width="1.5" PointX="5.25" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PublicationDatabaseModel.Author" Width="1.5" PointX="0.75" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PublicationDatabaseModel.ConferenceArticle" Width="1.5" PointX="5.25" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="PublicationDatabaseModel.JournalArticle" Width="1.5" PointX="5.25" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PublicationDatabaseModel.Publication" Width="1.5" PointX="3" PointY="6.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PublicationDatabaseModel.QualificationThesis" Width="1.5" PointX="5.25" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PublicationDatabaseModel.TechnicalReport" Width="1.5" PointX="5.25" PointY="13.375" IsExpanded="true" />
+        <AssociationConnector Association="PublicationDatabaseModel.FK_Attachment_Author" ManuallyRouted="false" />
+        <AssociationConnector Association="PublicationDatabaseModel.FK_ConferenceArticle_Publication" ManuallyRouted="false" />
+        <AssociationConnector Association="PublicationDatabaseModel.FK_JournalArticle_Publication" ManuallyRouted="false" />
+        <AssociationConnector Association="PublicationDatabaseModel.FK_QualificationThesis_Publication" ManuallyRouted="false" />
+        <AssociationConnector Association="PublicationDatabaseModel.FK_TechnicalReport_Publication" ManuallyRouted="false" />
+        <AssociationConnector Association="PublicationDatabaseModel.PublicationAuthorJunction" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
