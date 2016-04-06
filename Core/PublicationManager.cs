@@ -6,31 +6,62 @@ using System.Threading.Tasks;
 
 namespace Core
 {
-    class PublicationManager
+    public class PublicationManager
     {
         public List<Publication> ListPublications(Author author, int? year, PublicationType type)
         {
+            string t = type.ToString();
 
+            using (var context = new PublicationDatabaseEntities())
+            {
+                var publications = from p in context.Publication
+                                   where p.Author == author && p.Year == year && p.Type == t
+                                   orderby p.Title
+                                   select p;
+
+                return publications.ToList();
+            }
+        }
+        
+        /// <summary>
+        /// Nalezne publikaci podle zadaného ID.
+        /// </summary>
+        /// <param name="id">ID publikace</param>
+        /// <returns>publikace podle ID</returns>
+        public Publication GetPublication(int id)
+        {
+            using (var context = new PublicationDatabaseEntities())
+            {
+                return context.Publication.Find(id);
+            }            
         }
 
-        public Publication GetPublication(int Id)
+        /// <summary>
+        /// Odstraní publikaci podle zadaného ID.
+        /// </summary>
+        /// <param name="id">ID publikace</param>
+        public void RemovePublication(int id)
         {
-
+            using (var context = new PublicationDatabaseEntities())
+            {
+                context.Publication.Remove(context.Publication.Find(id));
+                context.SaveChanges();
+            }
         }
 
-        public string GeneratePublicationCitation(PublicationType type, int Id)
+        public string GeneratePublicationCitation(PublicationType type, int id)
         {
-
+            throw new NotImplementedException();
         }
 
-        public string GeneratePublicationBibtexEntry(PublicationType type, int Id)
+        public string GeneratePublicationBibtexEntry(PublicationType type, int id)
         {
-
+            throw new NotImplementedException();
         }
 
-        public string ExportPublicationToHtml(PublicationType type, int Id)
+        public string ExportPublicationToHtml(PublicationType type, int id)
         {
-
+            throw new NotImplementedException();
         }
     }
 }

@@ -6,26 +6,40 @@ using System.Threading.Tasks;
 
 namespace Core
 {
-    class TechnicalReportManager
+    public class TechnicalReportManager
     {
-        public TechnicalReport GetTechnicalReport(int Id)
+        public TechnicalReport GetTechnicalReport(Publication publication)
         {
-
+            using (var context = new PublicationDatabaseEntities())
+            {
+                return context.TechnicalReport.Find(publication.TechnicalReport);
+            }
         }
 
-        public void AddTechnicalReport()
+        public void AddTechnicalReport(Publication publication, TechnicalReport technicalReport)
         {
-
+            using (var context = new PublicationDatabaseEntities())
+            {
+                publication.TechnicalReport = technicalReport;
+                technicalReport.Publication = publication;
+                context.Publication.Add(publication);
+                context.TechnicalReport.Add(technicalReport);
+                context.SaveChanges();
+            }
         }
 
-        public void EditTechnicalReport(int Id)
+        public void EditTechnicalReport(Publication publication, TechnicalReport technicalReport)
         {
-
-        }
-
-        public void RemoveTechnicalReport(int Id)
-        {
-
+            using (var context = new PublicationDatabaseEntities())
+            {
+                context.TechnicalReport.Remove(publication.TechnicalReport);
+                context.Publication.Remove(publication);
+                publication.TechnicalReport = technicalReport;
+                technicalReport.Publication = publication;
+                context.Publication.Add(publication);
+                context.TechnicalReport.Add(technicalReport);
+                context.SaveChanges();
+            }
         }
     }
 }

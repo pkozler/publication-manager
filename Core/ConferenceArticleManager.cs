@@ -6,26 +6,40 @@ using System.Threading.Tasks;
 
 namespace Core
 {
-    class ConferenceArticleManager
+    public class ConferenceArticleManager
     {
-        ConferenceArticle GetConferenceArticle(int Id)
+        public ConferenceArticle GetConferenceArticle(Publication publication)
         {
-
+            using (var context = new PublicationDatabaseEntities())
+            {
+                return context.ConferenceArticle.Find(publication.ConferenceArticle);
+            }
         }
 
-        void AddConferenceArticle()
+        public void AddConferenceArticle(Publication publication, ConferenceArticle conferenceArticle)
         {
-
+            using (var context = new PublicationDatabaseEntities())
+            {
+                publication.ConferenceArticle = conferenceArticle;
+                conferenceArticle.Publication = publication;
+                context.Publication.Add(publication);
+                context.ConferenceArticle.Add(conferenceArticle);
+                context.SaveChanges();
+            }
         }
 
-        void EditConferenceArticle(int Id)
+        public void EditConferenceArticle(Publication publication, ConferenceArticle conferenceArticle)
         {
-
-        }
-
-        void RemoveConferenceArticle(int Id)
-        {
-
+            using (var context = new PublicationDatabaseEntities())
+            {
+                context.ConferenceArticle.Remove(publication.ConferenceArticle);
+                context.Publication.Remove(publication);
+                publication.ConferenceArticle = conferenceArticle;
+                conferenceArticle.Publication = publication;
+                context.Publication.Add(publication);
+                context.ConferenceArticle.Add(conferenceArticle);
+                context.SaveChanges();
+            }
         }
     }
 }

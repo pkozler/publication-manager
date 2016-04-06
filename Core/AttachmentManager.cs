@@ -6,26 +6,46 @@ using System.Threading.Tasks;
 
 namespace Core
 {
-    class AttachmentManager
+    public class AttachmentManager
     {
-        public List<Attachment> ListAttachments(int Id)
+        public List<Attachment> ListAttachments(int id)
         {
+            using (var context = new PublicationDatabaseEntities())
+            {
+                var attachments = from a in context.Attachment
+                                  where a.PublicationId == id
+                                  orderby a.Path
+                                  select a;
 
+                return attachments.ToList();
+            }
         }
 
-        public void AddAttachment(int Id)
+        public void AddAttachment(int id)
         {
-
+            using (var context = new PublicationDatabaseEntities())
+            {
+                // TODO implementovat
+                context.SaveChanges();
+            }
         }
 
-        public void EditAttachment(int Id)
+        public void EditAttachment(int id)
         {
-
+            using (var context = new PublicationDatabaseEntities())
+            {
+                // TODO implementovat
+                context.SaveChanges();
+            }
         }
 
-        public void RemoveAttachment(int Id)
+        public void RemoveAttachment(int id)
         {
-
+            using (var context = new PublicationDatabaseEntities())
+            {
+                // TODO implementovat
+                context.SaveChanges();
+            }
         }
     }
 }

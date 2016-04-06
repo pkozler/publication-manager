@@ -6,26 +6,40 @@ using System.Threading.Tasks;
 
 namespace Core
 {
-    class JournalArticleManager
+    public class JournalArticleManager
     {
-        public JournalArticle GetJournalArticle(int Id)
+        public JournalArticle GetJournalArticle(Publication publication)
         {
-
+            using (var context = new PublicationDatabaseEntities())
+            {
+                return context.JournalArticle.Find(publication.JournalArticle);
+            }
         }
 
-        public void AddJournalArticle()
+        public void AddJournalArticle(Publication publication, JournalArticle journalArticle)
         {
-
+            using (var context = new PublicationDatabaseEntities())
+            {
+                publication.JournalArticle = journalArticle;
+                journalArticle.Publication = publication;
+                context.Publication.Add(publication);
+                context.JournalArticle.Add(journalArticle);
+                context.SaveChanges();
+            }
         }
 
-        public void EditJournalArticle(int Id)
+        public void EditJournalArticle(Publication publication, JournalArticle journalArticle)
         {
-
-        }
-
-        public void RemoveJournalArticle(int Id)
-        {
-
+            using (var context = new PublicationDatabaseEntities())
+            {
+                context.JournalArticle.Remove(publication.JournalArticle);
+                context.Publication.Remove(publication);
+                publication.JournalArticle = journalArticle;
+                journalArticle.Publication = publication;
+                context.Publication.Add(publication);
+                context.JournalArticle.Add(journalArticle);
+                context.SaveChanges();
+            }
         }
     }
 }

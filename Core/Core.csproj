@@ -108,6 +108,7 @@
       <DependentUpon>PublicationDatabaseModel.tt</DependentUpon>
     </Compile>
     <Compile Include="QualificationThesisManager.cs" />
+    <Compile Include="QualificationThesisType.cs" />
     <Compile Include="TechnicalReport.cs">
       <DependentUpon>PublicationDatabaseModel.tt</DependentUpon>
     </Compile>
