@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{417FFA1B-0059-42C9-98B7-114C5CEB32DF}</ProjectGuid>
+    <ProjectGuid>{37780AE3-4F8D-457A-BFC6-346F343FE756}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Core</RootNamespace>
     <AssemblyName>Core</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -24,6 +23,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -67,52 +67,69 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attachment.cs">
-      <DependentUpon>PublicationDatabaseModel.tt</DependentUpon>
+      <DependentUpon>DbPublicationModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="AttachmentManager.cs" />
+    <Compile Include="AttachmentModel.cs" />
     <Compile Include="Author.cs">
-      <DependentUpon>PublicationDatabaseModel.tt</DependentUpon>
+      <DependentUpon>DbPublicationModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="AuthorManager.cs" />
+    <Compile Include="AuthorModel.cs" />
     <Compile Include="ConferenceArticle.cs">
-      <DependentUpon>PublicationDatabaseModel.tt</DependentUpon>
+      <DependentUpon>DbPublicationModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="ConferenceArticleManager.cs" />
+    <Compile Include="ConferenceArticleModel.cs" />
+    <Compile Include="DbPublicationModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DbPublicationModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbPublicationModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DbPublicationModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbPublicationModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DbPublicationModel.edmx</DependentUpon>
+    </Compile>
     <Compile Include="JournalArticle.cs">
-      <DependentUpon>PublicationDatabaseModel.tt</DependentUpon>
+      <DependentUpon>DbPublicationModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Publication.cs">
-      <DependentUpon>PublicationDatabaseModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PublicationDatabaseModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PublicationDatabaseModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PublicationDatabaseModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PublicationDatabaseModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PublicationDatabaseModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PublicationDatabaseModel.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="PublicationManager.cs" />
-    <Compile Include="JournalArticleManager.cs" />
+    <Compile Include="JournalArticleModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PublicationDatabaseManager.cs" />
+    <Compile Include="Publication.cs">
+      <DependentUpon>DbPublicationModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PublicationModel.cs" />
     <Compile Include="PublicationType.cs" />
     <Compile Include="QualificationThesis.cs">
-      <DependentUpon>PublicationDatabaseModel.tt</DependentUpon>
+      <DependentUpon>DbPublicationModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="QualificationThesisManager.cs" />
-    <Compile Include="QualificationThesisType.cs" />
+    <Compile Include="QualificationThesisModel.cs" />
     <Compile Include="TechnicalReport.cs">
-      <DependentUpon>PublicationDatabaseModel.tt</DependentUpon>
+      <DependentUpon>DbPublicationModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="TechnicalReportManager.cs" />
+    <Compile Include="TechnicalReportModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DbPublication.mdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DbPublicationModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DbPublicationModel.edmx</DependentUpon>
+      <LastGenOutput>DbPublicationModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="DbPublicationModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DbPublicationModel.edmx</DependentUpon>
+      <LastGenOutput>DbPublicationModel.cs</LastGenOutput>
+    </Content>
+    <Content Include="DbPublication_log.ldf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <DependentUpon>DbPublication.mdf</DependentUpon>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
@@ -127,34 +144,17 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="PublicationDatabase.mdf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PublicationDatabaseModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>PublicationDatabaseModel.edmx</DependentUpon>
-      <LastGenOutput>PublicationDatabaseModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="PublicationDatabaseModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>PublicationDatabaseModel.edmx</DependentUpon>
-      <LastGenOutput>PublicationDatabaseModel.cs</LastGenOutput>
-    </Content>
-    <Content Include="PublicationDatabase_log.ldf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <DependentUpon>PublicationDatabase.mdf</DependentUpon>
-    </Content>
+    <EntityDeploy Include="DbPublicationModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>DbPublicationModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />
-    <None Include="packages.config" />
-    <EntityDeploy Include="PublicationDatabaseModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>PublicationDatabaseModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <None Include="PublicationDatabaseModel.edmx.diagram">
-      <DependentUpon>PublicationDatabaseModel.edmx</DependentUpon>
+    <None Include="DbPublicationModel.edmx.diagram">
+      <DependentUpon>DbPublicationModel.edmx</DependentUpon>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

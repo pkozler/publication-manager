@@ -1,0 +1,508 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DbPublicationModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Attachment">
+          <Key>
+            <PropertyRef Name="PublicationId" />
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="PublicationId" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Path" Type="nvarchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Author">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Surname" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ConferenceArticle">
+          <Key>
+            <PropertyRef Name="PublicationId" />
+          </Key>
+          <Property Name="PublicationId" Type="int" Nullable="false" />
+          <Property Name="BookTitle" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="FromPage" Type="int" Nullable="false" />
+          <Property Name="ToPage" Type="int" Nullable="false" />
+          <Property Name="Address" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Publisher" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ISBN" Type="nvarchar" MaxLength="20" />
+          <Property Name="ISSN" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="JournalArticle">
+          <Key>
+            <PropertyRef Name="PublicationId" />
+          </Key>
+          <Property Name="PublicationId" Type="int" Nullable="false" />
+          <Property Name="JournalTitle" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Number" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="FromPage" Type="int" Nullable="false" />
+          <Property Name="ToPage" Type="int" Nullable="false" />
+          <Property Name="ISSN" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Publication">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Entry" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Year" Type="int" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Text" Type="ntext" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PublicationAuthorJunction">
+          <Key>
+            <PropertyRef Name="PublicationId" />
+            <PropertyRef Name="AuthorId" />
+          </Key>
+          <Property Name="PublicationId" Type="int" Nullable="false" />
+          <Property Name="AuthorId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="QualificationThesis">
+          <Key>
+            <PropertyRef Name="PublicationId" />
+          </Key>
+          <Property Name="PublicationId" Type="int" Nullable="false" />
+          <Property Name="School" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ThesisType" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Address" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TechnicalReport">
+          <Key>
+            <PropertyRef Name="PublicationId" />
+          </Key>
+          <Property Name="PublicationId" Type="int" Nullable="false" />
+          <Property Name="Institution" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ReportType" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Number" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Address" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Attachment_Author">
+          <End Role="Publication" Type="Self.Publication" Multiplicity="1" />
+          <End Role="Attachment" Type="Self.Attachment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Publication">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Attachment">
+              <PropertyRef Name="PublicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ConferenceArticle_Publication">
+          <End Role="Publication" Type="Self.Publication" Multiplicity="1" />
+          <End Role="ConferenceArticle" Type="Self.ConferenceArticle" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Publication">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConferenceArticle">
+              <PropertyRef Name="PublicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_JournalArticle_Publication">
+          <End Role="Publication" Type="Self.Publication" Multiplicity="1" />
+          <End Role="JournalArticle" Type="Self.JournalArticle" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Publication">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="JournalArticle">
+              <PropertyRef Name="PublicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PublicationAuthorJunction_Author">
+          <End Role="Author" Type="Self.Author" Multiplicity="1" />
+          <End Role="PublicationAuthorJunction" Type="Self.PublicationAuthorJunction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Author">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PublicationAuthorJunction">
+              <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PublicationAuthorJunction_Publication">
+          <End Role="Publication" Type="Self.Publication" Multiplicity="1" />
+          <End Role="PublicationAuthorJunction" Type="Self.PublicationAuthorJunction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Publication">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PublicationAuthorJunction">
+              <PropertyRef Name="PublicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QualificationThesis_Publication">
+          <End Role="Publication" Type="Self.Publication" Multiplicity="1" />
+          <End Role="QualificationThesis" Type="Self.QualificationThesis" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Publication">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="QualificationThesis">
+              <PropertyRef Name="PublicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TechnicalReport_Publication">
+          <End Role="Publication" Type="Self.Publication" Multiplicity="1" />
+          <End Role="TechnicalReport" Type="Self.TechnicalReport" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Publication">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TechnicalReport">
+              <PropertyRef Name="PublicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DbPublicationModelStoreContainer">
+          <EntitySet Name="Attachment" EntityType="Self.Attachment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Author" EntityType="Self.Author" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ConferenceArticle" EntityType="Self.ConferenceArticle" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="JournalArticle" EntityType="Self.JournalArticle" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Publication" EntityType="Self.Publication" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PublicationAuthorJunction" EntityType="Self.PublicationAuthorJunction" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="QualificationThesis" EntityType="Self.QualificationThesis" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TechnicalReport" EntityType="Self.TechnicalReport" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Attachment_Author" Association="Self.FK_Attachment_Author">
+            <End Role="Publication" EntitySet="Publication" />
+            <End Role="Attachment" EntitySet="Attachment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ConferenceArticle_Publication" Association="Self.FK_ConferenceArticle_Publication">
+            <End Role="Publication" EntitySet="Publication" />
+            <End Role="ConferenceArticle" EntitySet="ConferenceArticle" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JournalArticle_Publication" Association="Self.FK_JournalArticle_Publication">
+            <End Role="Publication" EntitySet="Publication" />
+            <End Role="JournalArticle" EntitySet="JournalArticle" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PublicationAuthorJunction_Author" Association="Self.FK_PublicationAuthorJunction_Author">
+            <End Role="Author" EntitySet="Author" />
+            <End Role="PublicationAuthorJunction" EntitySet="PublicationAuthorJunction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PublicationAuthorJunction_Publication" Association="Self.FK_PublicationAuthorJunction_Publication">
+            <End Role="Publication" EntitySet="Publication" />
+            <End Role="PublicationAuthorJunction" EntitySet="PublicationAuthorJunction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QualificationThesis_Publication" Association="Self.FK_QualificationThesis_Publication">
+            <End Role="Publication" EntitySet="Publication" />
+            <End Role="QualificationThesis" EntitySet="QualificationThesis" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TechnicalReport_Publication" Association="Self.FK_TechnicalReport_Publication">
+            <End Role="Publication" EntitySet="Publication" />
+            <End Role="TechnicalReport" EntitySet="TechnicalReport" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DbPublicationModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Attachment">
+          <Key>
+            <PropertyRef Name="PublicationId" />
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="PublicationId" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Path" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Publication" Relationship="Self.FK_Attachment_Author" FromRole="Attachment" ToRole="Publication" />
+        </EntityType>
+        <EntityType Name="Author">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Surname" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Publication" Relationship="Self.PublicationAuthorJunction" FromRole="Author" ToRole="Publication" />
+        </EntityType>
+        <EntityType Name="ConferenceArticle">
+          <Key>
+            <PropertyRef Name="PublicationId" />
+          </Key>
+          <Property Name="PublicationId" Type="Int32" Nullable="false" />
+          <Property Name="BookTitle" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FromPage" Type="Int32" Nullable="false" />
+          <Property Name="ToPage" Type="Int32" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Publisher" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ISBN" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ISSN" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Publication" Relationship="Self.FK_ConferenceArticle_Publication" FromRole="ConferenceArticle" ToRole="Publication" />
+        </EntityType>
+        <EntityType Name="JournalArticle">
+          <Key>
+            <PropertyRef Name="PublicationId" />
+          </Key>
+          <Property Name="PublicationId" Type="Int32" Nullable="false" />
+          <Property Name="JournalTitle" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Number" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FromPage" Type="Int32" Nullable="false" />
+          <Property Name="ToPage" Type="Int32" Nullable="false" />
+          <Property Name="ISSN" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Publication" Relationship="Self.FK_JournalArticle_Publication" FromRole="JournalArticle" ToRole="Publication" />
+        </EntityType>
+        <EntityType Name="Publication">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Entry" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Year" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Attachment" Relationship="Self.FK_Attachment_Author" FromRole="Publication" ToRole="Attachment" />
+          <NavigationProperty Name="ConferenceArticle" Relationship="Self.FK_ConferenceArticle_Publication" FromRole="Publication" ToRole="ConferenceArticle" />
+          <NavigationProperty Name="JournalArticle" Relationship="Self.FK_JournalArticle_Publication" FromRole="Publication" ToRole="JournalArticle" />
+          <NavigationProperty Name="QualificationThesis" Relationship="Self.FK_QualificationThesis_Publication" FromRole="Publication" ToRole="QualificationThesis" />
+          <NavigationProperty Name="TechnicalReport" Relationship="Self.FK_TechnicalReport_Publication" FromRole="Publication" ToRole="TechnicalReport" />
+          <NavigationProperty Name="Author" Relationship="Self.PublicationAuthorJunction" FromRole="Publication" ToRole="Author" />
+        </EntityType>
+        <EntityType Name="QualificationThesis">
+          <Key>
+            <PropertyRef Name="PublicationId" />
+          </Key>
+          <Property Name="PublicationId" Type="Int32" Nullable="false" />
+          <Property Name="School" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ThesisType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Publication" Relationship="Self.FK_QualificationThesis_Publication" FromRole="QualificationThesis" ToRole="Publication" />
+        </EntityType>
+        <EntityType Name="TechnicalReport">
+          <Key>
+            <PropertyRef Name="PublicationId" />
+          </Key>
+          <Property Name="PublicationId" Type="Int32" Nullable="false" />
+          <Property Name="Institution" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ReportType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Number" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Publication" Relationship="Self.FK_TechnicalReport_Publication" FromRole="TechnicalReport" ToRole="Publication" />
+        </EntityType>
+        <Association Name="FK_Attachment_Author">
+          <End Role="Publication" Type="Self.Publication" Multiplicity="1" />
+          <End Role="Attachment" Type="Self.Attachment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Publication">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Attachment">
+              <PropertyRef Name="PublicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ConferenceArticle_Publication">
+          <End Role="Publication" Type="Self.Publication" Multiplicity="1" />
+          <End Role="ConferenceArticle" Type="Self.ConferenceArticle" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Publication">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConferenceArticle">
+              <PropertyRef Name="PublicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_JournalArticle_Publication">
+          <End Role="Publication" Type="Self.Publication" Multiplicity="1" />
+          <End Role="JournalArticle" Type="Self.JournalArticle" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Publication">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="JournalArticle">
+              <PropertyRef Name="PublicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QualificationThesis_Publication">
+          <End Role="Publication" Type="Self.Publication" Multiplicity="1" />
+          <End Role="QualificationThesis" Type="Self.QualificationThesis" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Publication">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="QualificationThesis">
+              <PropertyRef Name="PublicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TechnicalReport_Publication">
+          <End Role="Publication" Type="Self.Publication" Multiplicity="1" />
+          <End Role="TechnicalReport" Type="Self.TechnicalReport" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Publication">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TechnicalReport">
+              <PropertyRef Name="PublicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PublicationAuthorJunction">
+          <End Role="Author" Type="Self.Author" Multiplicity="*" />
+          <End Role="Publication" Type="Self.Publication" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="DbPublicationEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Attachment" EntityType="Self.Attachment" />
+          <EntitySet Name="Author" EntityType="Self.Author" />
+          <EntitySet Name="ConferenceArticle" EntityType="Self.ConferenceArticle" />
+          <EntitySet Name="JournalArticle" EntityType="Self.JournalArticle" />
+          <EntitySet Name="Publication" EntityType="Self.Publication" />
+          <EntitySet Name="QualificationThesis" EntityType="Self.QualificationThesis" />
+          <EntitySet Name="TechnicalReport" EntityType="Self.TechnicalReport" />
+          <AssociationSet Name="FK_Attachment_Author" Association="Self.FK_Attachment_Author">
+            <End Role="Publication" EntitySet="Publication" />
+            <End Role="Attachment" EntitySet="Attachment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ConferenceArticle_Publication" Association="Self.FK_ConferenceArticle_Publication">
+            <End Role="Publication" EntitySet="Publication" />
+            <End Role="ConferenceArticle" EntitySet="ConferenceArticle" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JournalArticle_Publication" Association="Self.FK_JournalArticle_Publication">
+            <End Role="Publication" EntitySet="Publication" />
+            <End Role="JournalArticle" EntitySet="JournalArticle" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QualificationThesis_Publication" Association="Self.FK_QualificationThesis_Publication">
+            <End Role="Publication" EntitySet="Publication" />
+            <End Role="QualificationThesis" EntitySet="QualificationThesis" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TechnicalReport_Publication" Association="Self.FK_TechnicalReport_Publication">
+            <End Role="Publication" EntitySet="Publication" />
+            <End Role="TechnicalReport" EntitySet="TechnicalReport" />
+          </AssociationSet>
+          <AssociationSet Name="PublicationAuthorJunction" Association="Self.PublicationAuthorJunction">
+            <End Role="Author" EntitySet="Author" />
+            <End Role="Publication" EntitySet="Publication" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DbPublicationModelStoreContainer" CdmEntityContainer="DbPublicationEntities">
+          <EntitySetMapping Name="Attachment">
+            <EntityTypeMapping TypeName="DbPublicationModel.Attachment">
+              <MappingFragment StoreEntitySet="Attachment">
+                <ScalarProperty Name="PublicationId" ColumnName="PublicationId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Path" ColumnName="Path" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Author">
+            <EntityTypeMapping TypeName="DbPublicationModel.Author">
+              <MappingFragment StoreEntitySet="Author">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ConferenceArticle">
+            <EntityTypeMapping TypeName="DbPublicationModel.ConferenceArticle">
+              <MappingFragment StoreEntitySet="ConferenceArticle">
+                <ScalarProperty Name="PublicationId" ColumnName="PublicationId" />
+                <ScalarProperty Name="BookTitle" ColumnName="BookTitle" />
+                <ScalarProperty Name="FromPage" ColumnName="FromPage" />
+                <ScalarProperty Name="ToPage" ColumnName="ToPage" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Publisher" ColumnName="Publisher" />
+                <ScalarProperty Name="ISBN" ColumnName="ISBN" />
+                <ScalarProperty Name="ISSN" ColumnName="ISSN" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="JournalArticle">
+            <EntityTypeMapping TypeName="DbPublicationModel.JournalArticle">
+              <MappingFragment StoreEntitySet="JournalArticle">
+                <ScalarProperty Name="PublicationId" ColumnName="PublicationId" />
+                <ScalarProperty Name="JournalTitle" ColumnName="JournalTitle" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+                <ScalarProperty Name="FromPage" ColumnName="FromPage" />
+                <ScalarProperty Name="ToPage" ColumnName="ToPage" />
+                <ScalarProperty Name="ISSN" ColumnName="ISSN" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Publication">
+            <EntityTypeMapping TypeName="DbPublicationModel.Publication">
+              <MappingFragment StoreEntitySet="Publication">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Entry" ColumnName="Entry" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QualificationThesis">
+            <EntityTypeMapping TypeName="DbPublicationModel.QualificationThesis">
+              <MappingFragment StoreEntitySet="QualificationThesis">
+                <ScalarProperty Name="PublicationId" ColumnName="PublicationId" />
+                <ScalarProperty Name="School" ColumnName="School" />
+                <ScalarProperty Name="ThesisType" ColumnName="ThesisType" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TechnicalReport">
+            <EntityTypeMapping TypeName="DbPublicationModel.TechnicalReport">
+              <MappingFragment StoreEntitySet="TechnicalReport">
+                <ScalarProperty Name="PublicationId" ColumnName="PublicationId" />
+                <ScalarProperty Name="Institution" ColumnName="Institution" />
+                <ScalarProperty Name="ReportType" ColumnName="ReportType" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="PublicationAuthorJunction" TypeName="DbPublicationModel.PublicationAuthorJunction" StoreEntitySet="PublicationAuthorJunction">
+            <EndProperty Name="Author">
+              <ScalarProperty Name="Id" ColumnName="AuthorId" />
+            </EndProperty>
+            <EndProperty Name="Publication">
+              <ScalarProperty Name="Id" ColumnName="PublicationId" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

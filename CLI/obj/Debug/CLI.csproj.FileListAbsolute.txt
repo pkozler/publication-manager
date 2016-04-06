@@ -1,0 +1,14 @@
+C:\Users\pkout\Dropbox\cs\NET\CLI\bin\Debug\CLI.exe.config
+C:\Users\pkout\Dropbox\cs\NET\CLI\bin\Debug\DbPublication.mdf
+C:\Users\pkout\Dropbox\cs\NET\CLI\bin\Debug\DbPublication_log.ldf
+C:\Users\pkout\Dropbox\cs\NET\CLI\bin\Debug\CLI.exe
+C:\Users\pkout\Dropbox\cs\NET\CLI\bin\Debug\CLI.pdb
+C:\Users\pkout\Dropbox\cs\NET\CLI\bin\Debug\Core.dll
+C:\Users\pkout\Dropbox\cs\NET\CLI\bin\Debug\EntityFramework.dll
+C:\Users\pkout\Dropbox\cs\NET\CLI\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\pkout\Dropbox\cs\NET\CLI\bin\Debug\Core.pdb
+C:\Users\pkout\Dropbox\cs\NET\CLI\bin\Debug\EntityFramework.xml
+C:\Users\pkout\Dropbox\cs\NET\CLI\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\pkout\Dropbox\cs\NET\CLI\obj\Debug\CLI.csprojResolveAssemblyReference.cache
+C:\Users\pkout\Dropbox\cs\NET\CLI\obj\Debug\CLI.exe
+C:\Users\pkout\Dropbox\cs\NET\CLI\obj\Debug\CLI.pdb

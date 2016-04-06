@@ -1,6 +1,5 @@
-C:\Users\pkout\Dropbox\cs\NET\Core\obj\Debug\Core.csprojResolveAssemblyReference.cache
-C:\Users\pkout\Dropbox\cs\NET\Core\bin\Debug\PublicationDatabase.mdf
-C:\Users\pkout\Dropbox\cs\NET\Core\bin\Debug\PublicationDatabase_log.ldf
+C:\Users\pkout\Dropbox\cs\NET\Core\bin\Debug\DbPublication.mdf
+C:\Users\pkout\Dropbox\cs\NET\Core\bin\Debug\DbPublication_log.ldf
 C:\Users\pkout\Dropbox\cs\NET\Core\bin\Debug\Core.dll.config
 C:\Users\pkout\Dropbox\cs\NET\Core\bin\Debug\Core.dll
 C:\Users\pkout\Dropbox\cs\NET\Core\bin\Debug\Core.pdb
@@ -8,5 +7,6 @@ C:\Users\pkout\Dropbox\cs\NET\Core\bin\Debug\EntityFramework.dll
 C:\Users\pkout\Dropbox\cs\NET\Core\bin\Debug\EntityFramework.SqlServer.dll
 C:\Users\pkout\Dropbox\cs\NET\Core\bin\Debug\EntityFramework.xml
 C:\Users\pkout\Dropbox\cs\NET\Core\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\pkout\Dropbox\cs\NET\Core\obj\Debug\Core.csprojResolveAssemblyReference.cache
 C:\Users\pkout\Dropbox\cs\NET\Core\obj\Debug\Core.dll
 C:\Users\pkout\Dropbox\cs\NET\Core\obj\Debug\Core.pdb
