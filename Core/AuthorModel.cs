@@ -40,16 +40,7 @@ namespace Core
                 context.SaveChanges();
             }
         }
-
-        public void EditAuthor(int publicationId, int authorId)
-        {
-            using (var context = new DbPublicationEntities())
-            {
-                // TODO implementovat
-                context.SaveChanges();
-            }
-        }
-
+        
         public void RemoveAuthor(int publicationId, int authorId)
         {
             using (var context = new DbPublicationEntities())

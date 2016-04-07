@@ -20,7 +20,7 @@ namespace Core
                 return attachments.ToList();
             }
         }
-
+        
         public void AddAttachment(int id)
         {
             using (var context = new DbPublicationEntities())
@@ -29,16 +29,7 @@ namespace Core
                 context.SaveChanges();
             }
         }
-
-        public void EditAttachment(int id)
-        {
-            using (var context = new DbPublicationEntities())
-            {
-                // TODO implementovat
-                context.SaveChanges();
-            }
-        }
-
+        
         public void RemoveAttachment(int id)
         {
             using (var context = new DbPublicationEntities())

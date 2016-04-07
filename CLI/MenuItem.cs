@@ -12,6 +12,10 @@ namespace CLI
     /// </summary>
     public delegate void UserInterfaceMethod();
 
+    /// <summary>
+    /// Třída slouží k uchování informace o položce menu (příkazu) uživatelského rozhraní
+    /// (zahrnuje název, popis a delegát na metodu volanou při zadání daného příkazu).
+    /// </summary>
     public class MenuItem
     {
         /// <summary>

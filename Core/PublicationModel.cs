@@ -8,6 +8,23 @@ namespace Core
 {
     public class PublicationModel
     {
+        public ConferenceArticleModel conferenceArticleModel { get; private set; }
+        public JournalArticleModel journalArticleModel { get; private set; }
+        public TechnicalReportModel technicalReportModel { get; private set; }
+        public QualificationThesisModel qualificationThesisModel { get; private set; }
+
+        public PublicationModel(
+            ConferenceArticleModel conferenceArticleModel, 
+            JournalArticleModel journalArticleModel,
+            TechnicalReportModel technicalReportModel,
+            QualificationThesisModel qualificationThesisModel)
+        {
+            this.conferenceArticleModel = conferenceArticleModel;
+            this.journalArticleModel = journalArticleModel;
+            this.technicalReportModel = technicalReportModel;
+            this.qualificationThesisModel = qualificationThesisModel;
+        }
+
         public List<Publication> ListPublications(Author author, int? year, PublicationType type)
         {
             string t = type.ToString();
@@ -33,7 +50,7 @@ namespace Core
             using (var context = new DbPublicationEntities())
             {
                 return context.Publication.Find(id);
-            }            
+            }
         }
 
         /// <summary>
@@ -49,17 +66,17 @@ namespace Core
             }
         }
 
-        public string GeneratePublicationCitation(PublicationType type, int id)
+        public string GeneratePublicationCitation(int id)
         {
             throw new NotImplementedException();
         }
 
-        public string GeneratePublicationBibtexEntry(PublicationType type, int id)
+        public string GeneratePublicationBibtexEntry(int id)
         {
             throw new NotImplementedException();
         }
 
-        public string ExportPublicationToHtml(PublicationType type, int id)
+        public string ExportPublicationToHtml(int id)
         {
             throw new NotImplementedException();
         }
