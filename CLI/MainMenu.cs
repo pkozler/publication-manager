@@ -28,20 +28,35 @@ namespace CLI
         private AttachmentModel attachmentModel;
 
         /// <summary>
+        /// Seznam typů publikací, který slouží k uchování údajů specifických
+        /// pro jednotlivé typy publikací a objektů datové vrstvy pro jejich obsluhu.
+        /// </summary>
+        private List<PublicationType> publicationTypes;
+
+        /// <summary>
         /// Inicializuje hlavní menu.
         /// </summary>
-        public MainMenu(PublicationModel publicationModel, AuthorModel authorModel, AttachmentModel attachmentModel) : base()
+        /// <param name="publicationTypes">typy publikací</param>
+        /// <param name="publicationModel">správce publikací</param>
+        /// <param name="authorModel">správce autorů</param>
+        /// <param name="attachmentModel">správce příloh</param>
+        public MainMenu(List<PublicationType> publicationTypes, PublicationModel publicationModel, AuthorModel authorModel, AttachmentModel attachmentModel)
         {
+            this.publicationTypes = publicationTypes;
             this.publicationModel = publicationModel;
             this.authorModel = authorModel;
             this.attachmentModel = attachmentModel;
 
             MenuLabel = "Hlavní menu";
-            MenuItems.Add(ConsoleKey.L, new MenuItem() { Name = "List", Description = "Vypíše seznam publikací se zadanými filtry.", UIMethod = GetPublicationList });
-            MenuItems.Add(ConsoleKey.R, new MenuItem() { Name = "Read", Description = "Načte detail zadané publikace, kterou lze upravit nebo odstranit.", UIMethod = GetPublicationDetail });
-            MenuItems.Add(ConsoleKey.C, new MenuItem() { Name = "Create", Description = "Vytvoří novou publikaci.", UIMethod = CreateNewPublication });
-            MenuItems.Add(ConsoleKey.A, new MenuItem() { Name = "Authors", Description = "Vypíše seznam uložených autorů.", UIMethod = GetAuthorList });
-            MenuItems.Add(ConsoleKey.I, new MenuItem() { Name = "Info", Description = "Vypíše stručný popis programu.", UIMethod = PrintInfo });
+            InitializeMenuItems(new Dictionary<ConsoleKey, MenuItem>()
+            {
+                { ConsoleKey.L, new MenuItem() { Name = "List", Description = "Vypíše seznam publikací se zadanými filtry.", UIMethod = GetPublicationList } },
+                { ConsoleKey.R, new MenuItem() { Name = "Read", Description = "Načte detail zadané publikace, kterou lze upravit nebo odstranit.", UIMethod = GetPublicationDetail } },
+                { ConsoleKey.C, new MenuItem() { Name = "Create", Description = "Vytvoří novou publikaci.", UIMethod = CreateNewPublication } },
+                { ConsoleKey.A, new MenuItem() { Name = "Authors", Description = "Vypíše seznam uložených autorů.", UIMethod = GetAuthorList } },
+                { ConsoleKey.I, new MenuItem() { Name = "Info", Description = "Vypíše stručný popis programu.", UIMethod = PrintInfo } },
+            });
+            
             MenuItems[ConsoleKey.H].Description = "Ukončí program.";
         }
 

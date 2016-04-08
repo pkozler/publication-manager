@@ -22,7 +22,7 @@ namespace CLI
         /// Slovník, který slouží pro asociaci dostupných příkazů s příslušnými operacemi
         /// v daném menu konzolového uživatelského rozhraní.
         /// </summary>
-        protected Dictionary<ConsoleKey, MenuItem> MenuItems { get; set; } = new Dictionary<ConsoleKey, MenuItem>();
+        protected Dictionary<ConsoleKey, MenuItem> MenuItems { get; private set; }
 
         /// <summary>
         /// Popisek aktuálního menu, který se používá při výpisu dostupných příkazů.
@@ -30,10 +30,13 @@ namespace CLI
         protected string MenuLabel { get; set; }
 
         /// <summary>
-        /// Přidá do slovníku položky společné pro všechna menu (nápověda příkazů a návrat do nadřazeného menu).
+        /// Inicializuje slovník položek pro aktuální menu a dodá položky společné pro všechna menu
+        /// (nápověda příkazů a návrat do nadřazeného menu).
         /// </summary>
-        public AMenu()
+        /// <param name="menuItems">slovník položek</param>
+        protected void InitializeMenuItems(Dictionary<ConsoleKey, MenuItem> menuItems)
         {
+            MenuItems = menuItems;
             MenuItems.Add(ConsoleKey.H, new MenuItem() { Name = "Help", Description = "Vypíše znovu seznam příkazů aktuálního menu.", UIMethod = PrintMenu });
             MenuItems.Add(ConsoleKey.Q, new MenuItem() { Name = "Quit", Description = "Opustí aktuální menu a vrátí se do nadřazeného menu.", UIMethod = ExitMenu });
         }

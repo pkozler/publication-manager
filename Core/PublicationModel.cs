@@ -6,33 +6,35 @@ using System.Threading.Tasks;
 
 namespace Core
 {
+    /// <summary>
+    /// Třída představuje správce základních bibliografických údajů společných
+    /// pro všechny typy publikací (zahrnují BibTeX klíč, název, rok a typ publikace).
+    /// </summary>
     public class PublicationModel
     {
-        public ConferenceArticleModel conferenceArticleModel { get; private set; }
-        public JournalArticleModel journalArticleModel { get; private set; }
-        public TechnicalReportModel technicalReportModel { get; private set; }
-        public QualificationThesisModel qualificationThesisModel { get; private set; }
-
-        public PublicationModel(
-            ConferenceArticleModel conferenceArticleModel, 
-            JournalArticleModel journalArticleModel,
-            TechnicalReportModel technicalReportModel,
-            QualificationThesisModel qualificationThesisModel)
+        /// <summary>
+        /// Vrátí seznam evidovaných publikací filtrovaný podle předaných množin údajů
+        /// (tedy vrátí pouze publikace s údaji, které jsou obsaženy v příslušných množinách).
+        /// </summary>
+        /// <param name="authorFilter">množina požadovaných autorů</param>
+        /// <param name="yearFilter">množina požadovaných roků vydání</param>
+        /// <param name="publicationTypeFilter">množina požadovaných typů publikací</param>
+        /// <returns>filtrovaný seznam publikací</returns>
+        public List<Publication> GetPublications(
+            HashSet<int> authorFilter, HashSet<int> yearFilter, HashSet<string> publicationTypeFilter)
         {
-            this.conferenceArticleModel = conferenceArticleModel;
-            this.journalArticleModel = journalArticleModel;
-            this.technicalReportModel = technicalReportModel;
-            this.qualificationThesisModel = qualificationThesisModel;
-        }
-
-        public List<Publication> ListPublications(Author author, int? year, PublicationType type)
-        {
-            string t = type.ToString();
-
             using (var context = new DbPublicationEntities())
             {
+                // výběr autorů ze seznamu evidovaných podle ID autorů ze zadané množiny
+                var authors = from a in context.Author
+                              where authorFilter.Contains(a.Id)
+                              select a;
+                
+                // výběr publikací s filtrováním podle množin (pokud je některá množina prázdná, příslušná položka se nefiltruje)
                 var publications = from p in context.Publication
-                                   where p.Author == author && p.Year == year && p.Type == t
+                                   where ((authors.Count() == 0) ? true : authors.Intersect(p.Author).Any())
+                                   && ((yearFilter.Count() == 0) ? true : yearFilter.Contains(p.Year))
+                                   && ((publicationTypeFilter.Count()) == 0 ? true : publicationTypeFilter.Contains(p.Type))
                                    orderby p.Title
                                    select p;
 
@@ -41,11 +43,11 @@ namespace Core
         }
         
         /// <summary>
-        /// Nalezne publikaci podle zadaného ID.
+        /// Načte základní údaje uložené publikace se zadaným ID.
         /// </summary>
         /// <param name="id">ID publikace</param>
         /// <returns>publikace podle ID</returns>
-        public Publication GetPublication(int id)
+        public Publication GetPublicationById(int id)
         {
             using (var context = new DbPublicationEntities())
             {
@@ -54,29 +56,34 @@ namespace Core
         }
 
         /// <summary>
-        /// Odstraní publikaci podle zadaného ID.
+        /// Z bibliografických údajů uložené publikace se zadaným ID
+        /// vygeneruje citaci podle ISO normy.
         /// </summary>
         /// <param name="id">ID publikace</param>
-        public void RemovePublication(int id)
-        {
-            using (var context = new DbPublicationEntities())
-            {
-                context.Publication.Remove(context.Publication.Find(id));
-                context.SaveChanges();
-            }
-        }
-
-        public string GeneratePublicationCitation(int id)
+        /// <returns>citace podle ISO normy</returns>
+        public string GeneratePublicationIsoCitation(int id)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Z bibliografických údajů uložené publikace se zadaným ID
+        /// vygeneruje BibTeX záznam odpovídající citaci podle ISO normy.
+        /// </summary>
+        /// <param name="id">ID publikace</param>
+        /// <returns>BibTeX záznam</returns>
         public string GeneratePublicationBibtexEntry(int id)
         {
             throw new NotImplementedException();
         }
 
-        public string ExportPublicationToHtml(int id)
+        /// <summary>
+        /// Pro uloženou publikaci se zadaným ID sestaví HTML dokument
+        /// pro umístění publikace na webové stránky,
+        /// </summary>
+        /// <param name="id">ID publikace</param>
+        /// <returns>HTML dokument</returns>
+        public string ExportPublicationToHtmlDocument(int id)
         {
             throw new NotImplementedException();
         }

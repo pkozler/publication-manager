@@ -25,17 +25,18 @@ namespace CLI
         /// <summary>
         /// Inicializuje menu úpravy obsahu publikace.
         /// </summary>
-        public PublicationTextMenu(PublicationModel publicationModel, int publicationId) : base()
+        /// <param name="publicationModel">správce publikací</param>
+        public PublicationTextMenu(PublicationModel publicationModel, int publicationId)
         {
             this.publicationModel = publicationModel;
             this.publicationId = publicationId;
 
             MenuLabel = "Menu správy obsahu publikace č. " + publicationId;
-            MenuItems = new Dictionary<ConsoleKey, MenuItem>()
+            InitializeMenuItems(new Dictionary<ConsoleKey, MenuItem>()
             {
                 { ConsoleKey.U, new MenuItem() { Name = "Update", Description = "Nahradí stávající obsah publikace novým obsahem. " 
                     + "Nový obsah může být buď importován z textového souboru, nebo zadán přímo z konzole (pouze pro testovací účely).", UIMethod = UpdateText } },
-            };
+            });
         }
 
         /// <summary>

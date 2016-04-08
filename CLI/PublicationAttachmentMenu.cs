@@ -30,18 +30,20 @@ namespace CLI
         /// <summary>
         /// Inicializuje menu správy seznamu příloh publikace.
         /// </summary>
-        public PublicationAttachmentMenu(PublicationModel publicationModel, AttachmentModel attachmentModel, int publicationId) : base()
+        /// <param name="publicationModel">správce publikací</param>
+        /// <param name="attachmentModel">správce příloh</param>
+        public PublicationAttachmentMenu(PublicationModel publicationModel, AttachmentModel attachmentModel, int publicationId)
         {
             this.publicationModel = publicationModel;
             this.attachmentModel = attachmentModel;
             this.publicationId = publicationId;
 
             MenuLabel = "Menu správy příloh publikace č. " + publicationId;
-            MenuItems = new Dictionary<ConsoleKey, MenuItem>()
+            InitializeMenuItems(new Dictionary<ConsoleKey, MenuItem>()
             {
                 { ConsoleKey.C, new MenuItem() { Name = "Create", Description = "Přidá nový soubor se zadanou cestou do seznamu příloh publikace.", UIMethod = CreateAttachment } },
                 { ConsoleKey.D, new MenuItem() { Name = "Delete", Description = "Odebere existující soubor se zadaným ID ze seznamu příloh publikace.", UIMethod = DeleteAttachment } },
-            };
+            });
         }
 
         /// <summary>

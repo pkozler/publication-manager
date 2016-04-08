@@ -30,24 +30,27 @@ namespace CLI
         /// <summary>
         /// Inicializuje menu správy seznamu autorů publikace.
         /// </summary>
-        public PublicationAuthorMenu(PublicationModel publicationModel, AuthorModel authorModel, int publicationId) : base()
+        /// <param name="publicationModel">správce publikací</param>
+        /// <param name="authorModel">správce autorů</param>
+        public PublicationAuthorMenu(PublicationModel publicationModel, AuthorModel authorModel, int publicationId)
         {
             this.publicationModel = publicationModel;
             this.authorModel = authorModel;
             this.publicationId = publicationId;
 
             MenuLabel = "Menu správy autorů publikace č. " + publicationId;
-            MenuItems = new Dictionary<ConsoleKey, MenuItem>()
+            InitializeMenuItems(new Dictionary<ConsoleKey, MenuItem>()
             {
                 { ConsoleKey.C, new MenuItem() { Name = "Create", Description = "Přidá stávajícího autora se zadaným ID nebo nového autora " 
                     + "se zadaným jménem do seznamu autorů publikace.", UIMethod = AddAuthor } },
                 { ConsoleKey.D, new MenuItem() { Name = "Delete", Description = "Odebere autora se zadaným ID ze seznamu autorů publikace. " 
                     + "Jméno autora zůstane uloženo pro budoucí použití.", UIMethod = RemoveAuthor } },
-            };
+            });
         }
 
         /// <summary>
-        /// Načte od uživatele údaje o novém autorovi a požádá o jeho přidání do seznamu.
+        /// Načte od uživatele údaje o autorovi (jméno nového nebo ID existujícího)
+        /// a požádá o jeho přidání do seznamu.
         /// </summary>
         public void AddAuthor()
         {

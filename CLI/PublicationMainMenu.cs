@@ -10,7 +10,7 @@ namespace CLI
     /// <summary>
     /// Třída představuje vstupní menu pro správu jednotlivých publikací.
     /// </summary>
-    class MainPublicationMenu : AMenu
+    class PublicationMainMenu : AMenu
     {
         /// <summary>
         /// Objekt datové vrstvy, který slouží jako správce záznamů publikací.
@@ -28,33 +28,45 @@ namespace CLI
         private AttachmentModel attachmentModel;
 
         /// <summary>
-        /// Číslo, které představuje ID aktuálně spravované publikace.
+        /// Seznam typů publikací, který slouží k uchování údajů specifických
+        /// pro jednotlivé typy publikací a objektů datové vrstvy pro jejich obsluhu.
+        /// </summary>
+        private List<PublicationType> publicationTypes;
+
+        /// <summary>
+        /// Číslo, které představuje ID aktuálně zobrazené publikace.
         /// </summary>
         private int publicationId;
 
         /// <summary>
         /// Inicializuje menu správy publikace.
         /// </summary>
-        public MainPublicationMenu(PublicationModel publicationModel, AuthorModel authorModel, AttachmentModel attachmentModel, int publicationId) : base()
+        /// <param name="publicationTypes">typy publikací</param>
+        /// <param name="publicationModel">správce publikací</param>
+        /// <param name="authorModel">správce autorů</param>
+        /// <param name="attachmentModel">správce příloh</param>
+        /// <param name="publicationId">ID publikace</param>
+        public PublicationMainMenu(List<PublicationType> publicationTypes, PublicationModel publicationModel, AuthorModel authorModel, AttachmentModel attachmentModel, int publicationId)
         {
+            this.publicationTypes = publicationTypes;
             this.publicationModel = publicationModel;
             this.authorModel = authorModel;
             this.attachmentModel = attachmentModel;
             this.publicationId = publicationId;
 
             MenuLabel = "Menu správy publikace č. " + publicationId;
-            MenuItems = new Dictionary<ConsoleKey, MenuItem>()
+            InitializeMenuItems(new Dictionary<ConsoleKey, MenuItem>()
             {
                 { ConsoleKey.R, new MenuItem() { Name = "Read", Description = "Znovu vypíše bibliografické údaje zobrazené publikace.", UIMethod = GetBibliography } },
                 { ConsoleKey.U, new MenuItem() { Name = "Update", Description = "Spustí průvodce úpravou bibliografických údajů zobrazené publikace.", UIMethod = UpdateBibliography } },
                 { ConsoleKey.D, new MenuItem() { Name = "Delete", Description = "Odstraní zobrazenou publikaci (vyžaduje potvrzení).", UIMethod = UpdateContentText } },
                 { ConsoleKey.T, new MenuItem() { Name = "Text", Description = "Vypíše obsah (hlavní text) zobrazené publikace a umožní jeho editaci.", UIMethod = UpdateAuthors } },
                 { ConsoleKey.A, new MenuItem() { Name = "Authors", Description = "Přepne do menu správy autorů (umožňuje přidávat a odebírat autory publikace).", UIMethod = UpdateAttachments } },
-                { ConsoleKey.F, new MenuItem() { Name = "Files", Description = "Přepne do menu správy příloh (umožňuje přidávat a odebírat přílohy publikace).", UIMethod = GenerateIsoCitation } },
-                { ConsoleKey.I, new MenuItem() { Name = "ISO", Description = "Vygeneruje citaci zobrazené publikace podle normy ČSN ISO 690.", UIMethod = GenerateBibtexRecord } },
-                { ConsoleKey.B, new MenuItem() { Name = "BibTeX", Description = "Vygeneruje BibTeX záznam zobrazené publikace odpovídající citaci podle normy.", UIMethod = ExportToHtml } },
+                { ConsoleKey.F, new MenuItem() { Name = "Files", Description = "Přepne do menu správy příloh (umožňuje přidávat a odebírat přílohy publikace).", UIMethod = PrintIsoCitation } },
+                { ConsoleKey.I, new MenuItem() { Name = "ISO", Description = "Vygeneruje citaci zobrazené publikace podle normy ČSN ISO 690.", UIMethod = PrintBibtexEntry } },
+                { ConsoleKey.B, new MenuItem() { Name = "BibTeX", Description = "Vygeneruje BibTeX záznam zobrazené publikace odpovídající citaci podle normy.", UIMethod = PrintHtmlDocument } },
                 { ConsoleKey.E, new MenuItem() { Name = "Export", Description = "Exportuje zobrazenou publikaci do souboru ve formátu HTML.", UIMethod = DeletePublication } },
-            };
+            });
         }
 
         /// <summary>
@@ -100,7 +112,7 @@ namespace CLI
         /// <summary>
         /// Požádá o vygenerování citace publikace podle ISO normy a tuto citaci vypíše.
         /// </summary>
-        public void GenerateIsoCitation()
+        public void PrintIsoCitation()
         {
             throw new NotImplementedException();
         }
@@ -108,7 +120,7 @@ namespace CLI
         /// <summary>
         /// Požádá o vygenerování BibTeX záznamu publikace a tento záznam vypíše.
         /// </summary>
-        public void GenerateBibtexRecord()
+        public void PrintBibtexEntry()
         {
             throw new NotImplementedException();
         }
@@ -116,7 +128,7 @@ namespace CLI
         /// <summary>
         /// Požádá o vytvoření HTML dokumentu pro umístění publikace na webové stránky.
         /// </summary>
-        public void ExportToHtml()
+        public void PrintHtmlDocument()
         {
             throw new NotImplementedException();
         }
