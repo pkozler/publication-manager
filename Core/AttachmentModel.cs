@@ -16,12 +16,12 @@ namespace Core
         /// </summary>
         /// <param name="publicationId">ID publikace</param>
         /// <returns>seznam příloh</returns>
-        public List<Attachment> GetAttachmentsByPublication(int publicationId)
+        public List<Attachment> GetAttachmentsByPublication(Publication publication)
         {
             using (var context = new DbPublicationEntities())
             {
                 var attachments = from a in context.Attachment
-                                  where a.PublicationId == publicationId
+                                  where a.PublicationId == publication.Id
                                   orderby a.Path
                                   select a;
 
@@ -34,11 +34,13 @@ namespace Core
         /// </summary>
         /// <param name="publicationId">ID publikace</param>
         /// <param name="attachment">údaje o příloze</param>
-        public void AddAttachmentToPublication(int publicationId, Attachment attachment)
+        public void AddAttachmentToPublication(Publication publication, Attachment attachment)
         {
             using (var context = new DbPublicationEntities())
             {
-                // TODO implementovat
+                attachment.Publication = publication;
+                publication.Attachment.Add(attachment);
+                context.Attachment.Add(attachment);
                 context.SaveChanges();
             }
         }
@@ -48,11 +50,13 @@ namespace Core
         /// </summary>
         /// <param name="publicationId">ID publikace</param>
         /// <param name="id">ID přílohy</param>
-        public void RemoveAttachmentFromPublication(int publicationId, int id)
+        public void RemoveAttachmentFromPublication(Publication publication, int id)
         {
             using (var context = new DbPublicationEntities())
             {
-                // TODO implementovat
+                Attachment attachment = context.Attachment.Find(publication.Id, id);
+                publication.Attachment.Remove(attachment);
+                context.Attachment.Remove(attachment);
                 context.SaveChanges();
             }
         }

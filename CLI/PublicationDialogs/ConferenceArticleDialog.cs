@@ -17,7 +17,7 @@ namespace CLI
         /// Uchovává objekt datové vrstvy pro práci s příslušným typem publikace.
         /// </summary>
         private ConferenceArticleModel model;
-
+        
         /// <summary>
         /// Inicializuje objekt pro zobrazení dialogu.
         /// </summary>
@@ -28,7 +28,7 @@ namespace CLI
         }
 
         /// <inheritDoc/>
-        public void SetTypeSpecificBibliography(int? publicationId)
+        public void UpdateSpecificBibliography(int? publicationId)
         {
             throw new NotImplementedException();
         }

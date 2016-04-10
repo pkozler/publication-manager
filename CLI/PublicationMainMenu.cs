@@ -58,9 +58,9 @@ namespace CLI
             InitializeMenuItems(new Dictionary<ConsoleKey, MenuItem>()
             {
                 { ConsoleKey.R, new MenuItem() { Name = "Read", Description = "Znovu vypíše bibliografické údaje zobrazené publikace.", UIMethod = GetBibliography } },
-                { ConsoleKey.U, new MenuItem() { Name = "Update", Description = "Spustí průvodce úpravou bibliografických údajů zobrazené publikace.", UIMethod = UpdateBibliography } },
+                { ConsoleKey.U, new MenuItem() { Name = "Update", Description = "Spustí průvodce úpravou zobrazené publikace.", UIMethod = UpdateBibliography } },
                 { ConsoleKey.D, new MenuItem() { Name = "Delete", Description = "Odstraní zobrazenou publikaci (vyžaduje potvrzení).", UIMethod = UpdateContentText } },
-                { ConsoleKey.T, new MenuItem() { Name = "Text", Description = "Vypíše obsah (hlavní text) zobrazené publikace a umožní jeho editaci.", UIMethod = UpdateAuthors } },
+                { ConsoleKey.T, new MenuItem() { Name = "Text", Description = "Vypíše obsah (hlavní text) zobrazené publikace.", UIMethod = UpdateAuthors } },
                 { ConsoleKey.A, new MenuItem() { Name = "Authors", Description = "Přepne do menu správy autorů (umožňuje přidávat a odebírat autory publikace).", UIMethod = UpdateAttachments } },
                 { ConsoleKey.F, new MenuItem() { Name = "Files", Description = "Přepne do menu správy příloh (umožňuje přidávat a odebírat přílohy publikace).", UIMethod = PrintIsoCitation } },
                 { ConsoleKey.I, new MenuItem() { Name = "ISO", Description = "Vygeneruje citaci zobrazené publikace podle normy ČSN ISO 690.", UIMethod = PrintBibtexEntry } },

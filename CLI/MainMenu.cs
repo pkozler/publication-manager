@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
+using static System.Console;
 using Core;
 
 namespace CLI
@@ -65,7 +67,9 @@ namespace CLI
         /// </summary>
         public void GetPublicationList()
         {
-            throw new NotImplementedException();
+            ListPublicationMenu menu = new ListPublicationMenu(
+                publicationTypes, publicationModel);
+            menu.Start();
         }
 
         /// <summary>
@@ -74,7 +78,13 @@ namespace CLI
         /// </summary>
         public void GetPublicationDetail()
         {
-            throw new NotImplementedException();
+            WriteLine("Zadejte ID publikace pro zobrazení bibliografických údajů:");
+
+            int id = ReadValidNumber("Zadejte kladné celé číslo představující ID existující publikace.");
+
+            PublicationMainMenu menu = new PublicationMainMenu(
+                publicationTypes, publicationModel, authorModel, attachmentModel, id);
+            menu.Start();
         }
 
         /// <summary>
@@ -82,7 +92,36 @@ namespace CLI
         /// </summary>
         public void CreateNewPublication()
         {
-            throw new NotImplementedException();
+            Publication publication = new Publication();
+            WriteLine("Zadejte název BibTeX záznamu publikace:");
+            publication.Entry = ReadLine();
+            WriteLine("Zadejte skutečný název publikace:");
+            publication.Title = ReadLine();
+            WriteLine("Zadejte rok vydání publikace:");
+
+            int year;
+            while (!int.TryParse(ReadLine(), out year))
+            {
+                WriteLine("Neplatný vstup. Zadejte celé číslo představující rok vydání:");
+            }
+
+            publication.Year = year;
+            WriteLine("Zadejte cestu k textovému souboru publikace pro import textu "
+                + "nebo prázdný řádek pro zadání z konzole: (pouze pro testovací účely)");
+
+            string path = ReadLine();
+            if (string.IsNullOrEmpty(path))
+            {
+                WriteLine("Vložte text publikace: (\\n pro nový řádek)");
+                publication.Text = ReadLine().Replace("\\n", Environment.NewLine); ;
+            }
+            else
+            {
+                using (var reader = new StreamReader(path))
+                {
+                    publication.Text = reader.ReadToEnd();
+                }
+            }
         }
 
         /// <summary>
@@ -90,7 +129,8 @@ namespace CLI
         /// </summary>
         public void GetAuthorList()
         {
-            throw new NotImplementedException();
+            ListAuthorMenu menu = new ListAuthorMenu(authorModel);
+            menu.Start();
         }
 
         /// <summary>
@@ -98,10 +138,10 @@ namespace CLI
         /// </summary>
         public void PrintInfo()
         {
-            Console.WriteLine("\nO programu:");
-            Console.WriteLine("\tAplikace na evidenci vědeckých textů - testovací konzolové rozhraní (Verze 1.0)");
-            Console.WriteLine("\tSemestrální práce z předmětu \"Programování v prostředí .NET\" (KIV/NET)");
-            Console.WriteLine("\tCopyright (c) Petr Kozler (A13B0359P), 2016\n");
+            WriteLine("\nO programu:");
+            WriteLine("\tAplikace na evidenci vědeckých textů - testovací konzolové rozhraní (Verze 1.0)");
+            WriteLine("\tSemestrální práce z předmětu \"Programování v prostředí .NET\" (KIV/NET)");
+            WriteLine("\tCopyright (c) Petr Kozler (A13B0359P), 2016\n");
         }
         
         /// <summary>
@@ -109,23 +149,10 @@ namespace CLI
         /// </summary>
         public override void ExitMenu()
         {
-            do
+            if (ReadYesNoAnswer("Opravdu chcete ukončit program?"))
             {
-                Console.WriteLine("\nOpravdu chcete ukončit program? (y/n)");
-                ConsoleKeyInfo keyInfo = Console.ReadKey();
-
-                if (keyInfo.Key == ConsoleKey.Y)
-                {
-                    IsRunning = false;
-                    break;
-                }
-                else if (keyInfo.Key == ConsoleKey.N)
-                {
-                    PrintMenu();
-                    break;
-                }
+                IsRunning = false;
             }
-            while (true);
         }
     }
 }

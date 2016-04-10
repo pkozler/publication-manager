@@ -27,10 +27,10 @@ namespace CLI
             */
             return new List<PublicationType>()
             {
-                new PublicationType("ConferenceArticle", "Článek na konferenci", new ConferenceArticleDialog(conferenceArticleModel)),
-                new PublicationType("JournalArticle", "Článek do časopisu", new JournalArticleDialog(journalArticleModel)),
-                new PublicationType("TechnicalReport", "Technická zpráva", new TechnicalReportDialog(technicalReportModel)),
-                new PublicationType("QualificationThesis", "Kvalifikační práce", new QualificationThesisDialog(qualificationThesisModel)),
+                new PublicationType(ConferenceArticleModel.NAME, "Článek na konferenci", new ConferenceArticleDialog(conferenceArticleModel)),
+                new PublicationType(JournalArticleModel.NAME, "Článek do časopisu", new JournalArticleDialog(journalArticleModel)),
+                new PublicationType(TechnicalReportModel.NAME, "Technická zpráva", new TechnicalReportDialog(technicalReportModel)),
+                new PublicationType(QualificationThesisModel.NAME, "Kvalifikační práce", new QualificationThesisDialog(qualificationThesisModel)),
             };
         }
 

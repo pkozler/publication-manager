@@ -28,7 +28,7 @@ namespace CLI
         }
 
         /// <inheritDoc/>
-        public void SetTypeSpecificBibliography(int? publicationId)
+        public void UpdateSpecificBibliography(int? publicationId)
         {
             throw new NotImplementedException();
         }

@@ -13,31 +13,41 @@ namespace Core
     public class QualificationThesisModel : APublicationModel
     {
         /// <summary>
+        /// Uchovává název typu pro použití v databázi.
+        /// </summary>
+        public const string NAME = "QualificationThesis";
+
+        /// <summary>
         /// Vrátí specifické údaje o publikaci příslušného typu.
         /// </summary>
         /// <param name="id">ID publikace</param>
         /// <returns>specifické údaje o publikaci s uvedeným ID</returns>
-        public QualificationThesis GetPublication(int id)
+        /*public QualificationThesis GetPublication(int id)
         {
             using (var context = new DbPublicationEntities())
             {
                 Publication publication = GetPublication(context, id);
                 return publication.QualificationThesis;
             }
-        }
+        }*/
 
         /// <summary>
         /// Uloží novou publikaci příslušného typu a propojí záznam základních a specifických údajů.
         /// </summary>
         /// <param name="publication">základní údaje o publikaci</param>
         /// <param name="qualificationThesis">specifické údaje o publikaci</param>
-        public void CreatePublication(Publication publication, QualificationThesis qualificationThesis)
+        public void CreatePublication(Publication publication, Author author, QualificationThesis qualificationThesis)
         {
             using (var context = new DbPublicationEntities())
             {
+                if (author == null)
+                {
+                    throw new PublicationException("Kvalifikační práce musí mít právě jednoho autora.");
+                }
+
                 publication.QualificationThesis = qualificationThesis;
                 qualificationThesis.Publication = publication;
-                CreatePublication(context, publication);
+                CreatePublication(context, publication, author == null ? null : new List<Author> { author });
                 context.QualificationThesis.Add(qualificationThesis);
                 context.SaveChanges();
             }
@@ -49,12 +59,12 @@ namespace Core
         /// <param name="id">ID publikace</param>
         /// <param name="publication">základní údaje o publikaci</param>
         /// <param name="qualificationThesis">specifické údaje o publikaci</param>
-        public void UpdatePublication(int id, Publication publication, QualificationThesis qualificationThesis)
+        public void UpdatePublication(int id, Publication publication, Author author, QualificationThesis qualificationThesis)
         {
             using (var context = new DbPublicationEntities())
             {
                 Publication oldPublication = GetPublication(context, id);
-                UpdatePublication(context, oldPublication, publication);
+                UpdatePublication(context, oldPublication, publication, author == null ? null : new List<Author> { author });
                 QualificationThesis oldQualificationThesis = oldPublication.QualificationThesis;
                 oldQualificationThesis.Address = qualificationThesis.Address;
                 oldQualificationThesis.School = qualificationThesis.School;
@@ -77,6 +87,58 @@ namespace Core
                 DeletePublication(context, oldPublication);
                 context.SaveChanges();
             }
+        }
+
+        /// <inheritDoc/>
+        public override string GeneratePublicationIsoCitation(int id)
+        {
+            using (var context = new DbPublicationEntities())
+            {
+                Publication publication = GetPublication(context, id);
+                QualificationThesis qualificationThesis = publication.QualificationThesis;
+
+                return new StringBuilder(GenerateAuthorCitationString(publication))
+                    .Append($"{publication.Title}. ")
+                    .Append($"{qualificationThesis.Address}, ")
+                    .Append($"{publication.Year}. ")
+                    .Append($"{qualificationThesis.ThesisType}. ")
+                    .Append($"{qualificationThesis.School}. ").ToString();
+            }
+        }
+
+        /// <inheritDoc/>
+        public override string GeneratePublicationBibtexEntry(int id)
+        {
+            using (var context = new DbPublicationEntities())
+            {
+                Publication publication = GetPublication(context, id);
+                QualificationThesis qualificationThesis = publication.QualificationThesis;
+
+                string thesisType = "PhdThesis".Equals(qualificationThesis.ThesisType) ? 
+                    "PhdThesis" : "MastersThesis";
+
+                return new StringBuilder($"@{thesisType}{{{publication.Entry},")
+                    .Append(GenerateAuthorBibtexString(publication))
+                    .Append($"title={{{publication.Title}}},")
+                    .Append($"address={{{qualificationThesis.Address}}},")
+                    .Append($"year={{{publication.Year}}},")
+                    .Append($"type={{{qualificationThesis.ThesisType}}},")
+                    .Append($"school={{{qualificationThesis.School}}}}}").ToString();
+            }
+        }
+
+        /// <inheritDoc/>
+        public override string ExportPublicationToHtmlDocument(int id)
+        {
+            Publication publication;
+
+            using (var context = new DbPublicationEntities())
+            {
+                publication = GetPublication(context, id);
+            }
+
+            return new StringBuilder($"<p>{GeneratePublicationIsoCitation(id)}</p>")
+                    .Append($"<p>{publication.Text}</p>").ToString();
         }
     }
 }

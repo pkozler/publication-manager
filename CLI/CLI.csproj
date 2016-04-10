@@ -65,7 +65,6 @@
     <Compile Include="PublicationAttachmentMenu.cs" />
     <Compile Include="PublicationAuthorMenu.cs" />
     <Compile Include="ListPublicationMenu.cs" />
-    <Compile Include="PublicationTextMenu.cs" />
     <Compile Include="PublicationType.cs" />
     <Compile Include="PublicationDialogs\QualificationThesisDialog.cs" />
     <Compile Include="PublicationDialogs\TechnicalReportDialog.cs" />

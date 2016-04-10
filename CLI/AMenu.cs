@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Console;
 
 namespace CLI
 {
@@ -53,7 +54,7 @@ namespace CLI
             // čtení příkazů, dokud uživatel neopustí menu
             while (IsRunning)
             {
-                RunMethod(Console.ReadKey().Key);
+                RunMethod(ReadKey().Key);
             }
         }
         
@@ -66,7 +67,10 @@ namespace CLI
             // kontrola, zda je příkaz platný
             if (MenuItems.ContainsKey(command))
             {
+                WriteLine();
                 MenuItems[command].UIMethod();
+                WriteLine();
+                PrintMenu();
             }
         }
 
@@ -77,7 +81,7 @@ namespace CLI
         {
             string itemFormat = "\t{0} - {1}: {2}";
             ConsoleKey[] commonItemKeys = new ConsoleKey[] { ConsoleKey.H, ConsoleKey.Q };
-            Console.WriteLine("\n----- {0} -----\nSeznam příkazů:", MenuLabel);
+            WriteLine("----- {0} -----\nSeznam příkazů:", MenuLabel);
 
             // výpis specifických položek menu
             foreach (var item in MenuItems)
@@ -88,13 +92,13 @@ namespace CLI
                     continue;
                 }
 
-                Console.WriteLine(itemFormat, item.Key.ToString().ToLower(), item.Value.Name, item.Value.Description);
+                WriteLine(itemFormat, item.Key.ToString().ToLower(), item.Value.Name, item.Value.Description);
             }
 
             // dodatečný výpis společných položek menu
             foreach (var key in commonItemKeys)
             {
-                Console.WriteLine(itemFormat, key.ToString().ToLower(), MenuItems[key].Name, MenuItems[key].Description);
+                WriteLine(itemFormat, key.ToString().ToLower(), MenuItems[key].Name, MenuItems[key].Description);
             }
         }
 
@@ -104,6 +108,46 @@ namespace CLI
         public virtual void ExitMenu()
         {
             IsRunning = false;
+        }
+
+        /// <summary>
+        /// Načte od uživatele platné celé číslo.
+        /// </summary>
+        /// <param name="errorMessage">výzva při vložení neplatného vstupu</param>
+        /// <returns>celé číslo</returns>
+        protected int ReadValidNumber(string errorMessage)
+        {
+            int id;
+            while (!int.TryParse(ReadLine(), out id))
+            {
+                WriteLine("Neplatný vstup. " + errorMessage);
+            }
+
+            return id;
+        }
+
+        /// <summary>
+        /// Načte od uživatele odpověď ano/ne.
+        /// </summary>
+        /// <param name="question">otázka k potvrzení</param>
+        /// <returns>true při potvrzení, jinak false</returns>
+        protected bool ReadYesNoAnswer(string question)
+        {
+            do
+            {
+                WriteLine("\n{0} (y/n)", question);
+                ConsoleKeyInfo keyInfo = ReadKey();
+
+                if (keyInfo.Key == ConsoleKey.Y)
+                {
+                    return true;
+                }
+                else if (keyInfo.Key == ConsoleKey.N)
+                {
+                    return false;
+                }
+            }
+            while (true);
         }
     }
 }

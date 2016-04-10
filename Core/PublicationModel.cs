@@ -54,38 +54,5 @@ namespace Core
                 return context.Publication.Find(id);
             }
         }
-
-        /// <summary>
-        /// Z bibliografických údajů uložené publikace se zadaným ID
-        /// vygeneruje citaci podle ISO normy.
-        /// </summary>
-        /// <param name="id">ID publikace</param>
-        /// <returns>citace podle ISO normy</returns>
-        public string GeneratePublicationIsoCitation(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Z bibliografických údajů uložené publikace se zadaným ID
-        /// vygeneruje BibTeX záznam odpovídající citaci podle ISO normy.
-        /// </summary>
-        /// <param name="id">ID publikace</param>
-        /// <returns>BibTeX záznam</returns>
-        public string GeneratePublicationBibtexEntry(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Pro uloženou publikaci se zadaným ID sestaví HTML dokument
-        /// pro umístění publikace na webové stránky,
-        /// </summary>
-        /// <param name="id">ID publikace</param>
-        /// <returns>HTML dokument</returns>
-        public string ExportPublicationToHtmlDocument(int id)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

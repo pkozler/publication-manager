@@ -13,31 +13,36 @@ namespace Core
     public class TechnicalReportModel : APublicationModel
     {
         /// <summary>
+        /// Uchovává název typu pro použití v databázi.
+        /// </summary>
+        public const string NAME = "TechnicalReport";
+
+        /// <summary>
         /// Vrátí specifické údaje o publikaci příslušného typu.
         /// </summary>
         /// <param name="id">ID publikace</param>
         /// <returns>specifické údaje o publikaci s uvedeným ID</returns>
-        public TechnicalReport GetPublication(int id)
+        /*public TechnicalReport GetPublication(int id)
         {
             using (var context = new DbPublicationEntities())
             {
                 Publication publication = GetPublication(context, id);
                 return publication.TechnicalReport;
             }
-        }
+        }*/
 
         /// <summary>
         /// Uloží novou publikaci příslušného typu a propojí záznam základních a specifických údajů.
         /// </summary>
         /// <param name="publication">základní údaje o publikaci</param>
         /// <param name="technicalReport">specifické údaje o publikaci</param>
-        public void CreatePublication(Publication publication, TechnicalReport technicalReport)
+        public void CreatePublication(Publication publication, List<Author> authors, TechnicalReport technicalReport)
         {
             using (var context = new DbPublicationEntities())
             {
                 publication.TechnicalReport = technicalReport;
                 technicalReport.Publication = publication;
-                CreatePublication(context, publication);
+                CreatePublication(context, publication, authors);
                 context.TechnicalReport.Add(technicalReport);
                 context.SaveChanges();
             }
@@ -49,12 +54,12 @@ namespace Core
         /// <param name="id">ID publikace</param>
         /// <param name="publication">základní údaje o publikaci</param>
         /// <param name="technicalReport">specifické údaje o publikaci</param>
-        public void UpdatePublication(int id, Publication publication, TechnicalReport technicalReport)
+        public void UpdatePublication(int id, Publication publication, List<Author> authors, TechnicalReport technicalReport)
         {
             using (var context = new DbPublicationEntities())
             {
                 Publication oldPublication = GetPublication(context, id);
-                UpdatePublication(context, oldPublication, publication);
+                UpdatePublication(context, oldPublication, publication, authors);
                 TechnicalReport oldTechnicalReport = oldPublication.TechnicalReport;
                 oldTechnicalReport.Address = technicalReport.Address;
                 oldTechnicalReport.Institution = technicalReport.Institution;
@@ -78,6 +83,57 @@ namespace Core
                 DeletePublication(context, oldPublication);
                 context.SaveChanges();
             }
+        }
+
+        /// <inheritDoc/>
+        public override string GeneratePublicationIsoCitation(int id)
+        {
+            using (var context = new DbPublicationEntities())
+            {
+                Publication publication = GetPublication(context, id);
+                TechnicalReport technicalReport = publication.TechnicalReport;
+
+                return new StringBuilder(GenerateAuthorCitationString(publication))
+                    .Append($"{publication.Title}. ")
+                    .Append($"{technicalReport.Address}: ")
+                    .Append($"{technicalReport.Institution}, ")
+                    .Append($"{publication.Year}. ")
+                    .Append($"{technicalReport.ReportType} ")
+                    .Append($"č. {technicalReport.Number}.").ToString();
+            }
+        }
+
+        /// <inheritDoc/>
+        public override string GeneratePublicationBibtexEntry(int id)
+        {
+            using (var context = new DbPublicationEntities())
+            {
+                Publication publication = GetPublication(context, id);
+                TechnicalReport technicalReport = publication.TechnicalReport;
+                
+                return new StringBuilder($"@TechReport{{{publication.Entry},")
+                    .Append(GenerateAuthorBibtexString(publication))
+                    .Append($"title={{{publication.Title}}},")
+                    .Append($"address={{{technicalReport.Address}}},")
+                    .Append($"institution={{{technicalReport.Institution}}},")
+                    .Append($"year={{{publication.Year}}},")
+                    .Append($"type={{{technicalReport.ReportType}}},")
+                    .Append($"number={{{technicalReport.Number}}}}}").ToString();
+            }
+        }
+
+        /// <inheritDoc/>
+        public override string ExportPublicationToHtmlDocument(int id)
+        {
+            Publication publication;
+
+            using (var context = new DbPublicationEntities())
+            {
+                publication = GetPublication(context, id);
+            }
+
+            return new StringBuilder($"<p>{GeneratePublicationIsoCitation(id)}</p>")
+                    .Append($"<p>{publication.Text}</p>").ToString();
         }
     }
 }

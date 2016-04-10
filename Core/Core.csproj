@@ -103,6 +103,7 @@
       <DependentUpon>DbPublicationModel.tt</DependentUpon>
     </Compile>
     <Compile Include="PublicationModel.cs" />
+    <Compile Include="PublicationModels\PublicationException.cs" />
     <Compile Include="QualificationThesis.cs">
       <DependentUpon>DbPublicationModel.tt</DependentUpon>
     </Compile>

@@ -6,10 +6,12 @@
     /// </summary>
     interface IPublishableDialog
     {
+        //void CreateSpecificBibliography();
+
         /// <summary>
         /// Načte od uživatele specifické údaje pro konkrétní typ publikace.
         /// </summary>
         /// <param name="publicationId">ID publikace</param>
-        void SetTypeSpecificBibliography(int? publicationId);
+        void UpdateSpecificBibliography(int? publicationId);
     }
 }

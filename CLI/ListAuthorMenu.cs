@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Core;
+using static System.Console;
 
 namespace CLI
 {
@@ -32,6 +33,8 @@ namespace CLI
                 { ConsoleKey.D, new MenuItem() { Name = "Delete", Description = "Odstraní autora se zadaným ID. "
                     + "Odstranit je možné pouze autory, kterým není přiřazena žádná publikace.", UIMethod = RemoveAuthor } },
             });
+
+            GetAuthorList();
         }
 
         /// <summary>
@@ -39,7 +42,13 @@ namespace CLI
         /// </summary>
         public void RemoveAuthor()
         {
-            throw new NotImplementedException();
+            WriteLine("Zadejte ID autora k odstranění:");
+            int id = ReadValidNumber("Zadejte kladné celé číslo představující ID existujícího autora bez publikací.");
+
+            if (ReadYesNoAnswer("Opravdu chcete odstranit autora?"))
+            {
+                authorModel.DeleteAuthor(id);
+            }
         }
 
         /// <summary>
@@ -47,7 +56,16 @@ namespace CLI
         /// </summary>
         public void GetAuthorList()
         {
-            throw new NotImplementedException();
+            WriteLine("Seznam autorů:");
+            WriteLine("ID\tJméno\tPříjmení");
+            List<Author> authors = authorModel.GetAuthors();
+            
+            foreach (Author author in authors)
+            {
+                WriteLine($"{author.Id}\t{author.Name}\t{author.Surname}");
+                ICollection<Publication> publications = author.Publication;
+                WriteLine($"Publikace: {string.Join("; ", publications)}");
+            }
         }
     }
 }

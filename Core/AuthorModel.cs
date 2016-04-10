@@ -33,7 +33,7 @@ namespace Core
         /// </summary>
         /// <param name="publicationId">ID publikace</param>
         /// <returns>seznam autorů publikace</returns>
-        public List<Author> GetAuthorsByPublication(int publicationId)
+        /*public List<Author> GetAuthorsByPublication(int publicationId)
         {
             using (var context = new DbPublicationEntities())
             {
@@ -47,6 +47,19 @@ namespace Core
 
                 return authors.ToList();             
             }
+        }*/
+
+        /// <summary>
+        /// Uloží údaje nového autora pro pozdější použití.
+        /// </summary>
+        /// <param name="author">údaje o autorovi</param>
+        public void CreateAuthor(Author author)
+        {
+            using (var context = new DbPublicationEntities())
+            {
+                context.Author.Add(author);
+                context.SaveChanges();
+            }
         }
 
         /// <summary>
@@ -55,42 +68,48 @@ namespace Core
         /// </summary>
         /// <param name="publicationId">ID publikace</param>
         /// <param name="author">údaje o autorovi</param>
-        public void CreateAuthorOfPublication(int publicationId, Author author)
+        /*public void CreateAuthorOfPublication(Publication publication, Author author)
         {
             using (var context = new DbPublicationEntities())
             {
-                // TODO implementovat
+                author.Publication.Add(publication);
+                publication.Author.Add(author);
+                context.Author.Add(author);
                 context.SaveChanges();
             }
-        }
+        }*/
 
         /// <summary>
         /// Přidá existujícího autora do seznamu autorů publikace.
         /// </summary>
         /// <param name="publicationId">ID publikace</param>
         /// <param name="author">údaje o autorovi</param>
-        public void AddAuthorToPublication(int publicationId, Author author)
+        /*public void AddAuthorToPublication(Publication publication, int authorId)
         {
             using (var context = new DbPublicationEntities())
             {
-                // TODO implementovat
+                Author author = context.Author.Find(authorId);
+                author.Publication.Add(publication);
+                publication.Author.Add(author);
                 context.SaveChanges();
             }
-        }
-        
+        }*/
+
         /// <summary>
         /// Odebere autora ze seznamu autorů publikace.
         /// </summary>
         /// <param name="publicationId">ID publikace</param>
         /// <param name="authorId">údaje o autorovi</param>
-        public void RemoveAuthorFromPublication(int publicationId, int authorId)
+        /*public void RemoveAuthorFromPublication(Publication publication, int authorId)
         {
             using (var context = new DbPublicationEntities())
             {
-                // TODO implementovat
+                Author author = context.Author.Find(authorId);
+                publication.Author.Remove(author);
+                author.Publication.Remove(publication);
                 context.SaveChanges();
             }
-        }
+        }*/
 
         /// <summary>
         /// Odstraní uložený záznam o autorovi. Lze použít pouze na autora bez publikací.
@@ -100,7 +119,8 @@ namespace Core
         {
             using (var context = new DbPublicationEntities())
             {
-                // TODO implementovat
+                Author author = context.Author.Find(authorId);
+                context.Author.Remove(author);
                 context.SaveChanges();
             }
         }
