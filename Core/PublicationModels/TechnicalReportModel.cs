@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Core
 {
@@ -86,53 +83,38 @@ namespace Core
         }
 
         /// <inheritDoc/>
-        public override string GeneratePublicationIsoCitation(int id)
+        public override string GeneratePublicationIsoCitation(Publication publication)
         {
-            using (var context = new DbPublicationEntities())
-            {
-                Publication publication = GetPublication(context, id);
-                TechnicalReport technicalReport = publication.TechnicalReport;
+            TechnicalReport technicalReport = publication.TechnicalReport;
 
-                return new StringBuilder(GenerateAuthorCitationString(publication))
-                    .Append($"{publication.Title}. ")
-                    .Append($"{technicalReport.Address}: ")
-                    .Append($"{technicalReport.Institution}, ")
-                    .Append($"{publication.Year}. ")
-                    .Append($"{technicalReport.ReportType} ")
-                    .Append($"č. {technicalReport.Number}.").ToString();
-            }
+            return new StringBuilder(GenerateAuthorCitationString(publication))
+                .Append($"{publication.Title}. ")
+                .Append($"{technicalReport.Address}: ")
+                .Append($"{technicalReport.Institution}, ")
+                .Append($"{publication.Year}. ")
+                .Append($"{technicalReport.ReportType} ")
+                .Append($"č. {technicalReport.Number}.").ToString();
         }
 
         /// <inheritDoc/>
-        public override string GeneratePublicationBibtexEntry(int id)
+        public override string GeneratePublicationBibtexEntry(Publication publication)
         {
-            using (var context = new DbPublicationEntities())
-            {
-                Publication publication = GetPublication(context, id);
-                TechnicalReport technicalReport = publication.TechnicalReport;
+            TechnicalReport technicalReport = publication.TechnicalReport;
                 
-                return new StringBuilder($"@TechReport{{{publication.Entry},")
-                    .Append(GenerateAuthorBibtexString(publication))
-                    .Append($"title={{{publication.Title}}},")
-                    .Append($"address={{{technicalReport.Address}}},")
-                    .Append($"institution={{{technicalReport.Institution}}},")
-                    .Append($"year={{{publication.Year}}},")
-                    .Append($"type={{{technicalReport.ReportType}}},")
-                    .Append($"number={{{technicalReport.Number}}}}}").ToString();
-            }
+            return new StringBuilder($"@TechReport{{{publication.Entry},")
+                .Append(GenerateAuthorBibtexString(publication))
+                .Append($"title={{{publication.Title}}},")
+                .Append($"address={{{technicalReport.Address}}},")
+                .Append($"institution={{{technicalReport.Institution}}},")
+                .Append($"year={{{publication.Year}}},")
+                .Append($"type={{{technicalReport.ReportType}}},")
+                .Append($"number={{{technicalReport.Number}}}}}").ToString();
         }
 
         /// <inheritDoc/>
-        public override string ExportPublicationToHtmlDocument(int id)
+        public override string ExportPublicationToHtmlDocument(Publication publication)
         {
-            Publication publication;
-
-            using (var context = new DbPublicationEntities())
-            {
-                publication = GetPublication(context, id);
-            }
-
-            return new StringBuilder($"<p>{GeneratePublicationIsoCitation(id)}</p>")
+            return new StringBuilder($"<p>{GeneratePublicationIsoCitation(publication)}</p>")
                     .Append($"<p>{publication.Text}</p>").ToString();
         }
     }

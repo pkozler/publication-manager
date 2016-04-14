@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Core;
+
+using static System.Console;
+using static CLI.ConsoleExtension;
 
 namespace CLI
 {
@@ -44,6 +44,8 @@ namespace CLI
                 { ConsoleKey.C, new MenuItem() { Name = "Create", Description = "Přidá nový soubor se zadanou cestou do seznamu příloh publikace.", UIMethod = CreateAttachment } },
                 { ConsoleKey.D, new MenuItem() { Name = "Delete", Description = "Odebere existující soubor se zadaným ID ze seznamu příloh publikace.", UIMethod = DeleteAttachment } },
             });
+
+            GetAttachmentList();
         }
 
         /// <summary>
@@ -51,7 +53,12 @@ namespace CLI
         /// </summary>
         public void CreateAttachment()
         {
-            throw new NotImplementedException();
+            WriteLine("Zadejte cestu k souboru přílohy:");
+            string path = ReadNonEmptyString("Cesta nesmí být prázdná.");
+            Attachment attachment = new Attachment();
+            attachment.Path = path;
+            attachmentModel.AddAttachmentToPublication(
+                publicationModel.GetPublicationById(publicationId), attachment);
         }
 
         /// <summary>
@@ -59,7 +66,31 @@ namespace CLI
         /// </summary>
         public void DeleteAttachment()
         {
-            throw new NotImplementedException();
+            WriteLine("Zadejte ID přílohy k odstranění:");
+            int id = ReadValidNumber("Zadejte celé číslo představující ID přílohy aktuální publikace.");
+            
+            if (ReadYesNoAnswer("Opravdu chcete přílohu odstranit?"))
+            {
+                attachmentModel.RemoveAttachmentFromPublication(
+                    publicationModel.GetPublicationById(publicationId), id);
+            }
+
+            GetAttachmentList();
+        }
+
+        /// <summary>
+        /// Zobrazí seznam příloh dané publikace.
+        /// </summary>
+        public void GetAttachmentList()
+        {
+            WriteLine("Seznam příloh:");
+            WriteLine("ID\tCesta k souboru");
+            List<Attachment> attachments = new List<Attachment>();
+
+            foreach (Attachment attachment in attachments)
+            {
+                WriteLine($"{attachment.Id}\t{attachment.Path}");
+            }
         }
     }
 }

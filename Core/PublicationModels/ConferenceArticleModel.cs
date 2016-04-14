@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Core
 {
@@ -96,69 +93,54 @@ namespace Core
         }
 
         /// <inheritDoc/>
-        public override string GeneratePublicationIsoCitation(int id)
+        public override string GeneratePublicationIsoCitation(Publication publication)
         {
-            using (var context = new DbPublicationEntities())
-            {
-                Publication publication = GetPublication(context, id);
-                ConferenceArticle conferenceArticle = publication.ConferenceArticle;
+            ConferenceArticle conferenceArticle = publication.ConferenceArticle;
                 
-                string pages = conferenceArticle.FromPage == conferenceArticle.ToPage ? 
-                    $"{conferenceArticle.FromPage}" : 
-                    $"{conferenceArticle.FromPage}-{conferenceArticle.ToPage}";
-                string identification = (string.IsNullOrEmpty(conferenceArticle.ISBN) ?
-                    "" : $"ISBN {conferenceArticle.ISBN}")
-                    + (string.IsNullOrEmpty(conferenceArticle.ISSN) ?
-                    "" : $" ISSN {conferenceArticle.ISSN}");
+            string pages = conferenceArticle.FromPage == conferenceArticle.ToPage ? 
+                $"{conferenceArticle.FromPage}" : 
+                $"{conferenceArticle.FromPage}-{conferenceArticle.ToPage}";
+            string identification = (string.IsNullOrEmpty(conferenceArticle.ISBN) ?
+                "" : $"ISBN {conferenceArticle.ISBN}")
+                + (string.IsNullOrEmpty(conferenceArticle.ISSN) ?
+                "" : $" ISSN {conferenceArticle.ISSN}");
 
-                return new StringBuilder(GenerateAuthorCitationString(publication))
-                    .Append($"{publication.Title}. ")
-                    .Append($"In: {conferenceArticle.BookTitle}. ")
-                    .Append($"{conferenceArticle.Address}: ")
-                    .Append($"{conferenceArticle.Publisher}, ")
-                    .Append($"{publication.Year}, ")
-                    .Append($"s. {pages}. ")
-                    .Append($"{identification}.").ToString();
-            }
+            return new StringBuilder(GenerateAuthorCitationString(publication))
+                .Append($"{publication.Title}. ")
+                .Append($"In: {conferenceArticle.BookTitle}. ")
+                .Append($"{conferenceArticle.Address}: ")
+                .Append($"{conferenceArticle.Publisher}, ")
+                .Append($"{publication.Year}, ")
+                .Append($"s. {pages}. ")
+                .Append($"{identification}.").ToString();
         }
 
         /// <inheritDoc/>
-        public override string GeneratePublicationBibtexEntry(int id)
+        public override string GeneratePublicationBibtexEntry(Publication publication)
         {
-            using (var context = new DbPublicationEntities())
-            {
-                Publication publication = GetPublication(context, id);
-                ConferenceArticle conferenceArticle = publication.ConferenceArticle;
+            ConferenceArticle conferenceArticle = publication.ConferenceArticle;
 
-                string pages = conferenceArticle.FromPage == conferenceArticle.ToPage ?
-                    $"{conferenceArticle.FromPage}" :
-                    $"{conferenceArticle.FromPage} -- {conferenceArticle.ToPage}";
+            string pages = conferenceArticle.FromPage == conferenceArticle.ToPage ?
+                $"{conferenceArticle.FromPage}" :
+                $"{conferenceArticle.FromPage} -- {conferenceArticle.ToPage}";
 
-                return new StringBuilder($"@InProceedings{{{publication.Entry},")
-                    .Append(GenerateAuthorBibtexString(publication))
-                    .Append($"title={{{publication.Title}}},")
-                    .Append($"booktitle={{{conferenceArticle.BookTitle}}},")
-                    .Append($"address={{{conferenceArticle.Address}}},")
-                    .Append($"publisher={{{conferenceArticle.Publisher}}},")
-                    .Append($"year={{{publication.Year}}},")
-                    .Append($"pages={{{pages}}},")
-                    .Append((!string.IsNullOrEmpty(conferenceArticle.ISBN) ? 
-                        $"isbn={{{conferenceArticle.ISBN}}}}}" : 
-                        $"issn={{{conferenceArticle.ISSN}}}}}")).ToString();
-            }
+            return new StringBuilder($"@InProceedings{{{publication.Entry},")
+                .Append(GenerateAuthorBibtexString(publication))
+                .Append($"title={{{publication.Title}}},")
+                .Append($"booktitle={{{conferenceArticle.BookTitle}}},")
+                .Append($"address={{{conferenceArticle.Address}}},")
+                .Append($"publisher={{{conferenceArticle.Publisher}}},")
+                .Append($"year={{{publication.Year}}},")
+                .Append($"pages={{{pages}}},")
+                .Append((!string.IsNullOrEmpty(conferenceArticle.ISBN) ? 
+                    $"isbn={{{conferenceArticle.ISBN}}}}}" : 
+                    $"issn={{{conferenceArticle.ISSN}}}}}")).ToString();
         }
 
         /// <inheritDoc/>
-        public override string ExportPublicationToHtmlDocument(int id)
+        public override string ExportPublicationToHtmlDocument(Publication publication)
         {
-            Publication publication;
-
-            using (var context = new DbPublicationEntities())
-            {
-                publication = GetPublication(context, id);
-            }
-
-            return new StringBuilder($"<p>{GeneratePublicationIsoCitation(id)}</p>")
+            return new StringBuilder($"<p>{GeneratePublicationIsoCitation(publication)}</p>")
                     .Append($"<p>{publication.Text}</p>").ToString();
         }
     }

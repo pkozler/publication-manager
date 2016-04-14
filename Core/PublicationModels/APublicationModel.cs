@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using System.Collections.Generic;
 
 namespace Core
@@ -11,28 +10,28 @@ namespace Core
     public abstract class APublicationModel
     {
         /// <summary>
-        /// Z bibliografických údajů uložené publikace se zadaným ID
+        /// Z bibliografických údajů zadané publikace
         /// vygeneruje citaci podle ISO normy.
         /// </summary>
-        /// <param name="id">ID publikace</param>
+        /// <param name="publication">publikace</param>
         /// <returns>citace podle ISO normy</returns>
-        public abstract string GeneratePublicationIsoCitation(int id);
+        public abstract string GeneratePublicationIsoCitation(Publication publication);
 
         /// <summary>
-        /// Z bibliografických údajů uložené publikace se zadaným ID
+        /// Z bibliografických údajů zadané publikace
         /// vygeneruje BibTeX záznam odpovídající citaci podle ISO normy.
         /// </summary>
-        /// <param name="id">ID publikace</param>
+        /// <param name="publication">publikace</param>
         /// <returns>BibTeX záznam</returns>
-        public abstract string GeneratePublicationBibtexEntry(int id);
+        public abstract string GeneratePublicationBibtexEntry(Publication publication);
 
         /// <summary>
-        /// Pro uloženou publikaci se zadaným ID sestaví HTML dokument
+        /// Pro zadanou publikaci sestaví HTML dokument
         /// pro umístění publikace na webové stránky,
         /// </summary>
-        /// <param name="id">ID publikace</param>
+        /// <param name="publication">publikace</param>
         /// <returns>HTML dokument</returns>
-        public abstract string ExportPublicationToHtmlDocument(int id);
+        public abstract string ExportPublicationToHtmlDocument(Publication publication);
 
         /// <summary>
         /// Vygeneruje řetězec autorů publikace pro citaci ze seznamu autorů.

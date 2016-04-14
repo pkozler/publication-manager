@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Core;
+
 using static System.Console;
+using static CLI.ConsoleExtension;
 
 namespace CLI
 {
@@ -49,6 +49,8 @@ namespace CLI
             {
                 authorModel.DeleteAuthor(id);
             }
+
+            GetAuthorList();
         }
 
         /// <summary>
@@ -63,8 +65,19 @@ namespace CLI
             foreach (Author author in authors)
             {
                 WriteLine($"{author.Id}\t{author.Name}\t{author.Surname}");
-                ICollection<Publication> publications = author.Publication;
-                WriteLine($"Publikace: {string.Join("; ", publications)}");
+                Publication[] publications = author.Publication.ToArray();
+
+                if (publications.Length > 0)
+                {
+                    Write($"{publications[0].Id} ({publications[0].Title})");
+                }
+                
+                for (int i = 1; i < publications.Length; i++)
+                {
+                    Write($", {publications[i].Id} ({publications[i].Title})");
+                }
+                
+                WriteLine();
             }
         }
     }

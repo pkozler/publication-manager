@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Core
 {
@@ -87,61 +84,46 @@ namespace Core
         }
 
         /// <inheritDoc/>
-        public override string GeneratePublicationIsoCitation(int id)
+        public override string GeneratePublicationIsoCitation(Publication publication)
         {
-            using (var context = new DbPublicationEntities())
-            {
-                Publication publication = GetPublication(context, id);
-                JournalArticle journalArticle = publication.JournalArticle;
+            JournalArticle journalArticle = publication.JournalArticle;
 
-                string pages = journalArticle.FromPage == journalArticle.ToPage ?
-                    $"{journalArticle.FromPage}" :
-                    $"{journalArticle.FromPage}-{journalArticle.ToPage}";
+            string pages = journalArticle.FromPage == journalArticle.ToPage ?
+                $"{journalArticle.FromPage}" :
+                $"{journalArticle.FromPage}-{journalArticle.ToPage}";
 
-                return new StringBuilder(GenerateAuthorCitationString(publication))
-                    .Append($"{publication.Title}. ")
-                    .Append($"{journalArticle.JournalTitle}. ")
-                    .Append($"{publication.Year}, ")
-                    .Append($"{journalArticle.Number}, ")
-                    .Append($"{pages}. ")
-                    .Append($"ISSN {journalArticle.ISSN}.").ToString();
-            }
+            return new StringBuilder(GenerateAuthorCitationString(publication))
+                .Append($"{publication.Title}. ")
+                .Append($"{journalArticle.JournalTitle}. ")
+                .Append($"{publication.Year}, ")
+                .Append($"{journalArticle.Number}, ")
+                .Append($"{pages}. ")
+                .Append($"ISSN {journalArticle.ISSN}.").ToString();
         }
 
         /// <inheritDoc/>
-        public override string GeneratePublicationBibtexEntry(int id)
+        public override string GeneratePublicationBibtexEntry(Publication publication)
         {
-            using (var context = new DbPublicationEntities())
-            {
-                Publication publication = GetPublication(context, id);
-                JournalArticle journalArticle = publication.JournalArticle;
+            JournalArticle journalArticle = publication.JournalArticle;
 
-                string pages = journalArticle.FromPage == journalArticle.ToPage ?
-                    $"{journalArticle.FromPage}" :
-                    $"{journalArticle.FromPage} -- {journalArticle.ToPage}";
+            string pages = journalArticle.FromPage == journalArticle.ToPage ?
+                $"{journalArticle.FromPage}" :
+                $"{journalArticle.FromPage} -- {journalArticle.ToPage}";
 
-                return new StringBuilder($"@Article{{{publication.Entry},")
-                    .Append(GenerateAuthorBibtexString(publication))
-                    .Append($"title={{{publication.Title}}},")
-                    .Append($"journal={{{journalArticle.JournalTitle}}},")
-                    .Append($"year={{{publication.Year}}},")
-                    .Append($"number={{{journalArticle.Number}}},")
-                    .Append($"pages={{{pages}}},")
-                    .Append($"issn={{{journalArticle.ISSN}}}}}").ToString();
-            }
+            return new StringBuilder($"@Article{{{publication.Entry},")
+                .Append(GenerateAuthorBibtexString(publication))
+                .Append($"title={{{publication.Title}}},")
+                .Append($"journal={{{journalArticle.JournalTitle}}},")
+                .Append($"year={{{publication.Year}}},")
+                .Append($"number={{{journalArticle.Number}}},")
+                .Append($"pages={{{pages}}},")
+                .Append($"issn={{{journalArticle.ISSN}}}}}").ToString();
         }
 
         /// <inheritDoc/>
-        public override string ExportPublicationToHtmlDocument(int id)
+        public override string ExportPublicationToHtmlDocument(Publication publication)
         {
-            Publication publication;
-
-            using (var context = new DbPublicationEntities())
-            {
-                publication = GetPublication(context, id);
-            }
-
-            return new StringBuilder($"<p>{GeneratePublicationIsoCitation(id)}</p>")
+            return new StringBuilder($"<p>{GeneratePublicationIsoCitation(publication)}</p>")
                     .Append($"<p>{publication.Text}</p>").ToString();
         }
     }

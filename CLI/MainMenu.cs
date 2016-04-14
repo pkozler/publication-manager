@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
-using static System.Console;
 using Core;
+
+using static System.Console;
+using static CLI.ConsoleExtension;
 
 namespace CLI
 {
@@ -52,10 +51,10 @@ namespace CLI
             MenuLabel = "Hlavní menu";
             InitializeMenuItems(new Dictionary<ConsoleKey, MenuItem>()
             {
-                { ConsoleKey.L, new MenuItem() { Name = "List", Description = "Vypíše seznam publikací se zadanými filtry.", UIMethod = GetPublicationList } },
+                { ConsoleKey.L, new MenuItem() { Name = "List", Description = "Zobrazí menu výpisu publikací se zadanými filtry.", UIMethod = GetPublicationList } },
                 { ConsoleKey.R, new MenuItem() { Name = "Read", Description = "Načte detail zadané publikace, kterou lze upravit nebo odstranit.", UIMethod = GetPublicationDetail } },
                 { ConsoleKey.C, new MenuItem() { Name = "Create", Description = "Vytvoří novou publikaci.", UIMethod = CreateNewPublication } },
-                { ConsoleKey.A, new MenuItem() { Name = "Authors", Description = "Vypíše seznam uložených autorů.", UIMethod = GetAuthorList } },
+                { ConsoleKey.A, new MenuItem() { Name = "Authors", Description = "Zobrazí menu výpisu uložených autorů.", UIMethod = GetAuthorList } },
                 { ConsoleKey.I, new MenuItem() { Name = "Info", Description = "Vypíše stručný popis programu.", UIMethod = PrintInfo } },
             });
             
@@ -68,7 +67,7 @@ namespace CLI
         public void GetPublicationList()
         {
             ListPublicationMenu menu = new ListPublicationMenu(
-                publicationTypes, publicationModel);
+                publicationTypes, publicationModel, authorModel);
             menu.Start();
         }
 
@@ -81,10 +80,17 @@ namespace CLI
             WriteLine("Zadejte ID publikace pro zobrazení bibliografických údajů:");
 
             int id = ReadValidNumber("Zadejte kladné celé číslo představující ID existující publikace.");
-
-            PublicationMainMenu menu = new PublicationMainMenu(
+            
+            try
+            {
+                PublicationMainMenu menu = new PublicationMainMenu(
                 publicationTypes, publicationModel, authorModel, attachmentModel, id);
-            menu.Start();
+                menu.Start();
+            }
+            catch (PublicationException e)
+            {
+                WriteLine(e.Message);
+            }
         }
 
         /// <summary>
@@ -94,22 +100,22 @@ namespace CLI
         {
             Publication publication = new Publication();
             WriteLine("Zadejte název BibTeX záznamu publikace:");
-            publication.Entry = ReadLine();
+            publication.Entry = ReadNonEmptyString("Název nesmí být prázdný.");
+
+            WriteLine("Zadejte křestní jméno autora:");
+            List<Author> authors = ReadNameList(
+                "Zadejte křestní jméno dalšího autora nebo potvrďte hotový seznam autorů klávesou ENTER: (vložením prázdného řádku)",
+                "Zadejte příjmení autora:");
+
             WriteLine("Zadejte skutečný název publikace:");
-            publication.Title = ReadLine();
+            publication.Title = ReadNonEmptyString("Název nesmí být prázdný.");
             WriteLine("Zadejte rok vydání publikace:");
-
-            int year;
-            while (!int.TryParse(ReadLine(), out year))
-            {
-                WriteLine("Neplatný vstup. Zadejte celé číslo představující rok vydání:");
-            }
-
+            int year = ReadValidNumber("Zadejte celé číslo představující rok vydání");
             publication.Year = year;
             WriteLine("Zadejte cestu k textovému souboru publikace pro import textu "
                 + "nebo prázdný řádek pro zadání z konzole: (pouze pro testovací účely)");
 
-            string path = ReadLine();
+            string path = ReadLine().Trim();
             if (string.IsNullOrEmpty(path))
             {
                 WriteLine("Vložte text publikace: (\\n pro nový řádek)");
@@ -122,6 +128,12 @@ namespace CLI
                     publication.Text = reader.ReadToEnd();
                 }
             }
+            
+            WritePublicationTypes("Dostupné typy publikací:", publicationTypes);
+            int typeNumber = ReadValidNumber("Zadejte číslo označující typ publikace podle výše uvedeného seznamu.");
+            
+            // předání načítání údajů dialogu pro zvolený typ publikace
+            publicationTypes[typeNumber].Dialog.CreateSpecificBibliography(publication, authors);
         }
 
         /// <summary>

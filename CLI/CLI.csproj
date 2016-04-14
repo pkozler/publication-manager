@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AMenu.cs" />
+    <Compile Include="ConsoleExtension.cs" />
     <Compile Include="PublicationDialogs\ConferenceArticleDialog.cs" />
     <Compile Include="PublicationDialogs\IPublishableDialog.cs" />
     <Compile Include="PublicationDialogs\JournalArticleDialog.cs" />

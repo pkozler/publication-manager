@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using Core;
+
+using static System.Console;
+using static CLI.ConsoleExtension;
 
 namespace CLI
 {
@@ -59,14 +60,15 @@ namespace CLI
             {
                 { ConsoleKey.R, new MenuItem() { Name = "Read", Description = "Znovu vypíše bibliografické údaje zobrazené publikace.", UIMethod = GetBibliography } },
                 { ConsoleKey.U, new MenuItem() { Name = "Update", Description = "Spustí průvodce úpravou zobrazené publikace.", UIMethod = UpdateBibliography } },
-                { ConsoleKey.D, new MenuItem() { Name = "Delete", Description = "Odstraní zobrazenou publikaci (vyžaduje potvrzení).", UIMethod = UpdateContentText } },
-                { ConsoleKey.T, new MenuItem() { Name = "Text", Description = "Vypíše obsah (hlavní text) zobrazené publikace.", UIMethod = UpdateAuthors } },
-                { ConsoleKey.A, new MenuItem() { Name = "Authors", Description = "Přepne do menu správy autorů (umožňuje přidávat a odebírat autory publikace).", UIMethod = UpdateAttachments } },
-                { ConsoleKey.F, new MenuItem() { Name = "Files", Description = "Přepne do menu správy příloh (umožňuje přidávat a odebírat přílohy publikace).", UIMethod = PrintIsoCitation } },
-                { ConsoleKey.I, new MenuItem() { Name = "ISO", Description = "Vygeneruje citaci zobrazené publikace podle normy ČSN ISO 690.", UIMethod = PrintBibtexEntry } },
-                { ConsoleKey.B, new MenuItem() { Name = "BibTeX", Description = "Vygeneruje BibTeX záznam zobrazené publikace odpovídající citaci podle normy.", UIMethod = PrintHtmlDocument } },
-                { ConsoleKey.E, new MenuItem() { Name = "Export", Description = "Exportuje zobrazenou publikaci do souboru ve formátu HTML.", UIMethod = DeletePublication } },
+                { ConsoleKey.D, new MenuItem() { Name = "Delete", Description = "Odstraní zobrazenou publikaci (vyžaduje potvrzení).", UIMethod = DeletePublication } },
+                { ConsoleKey.T, new MenuItem() { Name = "Text", Description = "Vypíše obsah (hlavní text) zobrazené publikace.", UIMethod = PrintContentText } },
+                { ConsoleKey.F, new MenuItem() { Name = "Files", Description = "Přepne do menu správy příloh (umožňuje přidávat a odebírat přílohy publikace).", UIMethod = UpdateAttachments } },
+                { ConsoleKey.I, new MenuItem() { Name = "ISO", Description = "Vygeneruje citaci zobrazené publikace podle normy ČSN ISO 690.", UIMethod = PrintIsoCitation } },
+                { ConsoleKey.B, new MenuItem() { Name = "BibTeX", Description = "Vygeneruje BibTeX záznam zobrazené publikace odpovídající citaci podle normy.", UIMethod = PrintBibtexEntry } },
+                { ConsoleKey.E, new MenuItem() { Name = "Export", Description = "Exportuje zobrazenou publikaci do souboru ve formátu HTML.", UIMethod = PrintHtmlDocument } },
             });
+            
+            GetBibliography();
         }
 
         /// <summary>
@@ -74,7 +76,17 @@ namespace CLI
         /// </summary>
         public void GetBibliography()
         {
-            throw new NotImplementedException();
+            Publication publication = publicationModel.GetPublicationById(publicationId);
+            WriteLine("--- Údaje o publikaci s ID {0} ---", publicationId);
+            WriteLine("Klíč pro uložení BibTeX záznamu: " + publication.Entry);
+            Write("Autoři: ");
+            WriteAuthors(publication.Author);
+            WriteLine("Název publikace: " + publication.Title);
+            WriteLine("Rok vydání: " + publication.Year);
+            PublicationType publicationType = PublicationType.GetTypeByName(
+                publicationTypes, publication.Type);
+            WriteLine("Typ publikace: " + publicationType.Description);
+            publicationType.Dialog.GetSpecificBibliography(publication);
         }
 
         /// <summary>
@@ -82,31 +94,85 @@ namespace CLI
         /// </summary>
         public void UpdateBibliography()
         {
-            throw new NotImplementedException();
+            Publication publication = publicationModel.GetPublicationById(publicationId);
+            WriteLine("Zadejte nový název BibTeX záznamu publikace:");
+            string entry = ReadLine().Trim();
+
+            if (!string.IsNullOrEmpty(entry))
+            {
+                publication.Entry = entry;
+            }
+            
+            List<Author> authors = null;
+
+            if (ReadYesNoAnswer("Chcete nastavit nový seznam autorů?"))
+            {
+                WriteLine("Zadejte křestní jméno autora:");
+                authors = ReadNameList(
+                    "Zadejte křestní jméno dalšího autora nebo potvrďte hotový seznam autorů klávesou ENTER: (vložením prázdného řádku)",
+                    "Zadejte příjmení autora:");
+            }
+
+            WriteLine("Zadejte nový skutečný název publikace:");
+            string title = ReadLine().Trim();
+
+            if (!string.IsNullOrEmpty(title))
+            {
+                publication.Title = title;
+            }
+
+            WriteLine("Zadejte nový rok vydání publikace:");
+
+            int year;
+            if (int.TryParse(ReadLine(), out year))
+            {
+                publication.Year = year;
+            }
+            
+            if (ReadYesNoAnswer("Chcete upravit text publikace?"))
+            {
+                WriteLine("Zadejte cestu k textovému souboru publikace pro import textu "
+                + "nebo prázdný řádek pro zadání z konzole: (pouze pro testovací účely)");
+
+                string path = ReadLine().Trim();
+                if (string.IsNullOrEmpty(path))
+                {
+                    WriteLine("Vložte text publikace: (\\n pro nový řádek)");
+                    publication.Text = ReadLine().Replace("\\n", Environment.NewLine); ;
+                }
+                else
+                {
+                    using (var reader = new StreamReader(path))
+                    {
+                        publication.Text = reader.ReadToEnd();
+                    }
+                }
+            }
+            
+            // předání načítání údajů dialogu pro zvolený typ publikace
+            PublicationType.GetTypeByName(publicationTypes, publication.Type)
+                .Dialog.UpdateSpecificBibliography(publicationId, publication, authors);
         }
 
         /// <summary>
-        /// Zobrazí menu úpravy hlavního textu publikace.
+        /// Vypíše hlavní text publikace.
         /// </summary>
-        public void UpdateContentText()
+        public void PrintContentText()
         {
-            throw new NotImplementedException();
+            Publication publication = publicationModel.GetPublicationById(publicationId);
+            WriteLine("--- Text obsahu publikace s ID {0} ---", publicationId);
+            WriteLine(publication.Text);
+            WriteLine("--- Konec textu ---");
         }
-
-        /// <summary>
-        /// Zobrazí menu správy seznamu autorů publikace.
-        /// </summary>
-        public void UpdateAuthors()
-        {
-            throw new NotImplementedException();
-        }
-
+        
         /// <summary>
         /// Zobrazí menu správy seznamu příloh publikace.
         /// </summary>
         public void UpdateAttachments()
         {
-            throw new NotImplementedException();
+            PublicationAttachmentMenu menu = new PublicationAttachmentMenu(
+                publicationModel, attachmentModel, publicationId);
+            menu.Start();
         }
 
         /// <summary>
@@ -114,7 +180,10 @@ namespace CLI
         /// </summary>
         public void PrintIsoCitation()
         {
-            throw new NotImplementedException();
+            Publication publication = publicationModel.GetPublicationById(publicationId);
+            PublicationType publicationType = PublicationType.GetTypeByName(
+                publicationTypes, publication.Type);
+            publicationType.Dialog.PrintSpecificIsoCitation(publication);
         }
 
         /// <summary>
@@ -122,7 +191,10 @@ namespace CLI
         /// </summary>
         public void PrintBibtexEntry()
         {
-            throw new NotImplementedException();
+            Publication publication = publicationModel.GetPublicationById(publicationId);
+            PublicationType publicationType = PublicationType.GetTypeByName(
+                publicationTypes, publication.Type);
+            publicationType.Dialog.PrintSpecificBibtexEntry(publication);
         }
 
         /// <summary>
@@ -130,7 +202,10 @@ namespace CLI
         /// </summary>
         public void PrintHtmlDocument()
         {
-            throw new NotImplementedException();
+            Publication publication = publicationModel.GetPublicationById(publicationId);
+            PublicationType publicationType = PublicationType.GetTypeByName(
+                publicationTypes, publication.Type);
+            publicationType.Dialog.PrintSpecificHtmlDocument(publication);
         }
 
         /// <summary>
@@ -138,7 +213,10 @@ namespace CLI
         /// </summary>
         public void DeletePublication()
         {
-            throw new NotImplementedException();
+            Publication publication = publicationModel.GetPublicationById(publicationId);
+            PublicationType publicationType = PublicationType.GetTypeByName(
+                publicationTypes, publication.Type);
+            publicationType.Dialog.DeleteSpecificBibliography(publicationId);
         }
     }
 }

@@ -115,7 +115,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="DbPublication.mdf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="DbPublicationModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -128,8 +128,8 @@
       <LastGenOutput>DbPublicationModel.cs</LastGenOutput>
     </Content>
     <Content Include="DbPublication_log.ldf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DependentUpon>DbPublication.mdf</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>

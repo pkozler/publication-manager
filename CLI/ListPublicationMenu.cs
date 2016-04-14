@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Core;
+
+using static System.Console;
+using static CLI.ConsoleExtension;
 
 namespace CLI
 {
@@ -17,6 +17,11 @@ namespace CLI
         /// Objekt datové vrstvy, který slouží jako správce záznamů publikací.
         /// </summary>
         private PublicationModel publicationModel;
+
+        /// <summary>
+        /// Objekt datové vrstvy, který slouží jako správce záznamů autorů.
+        /// </summary>
+        private AuthorModel authorModel;
 
         /// <summary>
         /// Seznam typů publikací, který slouží k uchování údajů specifických
@@ -44,10 +49,11 @@ namespace CLI
         /// </summary>
         /// <param name="publicationTypes">typy publikací</param>
         /// <param name="publicationModel">správce publikací</param>
-        public ListPublicationMenu(List<PublicationType> publicationTypes, PublicationModel publicationModel)
+        public ListPublicationMenu(List<PublicationType> publicationTypes, PublicationModel publicationModel, AuthorModel authorModel)
         {
             this.publicationTypes = publicationTypes;
             this.publicationModel = publicationModel;
+            this.authorModel = authorModel;
 
             MenuLabel = "Menu zobrazení seznamu publikací";
             InitializeMenuItems(new Dictionary<ConsoleKey, MenuItem>()
@@ -55,6 +61,7 @@ namespace CLI
                 { ConsoleKey.A, new MenuItem() { Name = "Author", Description = "Přidá filtr pro autora se zadaným ID.", UIMethod = AddAuthorFilter} },
                 { ConsoleKey.Y, new MenuItem() { Name = "Year", Description = "Přidá filtr pro zadaný rok vydání.", UIMethod = AddYearFilter} },
                 { ConsoleKey.T, new MenuItem() { Name = "Type", Description = "Přidá filtr pro zadaný typ publikace.", UIMethod = AddTypeFilter} },
+                { ConsoleKey.L, new MenuItem() { Name = "List", Description = "Vypíše seznam se zadanými filtry a odstraní seznam filtrů.", UIMethod = PrintFilteredPublicationList} },
             });
         }
 
@@ -64,7 +71,19 @@ namespace CLI
         /// </summary>
         public void AddAuthorFilter()
         {
-            throw new NotImplementedException();
+            WriteLine("Seznam autorů:");
+            WriteLine("ID\tJméno\tPříjmení");
+            List<Author> authors = authorModel.GetAuthors();
+
+            foreach (Author author in authors)
+            {
+                WriteLine($"{author.Id}\t{author.Name}\t{author.Surname}");
+            }
+
+            WriteLine("Zadejte ID autora pro filtrování publikací:");
+            int id = ReadValidNumber("Zadejte celé číslo představující ID autora.");
+            authorFilter.Add(id);
+            WriteLine("Přidán filtr pro autora s ID {0}.", id);
         }
 
         /// <summary>
@@ -73,7 +92,10 @@ namespace CLI
         /// </summary>
         public void AddYearFilter()
         {
-            throw new NotImplementedException();
+            WriteLine("Zadejte rok vydání pro filtrování publikací:");
+            int year = ReadValidNumber("Zadejte kladné celé číslo představující letopočet.");
+            yearFilter.Add(year);
+            WriteLine("Přidán filtr pro rok {0}", year);
         }
 
         /// <summary>
@@ -82,14 +104,10 @@ namespace CLI
         /// </summary>
         public void AddTypeFilter()
         {
-            throw new NotImplementedException();
-
-            Console.WriteLine("Dostupné typy publikací:");
-            
-            for (int i = 0; i < publicationTypes.Count; i++)
-            {
-                Console.WriteLine($"\t{i} - {publicationTypes[i].Description}");
-            }
+            WritePublicationTypes("Dostupné typy publikací:", publicationTypes);
+            int typeNumber = ReadValidNumber("Zadejte číslo označující typ publikace podle výše uvedeného seznamu.");
+            publicationTypeFilter.Add(publicationTypes[typeNumber].Name);
+            WriteLine("Přidán filtr pro typ publikace \"{0}\"", publicationTypes[typeNumber].Description);
         }
 
         /// <summary>
@@ -97,20 +115,20 @@ namespace CLI
         /// </summary>
         public void PrintFilteredPublicationList()
         {
-            throw new NotImplementedException();
+            WriteLine("Seznam publikací:");
+            WriteLine("ID\tBibTeX klíč\tTyp\tNázev\tRok\tAutoři");
+            List<Publication> publications = publicationModel.GetPublications(
+                authorFilter, yearFilter, publicationTypeFilter);
+
+            foreach (Publication publication in publications)
+            {
+                Write($"{publication.Id}\t{publication.Entry}\t{publication.Type}\t{publication.Title}\t{publication.Year}\t");
+                WriteAuthors(publication.Author);
+            }
 
             authorFilter.Clear();
             yearFilter.Clear();
             publicationTypeFilter.Clear();
-        }
-
-        /// <summary>
-        /// Vypíše nápovědu.
-        /// </summary>
-        public override void PrintMenu()
-        {
-            base.PrintMenu();
-            Console.WriteLine("Pro výpis bez filtrů stiskněte klávesu Enter.");
         }
     }
 }

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Core
 {
@@ -16,6 +13,16 @@ namespace Core
         /// Uchovává název typu pro použití v databázi.
         /// </summary>
         public const string NAME = "QualificationThesis";
+
+        /// <summary>
+        /// Uchovává název označení typu 'diplomová práce' pro použití v databázi.
+        /// </summary>
+        public const string TYPE_MASTER_THESIS = "MastersThesis";
+
+        /// <summary>
+        /// Uchovává název označení typu 'disertační práce' pro použití v databázi.
+        /// </summary>
+        public const string TYPE_PHD_THESIS = "PhdThesis";
 
         /// <summary>
         /// Vrátí specifické údaje o publikaci příslušného typu.
@@ -90,54 +97,39 @@ namespace Core
         }
 
         /// <inheritDoc/>
-        public override string GeneratePublicationIsoCitation(int id)
+        public override string GeneratePublicationIsoCitation(Publication publication)
         {
-            using (var context = new DbPublicationEntities())
-            {
-                Publication publication = GetPublication(context, id);
-                QualificationThesis qualificationThesis = publication.QualificationThesis;
+            QualificationThesis qualificationThesis = publication.QualificationThesis;
 
-                return new StringBuilder(GenerateAuthorCitationString(publication))
-                    .Append($"{publication.Title}. ")
-                    .Append($"{qualificationThesis.Address}, ")
-                    .Append($"{publication.Year}. ")
-                    .Append($"{qualificationThesis.ThesisType}. ")
-                    .Append($"{qualificationThesis.School}. ").ToString();
-            }
+            return new StringBuilder(GenerateAuthorCitationString(publication))
+                .Append($"{publication.Title}. ")
+                .Append($"{qualificationThesis.Address}, ")
+                .Append($"{publication.Year}. ")
+                .Append($"{qualificationThesis.ThesisType}. ")
+                .Append($"{qualificationThesis.School}. ").ToString();
         }
 
         /// <inheritDoc/>
-        public override string GeneratePublicationBibtexEntry(int id)
+        public override string GeneratePublicationBibtexEntry(Publication publication)
         {
-            using (var context = new DbPublicationEntities())
-            {
-                Publication publication = GetPublication(context, id);
-                QualificationThesis qualificationThesis = publication.QualificationThesis;
+            QualificationThesis qualificationThesis = publication.QualificationThesis;
 
-                string thesisType = "PhdThesis".Equals(qualificationThesis.ThesisType) ? 
-                    "PhdThesis" : "MastersThesis";
+            string thesisType = TYPE_PHD_THESIS.Equals(qualificationThesis.ThesisType) ?
+                TYPE_PHD_THESIS : TYPE_MASTER_THESIS;
 
-                return new StringBuilder($"@{thesisType}{{{publication.Entry},")
-                    .Append(GenerateAuthorBibtexString(publication))
-                    .Append($"title={{{publication.Title}}},")
-                    .Append($"address={{{qualificationThesis.Address}}},")
-                    .Append($"year={{{publication.Year}}},")
-                    .Append($"type={{{qualificationThesis.ThesisType}}},")
-                    .Append($"school={{{qualificationThesis.School}}}}}").ToString();
-            }
+            return new StringBuilder($"@{thesisType}{{{publication.Entry},")
+                .Append(GenerateAuthorBibtexString(publication))
+                .Append($"title={{{publication.Title}}},")
+                .Append($"address={{{qualificationThesis.Address}}},")
+                .Append($"year={{{publication.Year}}},")
+                .Append($"type={{{qualificationThesis.ThesisType}}},")
+                .Append($"school={{{qualificationThesis.School}}}}}").ToString();
         }
 
         /// <inheritDoc/>
-        public override string ExportPublicationToHtmlDocument(int id)
+        public override string ExportPublicationToHtmlDocument(Publication publication)
         {
-            Publication publication;
-
-            using (var context = new DbPublicationEntities())
-            {
-                publication = GetPublication(context, id);
-            }
-
-            return new StringBuilder($"<p>{GeneratePublicationIsoCitation(id)}</p>")
+            return new StringBuilder($"<p>{GeneratePublicationIsoCitation(publication)}</p>")
                     .Append($"<p>{publication.Text}</p>").ToString();
         }
     }

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using static System.Console;
 
 namespace CLI
@@ -108,46 +107,6 @@ namespace CLI
         public virtual void ExitMenu()
         {
             IsRunning = false;
-        }
-
-        /// <summary>
-        /// Načte od uživatele platné celé číslo.
-        /// </summary>
-        /// <param name="errorMessage">výzva při vložení neplatného vstupu</param>
-        /// <returns>celé číslo</returns>
-        protected int ReadValidNumber(string errorMessage)
-        {
-            int id;
-            while (!int.TryParse(ReadLine(), out id))
-            {
-                WriteLine("Neplatný vstup. " + errorMessage);
-            }
-
-            return id;
-        }
-
-        /// <summary>
-        /// Načte od uživatele odpověď ano/ne.
-        /// </summary>
-        /// <param name="question">otázka k potvrzení</param>
-        /// <returns>true při potvrzení, jinak false</returns>
-        protected bool ReadYesNoAnswer(string question)
-        {
-            do
-            {
-                WriteLine("\n{0} (y/n)", question);
-                ConsoleKeyInfo keyInfo = ReadKey();
-
-                if (keyInfo.Key == ConsoleKey.Y)
-                {
-                    return true;
-                }
-                else if (keyInfo.Key == ConsoleKey.N)
-                {
-                    return false;
-                }
-            }
-            while (true);
         }
     }
 }
