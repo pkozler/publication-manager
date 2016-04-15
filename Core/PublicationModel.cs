@@ -10,8 +10,8 @@ namespace Core
     /// </summary>
     public class PublicationModel
     {
-        public PublicationModel()
-        {
+        //public PublicationModel()
+        //{
             /*using (var context = new DbPublicationEntities())
             {
                 Publication p = new Publication();
@@ -247,7 +247,7 @@ namespace Core
 
                 Debug.Flush();
             }*/
-        }
+        //}
 
         /// <summary>
         /// Vrátí seznam evidovaných publikací filtrovaný podle předaných množin údajů

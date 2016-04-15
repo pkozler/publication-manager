@@ -16,7 +16,6 @@ namespace Core
     {
         public int PublicationId { get; set; }
         public string Institution { get; set; }
-        public string ReportType { get; set; }
         public string Number { get; set; }
         public string Address { get; set; }
     

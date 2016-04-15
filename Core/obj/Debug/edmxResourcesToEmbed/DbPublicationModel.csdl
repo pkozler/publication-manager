@@ -78,8 +78,7 @@
     </Key>
     <Property Name="PublicationId" Type="Int32" Nullable="false" />
     <Property Name="Institution" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="ReportType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="Number" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Number" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="Address" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
     <NavigationProperty Name="Publication" Relationship="Self.FK_TechnicalReport_Publication" FromRole="TechnicalReport" ToRole="Publication" />
   </EntityType>

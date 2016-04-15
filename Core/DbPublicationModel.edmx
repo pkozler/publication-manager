@@ -80,8 +80,7 @@
           </Key>
           <Property Name="PublicationId" Type="int" Nullable="false" />
           <Property Name="Institution" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="ReportType" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Number" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Number" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Address" Type="nvarchar" MaxLength="100" Nullable="false" />
         </EntityType>
         <Association Name="FK_Attachment_Author">
@@ -289,8 +288,7 @@
           </Key>
           <Property Name="PublicationId" Type="Int32" Nullable="false" />
           <Property Name="Institution" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ReportType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Number" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Number" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Address" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Publication" Relationship="Self.FK_TechnicalReport_Publication" FromRole="TechnicalReport" ToRole="Publication" />
         </EntityType>
@@ -468,7 +466,6 @@
               <MappingFragment StoreEntitySet="TechnicalReport">
                 <ScalarProperty Name="PublicationId" ColumnName="PublicationId" />
                 <ScalarProperty Name="Institution" ColumnName="Institution" />
-                <ScalarProperty Name="ReportType" ColumnName="ReportType" />
                 <ScalarProperty Name="Number" ColumnName="Number" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
               </MappingFragment>

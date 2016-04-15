@@ -50,10 +50,10 @@ namespace CLI
             List<PublicationType> publicationTypes = initializePublicationTypes();
 
             // vytvoření instance hlavního menu, která je propojena s vytvořenými objekty datové vrstvy
-            //MainMenu mainMenu = new MainMenu(publicationTypes, publicationModel, authorModel, attachmentModel);
+            MainMenu mainMenu = new MainMenu(publicationTypes, publicationModel, authorModel, attachmentModel);
 
             // spuštění načítání příkazů
-            //mainMenu.Start();
+            mainMenu.Start();
 
             Console.ReadLine();
         }

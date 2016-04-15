@@ -75,8 +75,7 @@
     </Key>
     <Property Name="PublicationId" Type="int" Nullable="false" />
     <Property Name="Institution" Type="nvarchar" MaxLength="100" Nullable="false" />
-    <Property Name="ReportType" Type="nvarchar" MaxLength="100" Nullable="false" />
-    <Property Name="Number" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="Number" Type="nvarchar" MaxLength="100" Nullable="false" />
     <Property Name="Address" Type="nvarchar" MaxLength="100" Nullable="false" />
   </EntityType>
   <Association Name="FK_Attachment_Author">

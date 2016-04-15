@@ -87,6 +87,7 @@ namespace CLI
                 publicationTypes, publication.Type);
             WriteLine("Typ publikace: " + publicationType.Description);
             publicationType.Dialog.GetSpecificBibliography(publication);
+            WriteLine("--- Konec výpisu údajů ---");
         }
 
         /// <summary>
@@ -152,6 +153,7 @@ namespace CLI
             // předání načítání údajů dialogu pro zvolený typ publikace
             PublicationType.GetTypeByName(publicationTypes, publication.Type)
                 .Dialog.UpdateSpecificBibliography(publicationId, publication, authors);
+            WriteLine("Publikace s ID {0} byla úspěšně upravena.", publicationId);
         }
 
         /// <summary>
@@ -180,10 +182,12 @@ namespace CLI
         /// </summary>
         public void PrintIsoCitation()
         {
+            WriteLine("--- Citace publikace s ID {0} ---", publicationId);
             Publication publication = publicationModel.GetPublicationById(publicationId);
             PublicationType publicationType = PublicationType.GetTypeByName(
                 publicationTypes, publication.Type);
             publicationType.Dialog.PrintSpecificIsoCitation(publication);
+            WriteLine("--- Konec citace ---");
         }
 
         /// <summary>
@@ -191,10 +195,12 @@ namespace CLI
         /// </summary>
         public void PrintBibtexEntry()
         {
+            WriteLine("--- BibTeX záznam pro publikaci s ID {0} ---", publicationId);
             Publication publication = publicationModel.GetPublicationById(publicationId);
             PublicationType publicationType = PublicationType.GetTypeByName(
                 publicationTypes, publication.Type);
             publicationType.Dialog.PrintSpecificBibtexEntry(publication);
+            WriteLine("--- Konec záznamu ---");
         }
 
         /// <summary>
@@ -202,10 +208,12 @@ namespace CLI
         /// </summary>
         public void PrintHtmlDocument()
         {
+            WriteLine("--- HTML dokument z publikace s ID {0} ---", publicationId);
             Publication publication = publicationModel.GetPublicationById(publicationId);
             PublicationType publicationType = PublicationType.GetTypeByName(
                 publicationTypes, publication.Type);
             publicationType.Dialog.PrintSpecificHtmlDocument(publication);
+            WriteLine("--- Konec dokumentu ---");
         }
 
         /// <summary>
@@ -217,6 +225,7 @@ namespace CLI
             PublicationType publicationType = PublicationType.GetTypeByName(
                 publicationTypes, publication.Type);
             publicationType.Dialog.DeleteSpecificBibliography(publicationId);
+            WriteLine("Publikace s ID {0} byla úspěšně odstraněna.", publicationId);
         }
     }
 }

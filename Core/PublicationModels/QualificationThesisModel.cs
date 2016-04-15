@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using System.Diagnostics;
 
 namespace Core
 {
@@ -56,6 +57,21 @@ namespace Core
                 qualificationThesis.Publication = publication;
                 CreatePublication(context, publication, author == null ? null : new List<Author> { author });
                 context.QualificationThesis.Add(qualificationThesis);
+                
+                    Debug.WriteLine("=== VÝPIS PO ULOŽENÍ ===");
+                    Debug.WriteLine(publication.Id);
+                    Debug.WriteLine(publication.Entry);
+                    Debug.WriteLine(publication.Title);
+                    Debug.WriteLine(publication.Year);
+                    Debug.WriteLine(publication.Text);
+                    Debug.WriteLine(publication.Type);
+                    Debug.WriteLine(qualificationThesis.PublicationId);
+                    Debug.WriteLine(qualificationThesis.Address);
+                    Debug.WriteLine(qualificationThesis.School);
+                    Debug.WriteLine(qualificationThesis.ThesisType);
+
+                    Debug.Flush();
+
                 context.SaveChanges();
             }
         }

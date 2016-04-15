@@ -131,9 +131,11 @@ namespace CLI
             
             WritePublicationTypes("Dostupné typy publikací:", publicationTypes);
             int typeNumber = ReadValidNumber("Zadejte číslo označující typ publikace podle výše uvedeného seznamu.");
-            
+            publication.Type = publicationTypes[typeNumber].Name;
+
             // předání načítání údajů dialogu pro zvolený typ publikace
             publicationTypes[typeNumber].Dialog.CreateSpecificBibliography(publication, authors);
+            WriteLine("Publikace byla úspěšně vytvořena.");
         }
 
         /// <summary>

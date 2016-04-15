@@ -61,7 +61,6 @@ namespace Core
                 oldTechnicalReport.Address = technicalReport.Address;
                 oldTechnicalReport.Institution = technicalReport.Institution;
                 oldTechnicalReport.Number = technicalReport.Number;
-                oldTechnicalReport.ReportType = technicalReport.ReportType;
                 context.SaveChanges();
             }
         }
@@ -92,7 +91,6 @@ namespace Core
                 .Append($"{technicalReport.Address}: ")
                 .Append($"{technicalReport.Institution}, ")
                 .Append($"{publication.Year}. ")
-                .Append($"{technicalReport.ReportType} ")
                 .Append($"č. {technicalReport.Number}.").ToString();
         }
 
@@ -107,7 +105,6 @@ namespace Core
                 .Append($"address={{{technicalReport.Address}}},")
                 .Append($"institution={{{technicalReport.Institution}}},")
                 .Append($"year={{{publication.Year}}},")
-                .Append($"type={{{technicalReport.ReportType}}},")
                 .Append($"number={{{technicalReport.Number}}}}}").ToString();
         }
 

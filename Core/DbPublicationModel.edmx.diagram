@@ -4,14 +4,14 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="f667fb5b1d274b27bd4cfb03b5b97bf8" Name="Diagram1">
-        <EntityTypeShape EntityType="DbPublicationModel.Attachment" Width="1.5" PointX="5.875" PointY="10.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="DbPublicationModel.Author" Width="1.5" PointX="5.875" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DbPublicationModel.ConferenceArticle" Width="1.5" PointX="1" PointY="2.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DbPublicationModel.JournalArticle" Width="1.5" PointX="1" PointY="6.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="DbPublicationModel.Publication" Width="1.5" PointX="3.625" PointY="6.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="DbPublicationModel.QualificationThesis" Width="1.5" PointX="1" PointY="12.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="DbPublicationModel.TechnicalReport" Width="1.5" PointX="1" PointY="9.375" IsExpanded="true" />
+      <Diagram DiagramId="5f341325f32b4da38901b7c3222c3412" Name="Diagram1">
+        <EntityTypeShape EntityType="DbPublicationModel.Attachment" Width="1.5" PointX="5.25" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DbPublicationModel.Author" Width="1.5" PointX="0.75" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DbPublicationModel.ConferenceArticle" Width="1.5" PointX="5.25" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="DbPublicationModel.JournalArticle" Width="1.5" PointX="5.25" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DbPublicationModel.Publication" Width="1.5" PointX="3" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DbPublicationModel.QualificationThesis" Width="1.5" PointX="5.25" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DbPublicationModel.TechnicalReport" Width="1.5" PointX="5.25" PointY="13.375" IsExpanded="true" />
         <AssociationConnector Association="DbPublicationModel.FK_Attachment_Author" ManuallyRouted="false" />
         <AssociationConnector Association="DbPublicationModel.FK_ConferenceArticle_Publication" ManuallyRouted="false" />
         <AssociationConnector Association="DbPublicationModel.FK_JournalArticle_Publication" ManuallyRouted="false" />

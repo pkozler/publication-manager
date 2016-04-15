@@ -72,7 +72,6 @@
         <MappingFragment StoreEntitySet="TechnicalReport">
           <ScalarProperty Name="PublicationId" ColumnName="PublicationId" />
           <ScalarProperty Name="Institution" ColumnName="Institution" />
-          <ScalarProperty Name="ReportType" ColumnName="ReportType" />
           <ScalarProperty Name="Number" ColumnName="Number" />
           <ScalarProperty Name="Address" ColumnName="Address" />
         </MappingFragment>

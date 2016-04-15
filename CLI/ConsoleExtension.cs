@@ -43,7 +43,9 @@ namespace CLI
                         continue;
                     }
                 }
-                
+
+                author.Name = name;
+                WriteLine(surnameMessage);
                 author.Surname = ReadNonEmptyString(surnameMessage);
                 authors.Add(author);
                 WriteLine(nameMessage);
@@ -125,6 +127,10 @@ namespace CLI
             }
         }
 
+        /// <summary>
+        /// Vypíše seznam autorů.
+        /// </summary>
+        /// <param name="authorList">kolekce autorů</param>
         public static void WriteAuthors(ICollection<Author> authorList)
         {
             Author[] authors = authorList.ToArray();
