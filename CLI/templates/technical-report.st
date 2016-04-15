@@ -23,8 +23,12 @@
 				<dd>$type$</dd>
 			</dl>
 			<dl class="dl-horizontal"> <!-- bibliografické údaje pro článek na konferenci -->
-				<dt></dt>
-				<dd></dd>
+				<dt>Místo vytvoření:</dt>
+				<dd>$address$</dd>
+				<dt>Instituce:</dt>
+				<dd>$institution$</dd>
+				<dt>Označení:</dt>
+				<dd>$number$</dd>
 			</dl> <!-- konec bibliografických údajů -->
 			<div class="text-justify">
 				<p>$text$</p>

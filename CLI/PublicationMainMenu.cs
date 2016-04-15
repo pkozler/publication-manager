@@ -77,7 +77,7 @@ namespace CLI
         public void GetBibliography()
         {
             Publication publication = publicationModel.GetPublicationById(publicationId);
-            WriteLine("--- Údaje o publikaci s ID {0} ---", publicationId);
+            WriteLine("--- Výpis údajů publikace s ID {0} ---", publicationId);
             WriteLine("Klíč pro uložení BibTeX záznamu: " + publication.Entry);
             Write("Autoři: ");
             WriteAuthors(publication.Author);
@@ -87,7 +87,6 @@ namespace CLI
                 publicationTypes, publication.Type);
             WriteLine("Typ publikace: " + publicationType.Description);
             publicationType.Dialog.GetSpecificBibliography(publication);
-            WriteLine("--- Konec výpisu údajů ---");
         }
 
         /// <summary>
@@ -162,9 +161,7 @@ namespace CLI
         public void PrintContentText()
         {
             Publication publication = publicationModel.GetPublicationById(publicationId);
-            WriteLine("--- Text obsahu publikace s ID {0} ---", publicationId);
             WriteLine(publication.Text);
-            WriteLine("--- Konec textu ---");
         }
         
         /// <summary>
@@ -182,12 +179,10 @@ namespace CLI
         /// </summary>
         public void PrintIsoCitation()
         {
-            WriteLine("--- Citace publikace s ID {0} ---", publicationId);
             Publication publication = publicationModel.GetPublicationById(publicationId);
             PublicationType publicationType = PublicationType.GetTypeByName(
                 publicationTypes, publication.Type);
             publicationType.Dialog.PrintSpecificIsoCitation(publication);
-            WriteLine("--- Konec citace ---");
         }
 
         /// <summary>
@@ -195,12 +190,10 @@ namespace CLI
         /// </summary>
         public void PrintBibtexEntry()
         {
-            WriteLine("--- BibTeX záznam pro publikaci s ID {0} ---", publicationId);
             Publication publication = publicationModel.GetPublicationById(publicationId);
             PublicationType publicationType = PublicationType.GetTypeByName(
                 publicationTypes, publication.Type);
             publicationType.Dialog.PrintSpecificBibtexEntry(publication);
-            WriteLine("--- Konec záznamu ---");
         }
 
         /// <summary>
@@ -208,12 +201,19 @@ namespace CLI
         /// </summary>
         public void PrintHtmlDocument()
         {
-            WriteLine("--- HTML dokument z publikace s ID {0} ---", publicationId);
             Publication publication = publicationModel.GetPublicationById(publicationId);
             PublicationType publicationType = PublicationType.GetTypeByName(
                 publicationTypes, publication.Type);
-            publicationType.Dialog.PrintSpecificHtmlDocument(publication);
-            WriteLine("--- Konec dokumentu ---");
+            WriteLine("Zadejte cestu k souboru se šablonou pro vytvoření HTML dokumentu "
+                + "nebo ponechte prázdný řádek pro použití výchozí šablony pro daný typ publikace:");
+            string templatePath = ReadLine();
+            WriteLine("Zadejte cestu k výstupnímu souboru exportovaného dokumentu ve formátu HTML "
+                + "nebo ponechte prázdný řádek pro výpis HTML dokumentu na obrazovku:");
+            string htmlPath = ReadLine();
+            string template = File.ReadAllText(string.IsNullOrWhiteSpace(templatePath) ? 
+                publicationType.Template : templatePath);
+            publicationType.Dialog.PrintSpecificHtmlDocument(
+                publication, publicationType.Description, template, htmlPath);
         }
 
         /// <summary>

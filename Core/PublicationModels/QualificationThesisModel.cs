@@ -24,12 +24,7 @@ namespace Core
         /// Uchovává název označení typu 'disertační práce' pro použití v databázi.
         /// </summary>
         public const string TYPE_PHD_THESIS = "PhdThesis";
-
-        /// <summary>
-        /// Uchovává cestu k výchozí šabloně pro export do HTML dokumentu.
-        /// </summary>
-        private const string TEMPLATE = "qualification-thesis.st";
-
+        
         /// <summary>
         /// Vrátí specifické údaje o publikaci příslušného typu.
         /// </summary>
@@ -122,10 +117,16 @@ namespace Core
         }
 
         /// <inheritDoc/>
-        public override string ExportPublicationToHtmlDocument(Publication publication)
+        public override string ExportPublicationToHtmlDocument(Publication publication, string publicationType, string template)
         {
-            return new StringBuilder($"<p>{GeneratePublicationIsoCitation(publication)}</p>")
-                    .Append($"<p>{publication.Text}</p>").ToString();
+            StringTemplate stringTemplate = PrepareHtmlTemplate(publication, publicationType, template);
+            QualificationThesis qualificationThesis = publication.QualificationThesis;
+            stringTemplate.SetAttribute("address", qualificationThesis.Address);
+            stringTemplate.SetAttribute("school", qualificationThesis.School);
+            stringTemplate.SetAttribute("type", qualificationThesis.ThesisType == TYPE_MASTER_THESIS ? 
+                "diplomová práce" : "disertační práce");
+
+            return stringTemplate.ToString();
         }
     }
 }

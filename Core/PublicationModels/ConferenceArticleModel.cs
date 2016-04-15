@@ -15,12 +15,7 @@ namespace Core
         /// Uchovává název typu pro použití v databázi.
         /// </summary>
         public const string NAME = "ConferenceArticle";
-
-        /// <summary>
-        /// Uchovává cestu k výchozí šabloně pro export do HTML dokumentu.
-        /// </summary>
-        private const string TEMPLATE = "conference-article.st";
-
+        
         /// <summary>
         /// Vrátí specifické údaje o publikaci příslušného typu.
         /// </summary>
@@ -133,24 +128,20 @@ namespace Core
         }
 
         /// <inheritDoc/>
-        public override string ExportPublicationToHtmlDocument(Publication publication)
+        public override string ExportPublicationToHtmlDocument(Publication publication, string publicationType, string template)
         {
-            /*var reader = new StreamReader(@"");
-            string template = reader.ReadToEnd();
-
-            StringTemplate helloAgain = new StringTemplate(template);
-
-            helloAgain.SetAttribute("title", "Welcome To StringTemplate");
-            helloAgain.SetAttribute("name", "World");
-            helloAgain.SetAttribute("friends", "Terence");
-            helloAgain.SetAttribute("friends", "Kunle");
-            helloAgain.SetAttribute("friends", "Micheal");
-            helloAgain.SetAttribute("friends", "Marq");
-
-            Console.WriteLine(helloAgain.ToString());*/
-
-            return new StringBuilder($"<p>{GeneratePublicationIsoCitation(publication)}</p>")
-                    .Append($"<p>{publication.Text}</p>").ToString();
+            StringTemplate stringTemplate = PrepareHtmlTemplate(publication, publicationType, template);
+            ConferenceArticle conferenceArticle = publication.ConferenceArticle;
+            stringTemplate.SetAttribute("booktitle", conferenceArticle.BookTitle);
+            stringTemplate.SetAttribute("address", conferenceArticle.Address);
+            stringTemplate.SetAttribute("publisher", conferenceArticle.Publisher);
+            stringTemplate.SetAttribute("pages", conferenceArticle.FromPage == conferenceArticle.ToPage ?
+                (conferenceArticle.FromPage + "") :
+                (conferenceArticle.FromPage + " - " + conferenceArticle.ToPage));
+            stringTemplate.SetAttribute("identification", !string.IsNullOrEmpty(conferenceArticle.ISBN) ?
+                ("ISBN " + conferenceArticle.ISBN) : ("ISSN" + conferenceArticle.ISSN));
+            
+            return stringTemplate.ToString();
         }
     }
 }

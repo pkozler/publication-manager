@@ -20,6 +20,11 @@ namespace CLI
         public readonly string Description;
 
         /// <summary>
+        /// Uchovává cestu k výchozí šabloně pro export do HTML dokumentu.
+        /// </summary>
+        public readonly string Template;
+
+        /// <summary>
         /// Uchovává objekt pro načítání specifických údajů publikace z uživatelského vstupu.
         /// </summary>
         public readonly IPublishableDialog Dialog;
@@ -29,11 +34,13 @@ namespace CLI
         /// </summary>
         /// <param name="name">název typu v databázi</param>
         /// <param name="description">popis v uživatelském rozhraní</param>
+        /// <param name="template">výchozí šablona pro export publikace do HTML dokumentu</param>
         /// <param name="dialog">objekt pro načítání bibliografických údajů</param>
-        public PublicationType(string name, string description, IPublishableDialog dialog)
+        public PublicationType(string name, string description, string template, IPublishableDialog dialog)
         {
             Name = name;
             Description = description;
+            Template = template;
             Dialog = dialog;
         }
         

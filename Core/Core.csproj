@@ -157,7 +157,6 @@
     <None Include="DbPublicationModel.edmx.diagram">
       <DependentUpon>DbPublicationModel.edmx</DependentUpon>
     </None>
-    <None Include="templates\conference-article.st" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

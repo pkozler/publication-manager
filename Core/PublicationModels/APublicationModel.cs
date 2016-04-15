@@ -1,5 +1,7 @@
 ﻿using System.Text;
 using System.Collections.Generic;
+using Antlr3.ST;
+using System.IO;
 
 namespace Core
 {
@@ -33,7 +35,7 @@ namespace Core
         /// </summary>
         /// <param name="publication">publikace</param>
         /// <returns>HTML dokument</returns>
-        public abstract string ExportPublicationToHtmlDocument(Publication publication);
+        public abstract string ExportPublicationToHtmlDocument(Publication publication, string publicationType, string templatePath);
         
         /// <summary>
         /// Vygeneruje řetězec autorů publikace pro citaci ze seznamu autorů.
@@ -87,6 +89,25 @@ namespace Core
             sb.Append("},");
 
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// Připraví HTML šablonu se základními bibliografickými údaji pro export.
+        /// </summary>
+        /// <param name="publication">publikace</param>
+        /// <param name="publicationType">typ publikace</param>
+        /// <param name="templatePath">cesta k šabloně</param>
+        /// <returns>připravená šablona</returns>
+        protected StringTemplate PrepareHtmlTemplate(Publication publication, string publicationType, string template)
+        {
+            StringTemplate stringTemplate = new StringTemplate(template);
+            stringTemplate.SetAttribute("title", publication.Title);
+            stringTemplate.SetAttribute("authors", GenerateAuthorCitationString(publication));
+            stringTemplate.SetAttribute("year", publication.Year);
+            stringTemplate.SetAttribute("type", publicationType);
+            stringTemplate.SetAttribute("text", publication.Text);
+
+            return stringTemplate;
         }
 
         /// <summary>

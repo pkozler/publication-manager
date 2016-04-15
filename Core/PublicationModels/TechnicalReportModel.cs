@@ -14,12 +14,7 @@ namespace Core
         /// Uchovává název typu pro použití v databázi.
         /// </summary>
         public const string NAME = "TechnicalReport";
-
-        /// <summary>
-        /// Uchovává cestu k výchozí šabloně pro export do HTML dokumentu.
-        /// </summary>
-        private const string TEMPLATE = "technical-report.st";
-
+        
         /// <summary>
         /// Vrátí specifické údaje o publikaci příslušného typu.
         /// </summary>
@@ -103,10 +98,15 @@ namespace Core
         }
 
         /// <inheritDoc/>
-        public override string ExportPublicationToHtmlDocument(Publication publication)
+        public override string ExportPublicationToHtmlDocument(Publication publication, string publicationType, string template)
         {
-            return new StringBuilder($"<p>{GeneratePublicationIsoCitation(publication)}</p>")
-                    .Append($"<p>{publication.Text}</p>").ToString();
+            StringTemplate stringTemplate = PrepareHtmlTemplate(publication, publicationType, template);
+            TechnicalReport technicalReport = publication.TechnicalReport;
+            stringTemplate.SetAttribute("address", technicalReport.Address);
+            stringTemplate.SetAttribute("institution", technicalReport.Institution);
+            stringTemplate.SetAttribute("number", technicalReport.Number);
+
+            return stringTemplate.ToString();
         }
     }
 }

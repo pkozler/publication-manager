@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using Core;
 
 using static System.Console;
@@ -154,9 +155,18 @@ namespace CLI
         }
 
         /// <inheritDoc/>
-        public void PrintSpecificHtmlDocument(Publication publication)
+        public void PrintSpecificHtmlDocument(Publication publication, string typeDescription, string template, string htmlPath)
         {
-            WriteLine(model.ExportPublicationToHtmlDocument(publication));
+            string html = model.ExportPublicationToHtmlDocument(publication, typeDescription, template);
+
+            if (string.IsNullOrWhiteSpace(htmlPath))
+            {
+                WriteLine(html);
+            }
+            else
+            {
+                File.WriteAllText(htmlPath, html);
+            }
         }
     }
 }

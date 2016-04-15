@@ -28,10 +28,14 @@ namespace CLI
             */
             return new List<PublicationType>()
             {
-                new PublicationType(ConferenceArticleModel.NAME, "Článek na konferenci", new ConferenceArticleDialog(conferenceArticleModel)),
-                new PublicationType(JournalArticleModel.NAME, "Článek do časopisu", new JournalArticleDialog(journalArticleModel)),
-                new PublicationType(TechnicalReportModel.NAME, "Technická zpráva", new TechnicalReportDialog(technicalReportModel)),
-                new PublicationType(QualificationThesisModel.NAME, "Kvalifikační práce", new QualificationThesisDialog(qualificationThesisModel)),
+                new PublicationType(ConferenceArticleModel.NAME, 
+                    "Článek na konferenci", "templates/conference-article.st", new ConferenceArticleDialog(conferenceArticleModel)),
+                new PublicationType(JournalArticleModel.NAME, 
+                    "Článek do časopisu", "templates/journal-article.st", new JournalArticleDialog(journalArticleModel)),
+                new PublicationType(TechnicalReportModel.NAME, 
+                    "Technická zpráva", "templates/technical-report.st", new TechnicalReportDialog(technicalReportModel)),
+                new PublicationType(QualificationThesisModel.NAME, 
+                    "Kvalifikační práce", "templates/qualification-thesis.st", new QualificationThesisDialog(qualificationThesisModel)),
             };
         }
 
@@ -54,8 +58,6 @@ namespace CLI
 
             // spuštění načítání příkazů
             mainMenu.Start();
-
-            Console.ReadLine();
         }
     }
 }

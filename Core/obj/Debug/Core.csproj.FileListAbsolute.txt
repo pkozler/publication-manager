@@ -10,3 +10,5 @@ C:\Users\pkout\Dropbox\cs\NET\Core\obj\Debug\Core.dll
 C:\Users\pkout\Dropbox\cs\NET\Core\obj\Debug\Core.pdb
 C:\Users\pkout\Dropbox\cs\NET\Core\bin\Debug\DbPublication.mdf
 C:\Users\pkout\Dropbox\cs\NET\Core\bin\Debug\DbPublication_log.ldf
+C:\Users\pkout\Dropbox\cs\NET\Core\bin\Debug\Antlr3.StringTemplate.dll
+C:\Users\pkout\Dropbox\cs\NET\Core\bin\Debug\Antlr3.StringTemplate.pdb

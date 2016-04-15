@@ -73,6 +73,10 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="templates\conference-article.st" />
+    <None Include="templates\journal-article.st" />
+    <None Include="templates\qualification-thesis.st" />
+    <None Include="templates\technical-report.st" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj">
