@@ -8,21 +8,20 @@ namespace Core
     /// </summary>
     public class AuthorModel
     {
+        protected DbPublicationEntities context = new DbPublicationEntities();
+
         /// <summary>
         /// Vrátí seznam všech uložených autorů.
         /// </summary>
         /// <returns>seznam autorů</returns>
         public List<Author> GetAuthors()
         {
-            using (var context = new DbPublicationEntities())
-            {
-                // výběr všech autorů
-                var authors = from a in context.Author
-                              orderby a.Name
-                              select a;
+            // výběr všech autorů
+            var authors = from a in context.Author
+                            orderby a.Name
+                            select a;
 
-                return authors.ToList();
-            }
+            return authors.ToList();
         }
 
         /// <summary>
@@ -32,18 +31,15 @@ namespace Core
         /// <returns>seznam autorů publikace</returns>
         /*public List<Author> GetAuthorsByPublication(int publicationId)
         {
-            using (var context = new DbPublicationEntities())
-            {
-                Publication publication = context.Publication.Find(publicationId);
+            Publication publication = context.Publication.Find(publicationId);
 
-                // výběr autorů podle ID publikace
-                var authors = from a in context.Author
-                                where a.Publication == publication
-                                orderby a.Name
-                                select a;
+            // výběr autorů podle ID publikace
+            var authors = from a in context.Author
+                            where a.Publication == publication
+                            orderby a.Name
+                            select a;
 
-                return authors.ToList();             
-            }
+            return authors.ToList();
         }*/
 
         /// <summary>
@@ -52,11 +48,8 @@ namespace Core
         /// <param name="author">údaje o autorovi</param>
         public void CreateAuthor(Author author)
         {
-            using (var context = new DbPublicationEntities())
-            {
-                context.Author.Add(author);
-                context.SaveChanges();
-            }
+            context.Author.Add(author);
+            context.SaveChanges();
         }
 
         /// <summary>
@@ -67,13 +60,10 @@ namespace Core
         /// <param name="author">údaje o autorovi</param>
         /*public void CreateAuthorOfPublication(Publication publication, Author author)
         {
-            using (var context = new DbPublicationEntities())
-            {
-                author.Publication.Add(publication);
-                publication.Author.Add(author);
-                context.Author.Add(author);
-                context.SaveChanges();
-            }
+            author.Publication.Add(publication);
+            publication.Author.Add(author);
+            context.Author.Add(author);
+            context.SaveChanges();
         }*/
 
         /// <summary>
@@ -83,13 +73,10 @@ namespace Core
         /// <param name="author">údaje o autorovi</param>
         /*public void AddAuthorToPublication(Publication publication, int authorId)
         {
-            using (var context = new DbPublicationEntities())
-            {
-                Author author = context.Author.Find(authorId);
-                author.Publication.Add(publication);
-                publication.Author.Add(author);
-                context.SaveChanges();
-            }
+            Author author = context.Author.Find(authorId);
+            author.Publication.Add(publication);
+            publication.Author.Add(author);
+            context.SaveChanges();
         }*/
 
         /// <summary>
@@ -99,13 +86,10 @@ namespace Core
         /// <param name="authorId">údaje o autorovi</param>
         /*public void RemoveAuthorFromPublication(Publication publication, int authorId)
         {
-            using (var context = new DbPublicationEntities())
-            {
-                Author author = context.Author.Find(authorId);
-                publication.Author.Remove(author);
-                author.Publication.Remove(publication);
-                context.SaveChanges();
-            }
+            Author author = context.Author.Find(authorId);
+            publication.Author.Remove(author);
+            author.Publication.Remove(publication);
+            context.SaveChanges();
         }*/
 
         /// <summary>
@@ -114,12 +98,9 @@ namespace Core
         /// <param name="authorId"></param>
         public void DeleteAuthor(int authorId)
         {
-            using (var context = new DbPublicationEntities())
-            {
-                Author author = context.Author.Find(authorId);
-                context.Author.Remove(author);
-                context.SaveChanges();
-            }
+            Author author = context.Author.Find(authorId);
+            context.Author.Remove(author);
+            context.SaveChanges();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
-using System.Diagnostics;
+using Antlr3.ST;
 
 namespace Core
 {
@@ -26,17 +26,19 @@ namespace Core
         public const string TYPE_PHD_THESIS = "PhdThesis";
 
         /// <summary>
+        /// Uchovává cestu k výchozí šabloně pro export do HTML dokumentu.
+        /// </summary>
+        private const string TEMPLATE = "qualification-thesis.st";
+
+        /// <summary>
         /// Vrátí specifické údaje o publikaci příslušného typu.
         /// </summary>
         /// <param name="id">ID publikace</param>
         /// <returns>specifické údaje o publikaci s uvedeným ID</returns>
         /*public QualificationThesis GetPublication(int id)
         {
-            using (var context = new DbPublicationEntities())
-            {
-                Publication publication = GetPublication(context, id);
-                return publication.QualificationThesis;
-            }
+            Publication publication = GetPublication(context, id);
+            return publication.QualificationThesis;
         }*/
 
         /// <summary>
@@ -46,34 +48,17 @@ namespace Core
         /// <param name="qualificationThesis">specifické údaje o publikaci</param>
         public void CreatePublication(Publication publication, Author author, QualificationThesis qualificationThesis)
         {
-            using (var context = new DbPublicationEntities())
+            if (author == null)
             {
-                if (author == null)
-                {
-                    throw new PublicationException("Kvalifikační práce musí mít právě jednoho autora.");
-                }
-
-                publication.QualificationThesis = qualificationThesis;
-                qualificationThesis.Publication = publication;
-                CreatePublication(context, publication, author == null ? null : new List<Author> { author });
-                context.QualificationThesis.Add(qualificationThesis);
-                
-                    Debug.WriteLine("=== VÝPIS PO ULOŽENÍ ===");
-                    Debug.WriteLine(publication.Id);
-                    Debug.WriteLine(publication.Entry);
-                    Debug.WriteLine(publication.Title);
-                    Debug.WriteLine(publication.Year);
-                    Debug.WriteLine(publication.Text);
-                    Debug.WriteLine(publication.Type);
-                    Debug.WriteLine(qualificationThesis.PublicationId);
-                    Debug.WriteLine(qualificationThesis.Address);
-                    Debug.WriteLine(qualificationThesis.School);
-                    Debug.WriteLine(qualificationThesis.ThesisType);
-
-                    Debug.Flush();
-
-                context.SaveChanges();
+                throw new PublicationException("Kvalifikační práce musí mít právě jednoho autora.");
             }
+
+            publication.QualificationThesis = qualificationThesis;
+            qualificationThesis.Publication = publication;
+            CreatePublication(publication, author == null ? null : new List<Author> { author });
+            context.QualificationThesis.Add(qualificationThesis);
+                
+            context.SaveChanges();
         }
 
         /// <summary>
@@ -84,16 +69,13 @@ namespace Core
         /// <param name="qualificationThesis">specifické údaje o publikaci</param>
         public void UpdatePublication(int id, Publication publication, Author author, QualificationThesis qualificationThesis)
         {
-            using (var context = new DbPublicationEntities())
-            {
-                Publication oldPublication = GetPublication(context, id);
-                UpdatePublication(context, oldPublication, publication, author == null ? null : new List<Author> { author });
-                QualificationThesis oldQualificationThesis = oldPublication.QualificationThesis;
-                oldQualificationThesis.Address = qualificationThesis.Address;
-                oldQualificationThesis.School = qualificationThesis.School;
-                oldQualificationThesis.ThesisType = qualificationThesis.ThesisType;
-                context.SaveChanges();
-            }
+            Publication oldPublication = GetPublication(id);
+            UpdatePublication(oldPublication, publication, author == null ? null : new List<Author> { author });
+            QualificationThesis oldQualificationThesis = oldPublication.QualificationThesis;
+            oldQualificationThesis.Address = qualificationThesis.Address;
+            oldQualificationThesis.School = qualificationThesis.School;
+            oldQualificationThesis.ThesisType = qualificationThesis.ThesisType;
+            context.SaveChanges();
         }
 
         /// <summary>
@@ -102,14 +84,11 @@ namespace Core
         /// <param name="id">ID publikace</param>
         public void DeletePublication(int id)
         {
-            using (var context = new DbPublicationEntities())
-            {
-                Publication oldPublication = GetPublication(context, id);
-                QualificationThesis oldQualificationThesis = oldPublication.QualificationThesis;
-                context.QualificationThesis.Remove(oldQualificationThesis);
-                DeletePublication(context, oldPublication);
-                context.SaveChanges();
-            }
+            Publication oldPublication = GetPublication(id);
+            QualificationThesis oldQualificationThesis = oldPublication.QualificationThesis;
+            context.QualificationThesis.Remove(oldQualificationThesis);
+            DeletePublication(oldPublication);
+            context.SaveChanges();
         }
 
         /// <inheritDoc/>

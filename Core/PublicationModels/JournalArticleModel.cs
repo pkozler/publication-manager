@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using Antlr3.ST;
 
 namespace Core
 {
@@ -15,17 +16,19 @@ namespace Core
         public const string NAME = "JournalArticle";
 
         /// <summary>
+        /// Uchovává cestu k výchozí šabloně pro export do HTML dokumentu.
+        /// </summary>
+        private const string TEMPLATE = "journal-article.st";
+
+        /// <summary>
         /// Vrátí specifické údaje o publikaci příslušného typu.
         /// </summary>
         /// <param name="id">ID publikace</param>
         /// <returns>specifické údaje o publikaci s uvedeným ID</returns>
         /*public JournalArticle GetPublication(int id)
         {
-            using (var context = new DbPublicationEntities())
-            {
-                Publication publication = GetPublication(context, id);
-                return publication.JournalArticle;
-            }
+            Publication publication = GetPublication(context, id);
+            return publication.JournalArticle;
         }*/
 
         /// <summary>
@@ -35,14 +38,11 @@ namespace Core
         /// <param name="journalArticle">specifické údaje o publikaci</param>
         public void CreatePublication(Publication publication, List<Author> authors, JournalArticle journalArticle)
         {
-            using (var context = new DbPublicationEntities())
-            {
-                publication.JournalArticle = journalArticle;
-                journalArticle.Publication = publication;
-                CreatePublication(context, publication, authors);
-                context.JournalArticle.Add(journalArticle);
-                context.SaveChanges();
-            }
+            publication.JournalArticle = journalArticle;
+            journalArticle.Publication = publication;
+            CreatePublication(publication, authors);
+            context.JournalArticle.Add(journalArticle);
+            context.SaveChanges();
         }
 
         /// <summary>
@@ -53,18 +53,15 @@ namespace Core
         /// <param name="journalArticle">specifické údaje o publikaci</param>
         public void UpdatePublication(int id, Publication publication, List<Author> authors, JournalArticle journalArticle)
         {
-            using (var context = new DbPublicationEntities())
-            {
-                Publication oldPublication = GetPublication(context, id);
-                UpdatePublication(context, oldPublication, publication, authors);
-                JournalArticle oldJournalArticle = oldPublication.JournalArticle;
-                oldJournalArticle.FromPage = journalArticle.FromPage;
-                oldJournalArticle.ISSN = journalArticle.ISSN;
-                oldJournalArticle.JournalTitle = journalArticle.JournalTitle;
-                oldJournalArticle.Number = journalArticle.Number;
-                oldJournalArticle.ToPage = journalArticle.ToPage;
-                context.SaveChanges();
-            }
+            Publication oldPublication = GetPublication(id);
+            UpdatePublication(oldPublication, publication, authors);
+            JournalArticle oldJournalArticle = oldPublication.JournalArticle;
+            oldJournalArticle.FromPage = journalArticle.FromPage;
+            oldJournalArticle.ISSN = journalArticle.ISSN;
+            oldJournalArticle.JournalTitle = journalArticle.JournalTitle;
+            oldJournalArticle.Number = journalArticle.Number;
+            oldJournalArticle.ToPage = journalArticle.ToPage;
+            context.SaveChanges();
         }
 
         /// <summary>
@@ -73,14 +70,11 @@ namespace Core
         /// <param name="id">ID publikace</param>
         public void DeletePublication(int id)
         {
-            using (var context = new DbPublicationEntities())
-            {
-                Publication oldPublication = GetPublication(context, id);
-                JournalArticle oldJournalArticle = oldPublication.JournalArticle;
-                context.JournalArticle.Remove(oldJournalArticle);
-                DeletePublication(context, oldPublication);
-                context.SaveChanges();
-            }
+            Publication oldPublication = GetPublication(id);
+            JournalArticle oldJournalArticle = oldPublication.JournalArticle;
+            context.JournalArticle.Remove(oldJournalArticle);
+            DeletePublication(oldPublication);
+            context.SaveChanges();
         }
 
         /// <inheritDoc/>

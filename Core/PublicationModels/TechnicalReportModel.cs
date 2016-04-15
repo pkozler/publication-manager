@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using Antlr3.ST;
 
 namespace Core
 {
@@ -15,17 +16,19 @@ namespace Core
         public const string NAME = "TechnicalReport";
 
         /// <summary>
+        /// Uchovává cestu k výchozí šabloně pro export do HTML dokumentu.
+        /// </summary>
+        private const string TEMPLATE = "technical-report.st";
+
+        /// <summary>
         /// Vrátí specifické údaje o publikaci příslušného typu.
         /// </summary>
         /// <param name="id">ID publikace</param>
         /// <returns>specifické údaje o publikaci s uvedeným ID</returns>
         /*public TechnicalReport GetPublication(int id)
         {
-            using (var context = new DbPublicationEntities())
-            {
-                Publication publication = GetPublication(context, id);
-                return publication.TechnicalReport;
-            }
+            Publication publication = GetPublication(context, id);
+            return publication.TechnicalReport;
         }*/
 
         /// <summary>
@@ -35,14 +38,11 @@ namespace Core
         /// <param name="technicalReport">specifické údaje o publikaci</param>
         public void CreatePublication(Publication publication, List<Author> authors, TechnicalReport technicalReport)
         {
-            using (var context = new DbPublicationEntities())
-            {
-                publication.TechnicalReport = technicalReport;
-                technicalReport.Publication = publication;
-                CreatePublication(context, publication, authors);
-                context.TechnicalReport.Add(technicalReport);
-                context.SaveChanges();
-            }
+            publication.TechnicalReport = technicalReport;
+            technicalReport.Publication = publication;
+            CreatePublication(publication, authors);
+            context.TechnicalReport.Add(technicalReport);
+            context.SaveChanges();
         }
 
         /// <summary>
@@ -53,16 +53,13 @@ namespace Core
         /// <param name="technicalReport">specifické údaje o publikaci</param>
         public void UpdatePublication(int id, Publication publication, List<Author> authors, TechnicalReport technicalReport)
         {
-            using (var context = new DbPublicationEntities())
-            {
-                Publication oldPublication = GetPublication(context, id);
-                UpdatePublication(context, oldPublication, publication, authors);
-                TechnicalReport oldTechnicalReport = oldPublication.TechnicalReport;
-                oldTechnicalReport.Address = technicalReport.Address;
-                oldTechnicalReport.Institution = technicalReport.Institution;
-                oldTechnicalReport.Number = technicalReport.Number;
-                context.SaveChanges();
-            }
+            Publication oldPublication = GetPublication(id);
+            UpdatePublication(oldPublication, publication, authors);
+            TechnicalReport oldTechnicalReport = oldPublication.TechnicalReport;
+            oldTechnicalReport.Address = technicalReport.Address;
+            oldTechnicalReport.Institution = technicalReport.Institution;
+            oldTechnicalReport.Number = technicalReport.Number;
+            context.SaveChanges();
         }
 
         /// <summary>
@@ -71,14 +68,11 @@ namespace Core
         /// <param name="id">ID publikace</param>
         public void DeletePublication(int id)
         {
-            using (var context = new DbPublicationEntities())
-            {
-                Publication oldPublication = GetPublication(context, id);
-                TechnicalReport oldTechnicalReport = oldPublication.TechnicalReport;
-                context.TechnicalReport.Remove(oldTechnicalReport);
-                DeletePublication(context, oldPublication);
-                context.SaveChanges();
-            }
+            Publication oldPublication = GetPublication(id);
+            TechnicalReport oldTechnicalReport = oldPublication.TechnicalReport;
+            context.TechnicalReport.Remove(oldTechnicalReport);
+            DeletePublication(oldPublication);
+            context.SaveChanges();
         }
 
         /// <inheritDoc/>

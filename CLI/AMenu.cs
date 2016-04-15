@@ -36,7 +36,7 @@ namespace CLI
         /// <param name="menuItems">slovník položek</param>
         protected void InitializeMenuItems(Dictionary<ConsoleKey, MenuItem> menuItems)
         {
-            MenuItems = menuItems;
+            MenuItems = new Dictionary<ConsoleKey, MenuItem>(menuItems);
             MenuItems.Add(ConsoleKey.H, new MenuItem() { Name = "Help", Description = "Vypíše znovu seznam příkazů aktuálního menu.", UIMethod = PrintMenu });
             MenuItems.Add(ConsoleKey.Q, new MenuItem() { Name = "Quit", Description = "Opustí aktuální menu a vrátí se do nadřazeného menu.", UIMethod = ExitMenu });
         }
@@ -69,7 +69,11 @@ namespace CLI
                 WriteLine();
                 MenuItems[command].UIMethod();
                 WriteLine();
-                PrintMenu();
+
+                if (MenuItems[command].UIMethod != PrintMenu)
+                {
+                    PrintMenu();
+                }
             }
         }
 

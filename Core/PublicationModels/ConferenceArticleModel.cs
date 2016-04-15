@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using System.IO;
+using Antlr3.ST;
 
 namespace Core
 {
@@ -15,17 +17,19 @@ namespace Core
         public const string NAME = "ConferenceArticle";
 
         /// <summary>
+        /// Uchovává cestu k výchozí šabloně pro export do HTML dokumentu.
+        /// </summary>
+        private const string TEMPLATE = "conference-article.st";
+
+        /// <summary>
         /// Vrátí specifické údaje o publikaci příslušného typu.
         /// </summary>
         /// <param name="id">ID publikace</param>
         /// <returns>specifické údaje o publikaci s uvedeným ID</returns>
         /*public ConferenceArticle GetPublication(int id)
         {
-            using (var context = new DbPublicationEntities())
-            {
-                Publication publication = GetPublication(context, id);
-                return publication.ConferenceArticle;
-            }
+            Publication publication = GetPublication(context, id);
+            return publication.ConferenceArticle;
         }*/
 
         /// <summary>
@@ -35,21 +39,18 @@ namespace Core
         /// <param name="conferenceArticle">specifické údaje o publikaci</param>
         public void CreatePublication(Publication publication, List<Author> authors, ConferenceArticle conferenceArticle)
         {
-            using (var context = new DbPublicationEntities())
+            if (string.IsNullOrEmpty(conferenceArticle.ISBN) 
+                && string.IsNullOrEmpty(conferenceArticle.ISSN))
             {
-                if (string.IsNullOrEmpty(conferenceArticle.ISBN) 
-                    && string.IsNullOrEmpty(conferenceArticle.ISSN))
-                {
-                    throw new PublicationException("Musí být zadán alespoň jeden z následujících údajů: ISBN nebo ISSN");
-                }
-
-                // propojení základních a specifických údajů
-                publication.ConferenceArticle = conferenceArticle;
-                conferenceArticle.Publication = publication;
-                CreatePublication(context, publication, authors);
-                context.ConferenceArticle.Add(conferenceArticle);
-                context.SaveChanges();
+                throw new PublicationException("Musí být zadán alespoň jeden z následujících údajů: ISBN nebo ISSN");
             }
+
+            // propojení základních a specifických údajů
+            publication.ConferenceArticle = conferenceArticle;
+            conferenceArticle.Publication = publication;
+            CreatePublication(publication, authors);
+            context.ConferenceArticle.Add(conferenceArticle);
+            context.SaveChanges();
         }
 
         /// <summary>
@@ -60,20 +61,17 @@ namespace Core
         /// <param name="conferenceArticle">specifické údaje o publikaci</param>
         public void UpdatePublication(int id, Publication publication, List<Author> authors, ConferenceArticle conferenceArticle)
         {
-            using (var context = new DbPublicationEntities())
-            {
-                Publication oldPublication = GetPublication(context, id);
-                UpdatePublication(context, oldPublication, publication, authors);
-                ConferenceArticle oldConferenceArticle = oldPublication.ConferenceArticle;
-                oldConferenceArticle.Address = conferenceArticle.Address;
-                oldConferenceArticle.BookTitle = conferenceArticle.BookTitle;
-                oldConferenceArticle.FromPage = conferenceArticle.FromPage;
-                oldConferenceArticle.ISBN = conferenceArticle.ISBN;
-                oldConferenceArticle.ISSN = conferenceArticle.ISSN;
-                oldConferenceArticle.Publisher = conferenceArticle.Publisher;
-                oldConferenceArticle.ToPage = conferenceArticle.ToPage;
-                context.SaveChanges();
-            }
+            Publication oldPublication = GetPublication(id);
+            UpdatePublication(oldPublication, publication, authors);
+            ConferenceArticle oldConferenceArticle = oldPublication.ConferenceArticle;
+            oldConferenceArticle.Address = conferenceArticle.Address;
+            oldConferenceArticle.BookTitle = conferenceArticle.BookTitle;
+            oldConferenceArticle.FromPage = conferenceArticle.FromPage;
+            oldConferenceArticle.ISBN = conferenceArticle.ISBN;
+            oldConferenceArticle.ISSN = conferenceArticle.ISSN;
+            oldConferenceArticle.Publisher = conferenceArticle.Publisher;
+            oldConferenceArticle.ToPage = conferenceArticle.ToPage;
+            context.SaveChanges();
         }
 
         /// <summary>
@@ -82,21 +80,18 @@ namespace Core
         /// <param name="id">ID publikace</param>
         public void DeletePublication(int id)
         {
-            using (var context = new DbPublicationEntities())
-            {
-                Publication oldPublication = GetPublication(context, id);
-                ConferenceArticle oldConferenceArticle = oldPublication.ConferenceArticle;
-                context.ConferenceArticle.Remove(oldConferenceArticle);
-                DeletePublication(context, oldPublication);
-                context.SaveChanges();
-            }
+            Publication oldPublication = GetPublication(id);
+            ConferenceArticle oldConferenceArticle = oldPublication.ConferenceArticle;
+            context.ConferenceArticle.Remove(oldConferenceArticle);
+            DeletePublication(oldPublication);
+            context.SaveChanges();
         }
 
         /// <inheritDoc/>
         public override string GeneratePublicationIsoCitation(Publication publication)
         {
             ConferenceArticle conferenceArticle = publication.ConferenceArticle;
-                
+
             string pages = conferenceArticle.FromPage == conferenceArticle.ToPage ? 
                 $"{conferenceArticle.FromPage}" : 
                 $"{conferenceArticle.FromPage}-{conferenceArticle.ToPage}";
@@ -140,6 +135,20 @@ namespace Core
         /// <inheritDoc/>
         public override string ExportPublicationToHtmlDocument(Publication publication)
         {
+            /*var reader = new StreamReader(@"");
+            string template = reader.ReadToEnd();
+
+            StringTemplate helloAgain = new StringTemplate(template);
+
+            helloAgain.SetAttribute("title", "Welcome To StringTemplate");
+            helloAgain.SetAttribute("name", "World");
+            helloAgain.SetAttribute("friends", "Terence");
+            helloAgain.SetAttribute("friends", "Kunle");
+            helloAgain.SetAttribute("friends", "Micheal");
+            helloAgain.SetAttribute("friends", "Marq");
+
+            Console.WriteLine(helloAgain.ToString());*/
+
             return new StringBuilder($"<p>{GeneratePublicationIsoCitation(publication)}</p>")
                     .Append($"<p>{publication.Text}</p>").ToString();
         }

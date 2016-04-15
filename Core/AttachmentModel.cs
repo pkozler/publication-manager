@@ -8,6 +8,8 @@ namespace Core
     /// </summary>
     public class AttachmentModel
     {
+        protected DbPublicationEntities context = new DbPublicationEntities();
+
         /// <summary>
         /// Vrátí seznam příloh publikace se zadaným ID.
         /// </summary>
@@ -15,15 +17,12 @@ namespace Core
         /// <returns>seznam příloh</returns>
         public List<Attachment> GetAttachmentsByPublication(Publication publication)
         {
-            using (var context = new DbPublicationEntities())
-            {
-                var attachments = from a in context.Attachment
-                                  where a.PublicationId == publication.Id
-                                  orderby a.Path
-                                  select a;
+            var attachments = from a in context.Attachment
+                                where a.PublicationId == publication.Id
+                                orderby a.Path
+                                select a;
 
-                return attachments.ToList();
-            }
+            return attachments.ToList();
         }
         
         /// <summary>
@@ -33,13 +32,10 @@ namespace Core
         /// <param name="attachment">údaje o příloze</param>
         public void AddAttachmentToPublication(Publication publication, Attachment attachment)
         {
-            using (var context = new DbPublicationEntities())
-            {
-                attachment.Publication = publication;
-                publication.Attachment.Add(attachment);
-                context.Attachment.Add(attachment);
-                context.SaveChanges();
-            }
+            attachment.Publication = publication;
+            publication.Attachment.Add(attachment);
+            context.Attachment.Add(attachment);
+            context.SaveChanges();
         }
         
         /// <summary>
@@ -49,13 +45,10 @@ namespace Core
         /// <param name="id">ID přílohy</param>
         public void RemoveAttachmentFromPublication(Publication publication, int id)
         {
-            using (var context = new DbPublicationEntities())
-            {
-                Attachment attachment = context.Attachment.Find(publication.Id, id);
-                publication.Attachment.Remove(attachment);
-                context.Attachment.Remove(attachment);
-                context.SaveChanges();
-            }
+            Attachment attachment = context.Attachment.Find(publication.Id, id);
+            publication.Attachment.Remove(attachment);
+            context.Attachment.Remove(attachment);
+            context.SaveChanges();
         }
     }
 }

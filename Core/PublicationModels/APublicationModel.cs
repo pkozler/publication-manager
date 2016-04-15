@@ -9,6 +9,8 @@ namespace Core
     /// </summary>
     public abstract class APublicationModel
     {
+        protected DbPublicationEntities context = new DbPublicationEntities();
+
         /// <summary>
         /// Z bibliografických údajů zadané publikace
         /// vygeneruje citaci podle ISO normy.
@@ -32,7 +34,7 @@ namespace Core
         /// <param name="publication">publikace</param>
         /// <returns>HTML dokument</returns>
         public abstract string ExportPublicationToHtmlDocument(Publication publication);
-
+        
         /// <summary>
         /// Vygeneruje řetězec autorů publikace pro citaci ze seznamu autorů.
         /// </summary>
@@ -90,10 +92,9 @@ namespace Core
         /// <summary>
         /// Načte základní údaje o publikaci se zadaným ID.
         /// </summary>
-        /// <param name="context">aktuální kontext</param>
         /// <param name="id">ID publikace</param>
         /// <returns>publikace</returns>
-        protected Publication GetPublication(DbPublicationEntities context, int id)
+        protected Publication GetPublication(int id)
         {
             return context.Publication.Find(id);
         }
@@ -101,9 +102,8 @@ namespace Core
         /// <summary>
         /// Vytvoří novou publikaci se zadanými údaji.
         /// </summary>
-        /// <param name="context">aktuální kontext</param>
         /// <param name="publication">údaje publikace</param>
-        protected void CreatePublication(DbPublicationEntities context, Publication publication, List<Author> authors)
+        protected void CreatePublication(Publication publication, List<Author> authors)
         {
             context.Publication.Add(publication);
 
@@ -123,10 +123,9 @@ namespace Core
         /// <summary>
         /// Upraví zadanou publikaci zadanými údaji.
         /// </summary>
-        /// <param name="context">aktuální kontext</param>
         /// <param name="oldPublication">existující publikace</param>
         /// <param name="publication">nové údaje</param>
-        protected void UpdatePublication(DbPublicationEntities context, Publication oldPublication, Publication publication, List<Author> authors)
+        protected void UpdatePublication(Publication oldPublication, Publication publication, List<Author> authors)
         {
             oldPublication.Entry = publication.Entry;
             oldPublication.Title = publication.Title;
@@ -156,9 +155,8 @@ namespace Core
         /// <summary>
         /// Odstraní zadanou publikaci.
         /// </summary>
-        /// <param name="context">aktuální kontext</param>
         /// <param name="oldPublication">existující publikace</param>
-        protected void DeletePublication(DbPublicationEntities context, Publication oldPublication)
+        protected void DeletePublication(Publication oldPublication)
         {
             // odstranění publikace u autorů
             foreach (Author author in oldPublication.Author)
