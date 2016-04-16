@@ -7,7 +7,7 @@
     </Key>
     <Property Name="PublicationId" Type="Int32" Nullable="false" />
     <Property Name="Id" Type="Int32" Nullable="false" />
-    <Property Name="Path" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Path" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
     <NavigationProperty Name="Publication" Relationship="Self.FK_Attachment_Author" FromRole="Attachment" ToRole="Publication" />
   </EntityType>
   <EntityType Name="Author">
@@ -15,8 +15,8 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="Surname" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Surname" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
     <NavigationProperty Name="Publication" Relationship="Self.PublicationAuthorJunction" FromRole="Author" ToRole="Publication" />
   </EntityType>
   <EntityType Name="ConferenceArticle">
@@ -24,13 +24,13 @@
       <PropertyRef Name="PublicationId" />
     </Key>
     <Property Name="PublicationId" Type="Int32" Nullable="false" />
-    <Property Name="BookTitle" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="BookTitle" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="FromPage" Type="Int32" Nullable="false" />
     <Property Name="ToPage" Type="Int32" Nullable="false" />
-    <Property Name="Address" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="Publisher" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="ISBN" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-    <Property Name="ISSN" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Address" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Publisher" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ISBN" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="ISSN" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="Publication" Relationship="Self.FK_ConferenceArticle_Publication" FromRole="ConferenceArticle" ToRole="Publication" />
   </EntityType>
   <EntityType Name="JournalArticle">
@@ -38,11 +38,11 @@
       <PropertyRef Name="PublicationId" />
     </Key>
     <Property Name="PublicationId" Type="Int32" Nullable="false" />
-    <Property Name="JournalTitle" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="Number" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="JournalTitle" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Number" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="FromPage" Type="Int32" Nullable="false" />
     <Property Name="ToPage" Type="Int32" Nullable="false" />
-    <Property Name="ISSN" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ISSN" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
     <NavigationProperty Name="Publication" Relationship="Self.FK_JournalArticle_Publication" FromRole="JournalArticle" ToRole="Publication" />
   </EntityType>
   <EntityType Name="Publication">
@@ -50,10 +50,10 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Entry" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Entry" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Title" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="Year" Type="Int32" Nullable="false" />
-    <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Type" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
     <NavigationProperty Name="Attachment" Relationship="Self.FK_Attachment_Author" FromRole="Publication" ToRole="Attachment" />
     <NavigationProperty Name="ConferenceArticle" Relationship="Self.FK_ConferenceArticle_Publication" FromRole="Publication" ToRole="ConferenceArticle" />
@@ -67,9 +67,9 @@
       <PropertyRef Name="PublicationId" />
     </Key>
     <Property Name="PublicationId" Type="Int32" Nullable="false" />
-    <Property Name="School" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="School" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="ThesisType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="Address" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Address" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
     <NavigationProperty Name="Publication" Relationship="Self.FK_QualificationThesis_Publication" FromRole="QualificationThesis" ToRole="Publication" />
   </EntityType>
   <EntityType Name="TechnicalReport">
@@ -77,9 +77,9 @@
       <PropertyRef Name="PublicationId" />
     </Key>
     <Property Name="PublicationId" Type="Int32" Nullable="false" />
-    <Property Name="Institution" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="Number" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="Address" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Institution" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Number" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Address" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
     <NavigationProperty Name="Publication" Relationship="Self.FK_TechnicalReport_Publication" FromRole="TechnicalReport" ToRole="Publication" />
   </EntityType>
   <Association Name="FK_Attachment_Author">

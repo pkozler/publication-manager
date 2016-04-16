@@ -50,7 +50,15 @@ namespace CLI
             WriteLine("Citace od strany:");
             journalArticle.FromPage = ReadValidNumber("Zadejte číslo počáteční strany citace.");
             WriteLine("Citace do strany:");
-            journalArticle.ToPage = ReadValidNumber("Zadejte číslo poslední strany citace.");
+
+            int toPage = ReadValidNumber("Zadejte číslo poslední strany citace.");
+            while (toPage < journalArticle.FromPage)
+            {
+                WriteLine("Poslední číslo nesmí být menší než počáteční.");
+                toPage = ReadValidNumber("Zadejte číslo poslední strany citace.");
+            }
+            journalArticle.ToPage = toPage;
+            
             WriteLine("Zadejte ISSN:");
             journalArticle.ISSN = ReadNonEmptyString("ISSN nesmí být prázdné.");
 
@@ -88,7 +96,7 @@ namespace CLI
 
             WriteLine("Nová poslední strana citace:");
             int toPage;
-            if (int.TryParse(ReadLine(), out toPage))
+            if (int.TryParse(ReadLine(), out toPage) && toPage >= journalArticle.FromPage)
             {
                 journalArticle.ToPage = toPage;
             }

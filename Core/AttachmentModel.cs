@@ -22,7 +22,10 @@ namespace Core
                                 orderby a.Path
                                 select a;
 
-            return attachments.ToList();
+            List<Attachment> attachmentList = attachments.ToList();
+            attachmentList.Sort(new AttachmentComparer());
+
+            return attachmentList;
         }
         
         /// <summary>

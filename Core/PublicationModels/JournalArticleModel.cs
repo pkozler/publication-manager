@@ -33,6 +33,11 @@ namespace Core
         /// <param name="journalArticle">specifické údaje o publikaci</param>
         public void CreatePublication(Publication publication, List<Author> authors, JournalArticle journalArticle)
         {
+            if (journalArticle.ToPage < journalArticle.FromPage)
+            {
+                throw new PublicationException("Poslední strana citace nesmí být menší než počáteční.");
+            }
+
             publication.JournalArticle = journalArticle;
             journalArticle.Publication = publication;
             CreatePublication(publication, authors);

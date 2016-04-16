@@ -40,6 +40,11 @@ namespace Core
                 throw new PublicationException("Musí být zadán alespoň jeden z následujících údajů: ISBN nebo ISSN");
             }
 
+            if (conferenceArticle.ToPage < conferenceArticle.FromPage)
+            {
+                throw new PublicationException("Poslední strana citace nesmí být menší než počáteční.");
+            }
+
             // propojení základních a specifických údajů
             publication.ConferenceArticle = conferenceArticle;
             conferenceArticle.Publication = publication;

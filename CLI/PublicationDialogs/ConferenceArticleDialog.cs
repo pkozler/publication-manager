@@ -55,7 +55,15 @@ namespace CLI
             WriteLine("Citace od strany:");
             conferenceArticle.FromPage = ReadValidNumber("Zadejte číslo počáteční strany citace.");
             WriteLine("Citace do strany:");
-            conferenceArticle.ToPage = ReadValidNumber("Zadejte číslo poslední strany citace.");
+
+            int toPage = ReadValidNumber("Zadejte číslo poslední strany citace.");
+            while (toPage < conferenceArticle.FromPage)
+            {
+                WriteLine("Poslední číslo nesmí být menší než počáteční.");
+                toPage = ReadValidNumber("Zadejte číslo poslední strany citace.");
+            }
+            conferenceArticle.ToPage = toPage;
+
             WriteLine("Zadejte ISBN nebo ponechte prázdný řádek pro zadání ISSN:");
             string isbn = ReadLine();
 
@@ -110,7 +118,7 @@ namespace CLI
 
             WriteLine("Nová poslední strana citace:");
             int toPage;
-            if (int.TryParse(ReadLine(), out toPage))
+            if (int.TryParse(ReadLine(), out toPage) && toPage >= conferenceArticle.FromPage)
             {
                 conferenceArticle.ToPage = toPage;
             }

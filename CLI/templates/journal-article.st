@@ -22,7 +22,7 @@
 				<dt>Typ publikace:</dt>
 				<dd>$type$</dd>
 			</dl>
-			<dl class="dl-horizontal"> <!-- bibliografické údaje pro článek na konferenci -->
+			<dl class="dl-horizontal"> <!-- bibliografické údaje pro článek do časopisu -->
 				<dt>Časopis:</dt>
 				<dd>$journaltitle$</dd>
 				<dt>Číslo:</dt>

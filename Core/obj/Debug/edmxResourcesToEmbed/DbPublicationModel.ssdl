@@ -7,49 +7,49 @@
     </Key>
     <Property Name="PublicationId" Type="int" Nullable="false" />
     <Property Name="Id" Type="int" Nullable="false" />
-    <Property Name="Path" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="Path" Type="nvarchar" MaxLength="1000" Nullable="false" />
   </EntityType>
   <EntityType Name="Author">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
-    <Property Name="Surname" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="1000" Nullable="false" />
+    <Property Name="Surname" Type="nvarchar" MaxLength="1000" Nullable="false" />
   </EntityType>
   <EntityType Name="ConferenceArticle">
     <Key>
       <PropertyRef Name="PublicationId" />
     </Key>
     <Property Name="PublicationId" Type="int" Nullable="false" />
-    <Property Name="BookTitle" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="BookTitle" Type="nvarchar" MaxLength="1000" Nullable="false" />
     <Property Name="FromPage" Type="int" Nullable="false" />
     <Property Name="ToPage" Type="int" Nullable="false" />
-    <Property Name="Address" Type="nvarchar" MaxLength="100" Nullable="false" />
-    <Property Name="Publisher" Type="nvarchar" MaxLength="100" Nullable="false" />
-    <Property Name="ISBN" Type="nvarchar" MaxLength="20" />
-    <Property Name="ISSN" Type="nvarchar" MaxLength="20" />
+    <Property Name="Address" Type="nvarchar" MaxLength="1000" Nullable="false" />
+    <Property Name="Publisher" Type="nvarchar" MaxLength="1000" Nullable="false" />
+    <Property Name="ISBN" Type="nvarchar" MaxLength="100" />
+    <Property Name="ISSN" Type="nvarchar" MaxLength="100" />
   </EntityType>
   <EntityType Name="JournalArticle">
     <Key>
       <PropertyRef Name="PublicationId" />
     </Key>
     <Property Name="PublicationId" Type="int" Nullable="false" />
-    <Property Name="JournalTitle" Type="nvarchar" MaxLength="100" Nullable="false" />
-    <Property Name="Number" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="JournalTitle" Type="nvarchar" MaxLength="1000" Nullable="false" />
+    <Property Name="Number" Type="nvarchar" MaxLength="1000" Nullable="false" />
     <Property Name="FromPage" Type="int" Nullable="false" />
     <Property Name="ToPage" Type="int" Nullable="false" />
-    <Property Name="ISSN" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="ISSN" Type="nvarchar" MaxLength="100" Nullable="false" />
   </EntityType>
   <EntityType Name="Publication">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Entry" Type="nvarchar" MaxLength="100" Nullable="false" />
-    <Property Name="Title" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Entry" Type="nvarchar" MaxLength="1000" Nullable="false" />
+    <Property Name="Title" Type="nvarchar" MaxLength="1000" Nullable="false" />
     <Property Name="Year" Type="int" Nullable="false" />
-    <Property Name="Type" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Type" Type="nvarchar" MaxLength="100" Nullable="false" />
     <Property Name="Text" Type="ntext" Nullable="false" />
   </EntityType>
   <EntityType Name="PublicationAuthorJunction">
@@ -65,18 +65,18 @@
       <PropertyRef Name="PublicationId" />
     </Key>
     <Property Name="PublicationId" Type="int" Nullable="false" />
-    <Property Name="School" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="School" Type="nvarchar" MaxLength="1000" Nullable="false" />
     <Property Name="ThesisType" Type="nvarchar" MaxLength="100" Nullable="false" />
-    <Property Name="Address" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Address" Type="nvarchar" MaxLength="1000" Nullable="false" />
   </EntityType>
   <EntityType Name="TechnicalReport">
     <Key>
       <PropertyRef Name="PublicationId" />
     </Key>
     <Property Name="PublicationId" Type="int" Nullable="false" />
-    <Property Name="Institution" Type="nvarchar" MaxLength="100" Nullable="false" />
-    <Property Name="Number" Type="nvarchar" MaxLength="100" Nullable="false" />
-    <Property Name="Address" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Institution" Type="nvarchar" MaxLength="1000" Nullable="false" />
+    <Property Name="Number" Type="nvarchar" MaxLength="1000" Nullable="false" />
+    <Property Name="Address" Type="nvarchar" MaxLength="1000" Nullable="false" />
   </EntityType>
   <Association Name="FK_Attachment_Author">
     <End Role="Publication" Type="Self.Publication" Multiplicity="1" />

@@ -67,7 +67,17 @@ namespace CLI
             if (MenuItems.ContainsKey(command))
             {
                 WriteLine();
-                MenuItems[command].UIMethod();
+
+                try
+                {
+                    MenuItems[command].UIMethod();
+                }
+                catch (Exception e)
+                {
+                    WriteLine("CHYBA:");
+                    WriteLine(e.Message);
+                }
+
                 WriteLine();
 
                 if (MenuItems[command].UIMethod != PrintMenu)

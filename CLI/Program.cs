@@ -29,13 +29,13 @@ namespace CLI
             return new List<PublicationType>()
             {
                 new PublicationType(ConferenceArticleModel.NAME, 
-                    "Článek na konferenci", "templates/conference-article.st", new ConferenceArticleDialog(conferenceArticleModel)),
+                    "Článek na konferenci", "Templates/conference-article.st", new ConferenceArticleDialog(conferenceArticleModel)),
                 new PublicationType(JournalArticleModel.NAME, 
-                    "Článek do časopisu", "templates/journal-article.st", new JournalArticleDialog(journalArticleModel)),
+                    "Článek do časopisu", "Templates/journal-article.st", new JournalArticleDialog(journalArticleModel)),
                 new PublicationType(TechnicalReportModel.NAME, 
-                    "Technická zpráva", "templates/technical-report.st", new TechnicalReportDialog(technicalReportModel)),
+                    "Technická zpráva", "Templates/technical-report.st", new TechnicalReportDialog(technicalReportModel)),
                 new PublicationType(QualificationThesisModel.NAME, 
-                    "Kvalifikační práce", "templates/qualification-thesis.st", new QualificationThesisDialog(qualificationThesisModel)),
+                    "Kvalifikační práce", "Templates/qualification-thesis.st", new QualificationThesisDialog(qualificationThesisModel)),
             };
         }
 

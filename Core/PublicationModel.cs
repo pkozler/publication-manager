@@ -275,7 +275,10 @@ namespace Core
                                 orderby p.Title
                                 select p;
 
-            return publications.ToList();
+            List<Publication> publicationList = publications.ToList();
+            publicationList.Sort(new PublicationComparer());
+
+            return publicationList;
         }
         
         /// <summary>

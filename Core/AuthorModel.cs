@@ -21,7 +21,10 @@ namespace Core
                             orderby a.Name
                             select a;
 
-            return authors.ToList();
+            List<Author> authorList = authors.ToList();
+            authorList.Sort(new AuthorComparer());
+
+            return authorList;
         }
 
         /// <summary>
