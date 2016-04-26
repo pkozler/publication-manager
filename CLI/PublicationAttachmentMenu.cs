@@ -59,6 +59,8 @@ namespace CLI
             attachment.Path = path;
             attachmentModel.AddAttachmentToPublication(
                 publicationModel.GetPublicationById(publicationId), attachment);
+
+            GetAttachmentList();
         }
 
         /// <summary>
@@ -85,7 +87,8 @@ namespace CLI
         {
             WriteLine("Seznam příloh:");
             WriteLine("ID\tCesta k souboru");
-            List<Attachment> attachments = new List<Attachment>();
+            List<Attachment> attachments = attachmentModel.GetAttachmentsByPublication(
+                publicationModel.GetPublicationById(publicationId));
 
             foreach (Attachment attachment in attachments)
             {

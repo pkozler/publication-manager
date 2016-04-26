@@ -65,6 +65,8 @@ namespace CLI
             foreach (Author author in authors)
             {
                 WriteLine($"{author.Id}\t{author.Name}\t{author.Surname}");
+                Write("Seznam publikací: ");
+
                 Publication[] publications = author.Publication.ToArray();
 
                 if (publications.Length > 0)

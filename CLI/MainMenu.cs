@@ -102,10 +102,13 @@ namespace CLI
             WriteLine("Zadejte název BibTeX záznamu publikace:");
             publication.Entry = ReadNonEmptyString("Název nesmí být prázdný.");
 
-            WriteLine("Zadejte křestní jméno autora:");
-            List<Author> authors = ReadNameList(
-                "Zadejte křestní jméno dalšího autora nebo potvrďte hotový seznam autorů klávesou ENTER: (vložením prázdného řádku)",
-                "Zadejte příjmení autora:");
+            WriteLine("Zadejte křestní jméno nového autora NEBO "
+                + "číslo představující ID již použitého autora:");
+            List<Author> authors = ReadAuthorList(authorModel,
+                "Zadejte křestní jméno dalšího nového autora NEBO "
+                + "číslo představující ID již použitého autora NEBO "
+                + "potvrďte hotový seznam autorů klávesou ENTER (tj. vložením prázdného řádku):",
+                "Zadejte příjmení nového autora:");
 
             WriteLine("Zadejte skutečný název publikace:");
             publication.Title = ReadNonEmptyString("Název nesmí být prázdný.");

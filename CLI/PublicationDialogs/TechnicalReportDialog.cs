@@ -30,7 +30,7 @@ namespace CLI
         /// <inheritDoc/>
         public void GetSpecificBibliography(Publication publication)
         {
-            TechnicalReport technicalReport = new TechnicalReport();
+            TechnicalReport technicalReport = publication.TechnicalReport;
             WriteLine("Místo vydání: " + technicalReport.Address);
             WriteLine("Vydavatel: " + technicalReport.Institution);
             WriteLine("Označení: " + technicalReport.Number);
@@ -54,7 +54,7 @@ namespace CLI
         /// <inheritDoc/>
         public void UpdateSpecificBibliography(int publicationId, Publication publication, List<Author> authors)
         {
-            TechnicalReport technicalReport = publication.TechnicalReport;
+            TechnicalReport technicalReport = new TechnicalReport();
 
             WriteLine("Zadejte nové místo vydání:");
             string address = ReadLine();

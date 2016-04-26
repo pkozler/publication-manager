@@ -84,7 +84,7 @@ namespace CLI
         /// <inheritDoc/>
         public void UpdateSpecificBibliography(int publicationId, Publication publication, List<Author> authors)
         {
-            ConferenceArticle conferenceArticle = publication.ConferenceArticle;
+            ConferenceArticle conferenceArticle = new ConferenceArticle();
             WriteLine("Zadejte nový název sborníku konference:");
             string bookTitle = ReadLine().Trim();
 

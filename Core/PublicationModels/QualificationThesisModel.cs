@@ -24,17 +24,15 @@ namespace Core
         /// Uchovává název označení typu 'disertační práce' pro použití v databázi.
         /// </summary>
         public const string TYPE_PHD_THESIS = "PhdThesis";
-        
+
         /// <summary>
-        /// Vrátí specifické údaje o publikaci příslušného typu.
+        /// Vytvoří instanci správce.
         /// </summary>
-        /// <param name="id">ID publikace</param>
-        /// <returns>specifické údaje o publikaci s uvedeným ID</returns>
-        /*public QualificationThesis GetPublication(int id)
+        /// <param name="context">databázový kontext</param>
+        public QualificationThesisModel(DbPublicationEntities context) : base(context)
         {
-            Publication publication = GetPublication(context, id);
-            return publication.QualificationThesis;
-        }*/
+            // inicializace v nadřazené třídě
+        }
 
         /// <summary>
         /// Uloží novou publikaci příslušného typu a propojí záznam základních a specifických údajů.
@@ -47,12 +45,12 @@ namespace Core
             {
                 throw new PublicationException("Kvalifikační práce musí mít právě jednoho autora.");
             }
-
+            
             publication.QualificationThesis = qualificationThesis;
             qualificationThesis.Publication = publication;
             CreatePublication(publication, author == null ? null : new List<Author> { author });
             context.QualificationThesis.Add(qualificationThesis);
-                
+
             context.SaveChanges();
         }
 
@@ -67,9 +65,22 @@ namespace Core
             Publication oldPublication = GetPublication(id);
             UpdatePublication(oldPublication, publication, author == null ? null : new List<Author> { author });
             QualificationThesis oldQualificationThesis = oldPublication.QualificationThesis;
-            oldQualificationThesis.Address = qualificationThesis.Address;
-            oldQualificationThesis.School = qualificationThesis.School;
-            oldQualificationThesis.ThesisType = qualificationThesis.ThesisType;
+
+            if (qualificationThesis.Address != null)
+            {
+                oldQualificationThesis.Address = qualificationThesis.Address;
+            }
+            
+            if (qualificationThesis.School != null)
+            {
+                oldQualificationThesis.School = qualificationThesis.School;
+            }
+
+            if (qualificationThesis.ThesisType != null)
+            {
+                oldQualificationThesis.ThesisType = qualificationThesis.ThesisType;
+            }
+            
             context.SaveChanges();
         }
 

@@ -8,7 +8,19 @@ namespace Core
     /// </summary>
     public class AttachmentModel
     {
-        protected DbPublicationEntities context = new DbPublicationEntities();
+        /// <summary>
+        /// Uchovává databázový kontext.
+        /// </summary>
+        protected DbPublicationEntities context;
+
+        /// <summary>
+        /// Vytvoří instanci správce.
+        /// </summary>
+        /// <param name="context">databázový kontext</param>
+        public AttachmentModel(DbPublicationEntities context)
+        {
+            this.context = context;
+        }
 
         /// <summary>
         /// Vrátí seznam příloh publikace se zadaným ID.
@@ -36,6 +48,9 @@ namespace Core
         public void AddAttachmentToPublication(Publication publication, Attachment attachment)
         {
             attachment.Publication = publication;
+            List<Attachment> attachmentList = GetAttachmentsByPublication(publication);
+            // určení ID nové přílohy
+            attachment.Id = attachmentList.Count > 0 ? attachmentList.Last().Id + 1 : 1;
             publication.Attachment.Add(attachment);
             context.Attachment.Add(attachment);
             context.SaveChanges();
@@ -49,6 +64,13 @@ namespace Core
         public void RemoveAttachmentFromPublication(Publication publication, int id)
         {
             Attachment attachment = context.Attachment.Find(publication.Id, id);
+
+            if (attachment == null)
+            {
+                throw new AttachmentException(string.Format(
+                    "Příloha s id {0} u publikace s id {1} neexistuje.", id, publication.Id));
+            }
+
             publication.Attachment.Remove(attachment);
             context.Attachment.Remove(attachment);
             context.SaveChanges();

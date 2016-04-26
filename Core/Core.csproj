@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Core</RootNamespace>
-    <AssemblyName>Core</AssemblyName>
+    <AssemblyName>PMCore</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <PublishUrl>publish\</PublishUrl>
@@ -84,6 +84,8 @@
     <Compile Include="ConferenceArticle.cs">
       <DependentUpon>DbPublicationModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Exceptions\AttachmentException.cs" />
+    <Compile Include="Exceptions\AuthorException.cs" />
     <Compile Include="Helpers\DbPublicationEntities.SaveChanges.cs" />
     <Compile Include="DbPublicationModel.Context.cs">
       <AutoGen>True</AutoGen>

@@ -14,17 +14,15 @@ namespace Core
         /// Uchovává název typu pro použití v databázi.
         /// </summary>
         public const string NAME = "TechnicalReport";
-        
+
         /// <summary>
-        /// Vrátí specifické údaje o publikaci příslušného typu.
+        /// Vytvoří instanci správce.
         /// </summary>
-        /// <param name="id">ID publikace</param>
-        /// <returns>specifické údaje o publikaci s uvedeným ID</returns>
-        /*public TechnicalReport GetPublication(int id)
+        /// <param name="context">databázový kontext</param>
+        public TechnicalReportModel(DbPublicationEntities context) : base(context)
         {
-            Publication publication = GetPublication(context, id);
-            return publication.TechnicalReport;
-        }*/
+            // inicializace v nadřazené třídě
+        }
 
         /// <summary>
         /// Uloží novou publikaci příslušného typu a propojí záznam základních a specifických údajů.
@@ -51,9 +49,22 @@ namespace Core
             Publication oldPublication = GetPublication(id);
             UpdatePublication(oldPublication, publication, authors);
             TechnicalReport oldTechnicalReport = oldPublication.TechnicalReport;
-            oldTechnicalReport.Address = technicalReport.Address;
-            oldTechnicalReport.Institution = technicalReport.Institution;
-            oldTechnicalReport.Number = technicalReport.Number;
+
+            if (technicalReport.Address != null)
+            {
+                oldTechnicalReport.Address = technicalReport.Address;
+            }
+            
+            if (technicalReport.Institution != null)
+            {
+                oldTechnicalReport.Institution = technicalReport.Institution;
+            }
+            
+            if (technicalReport.Number != null)
+            {
+                oldTechnicalReport.Number = technicalReport.Number;
+            }
+            
             context.SaveChanges();
         }
 

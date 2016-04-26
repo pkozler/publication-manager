@@ -5,14 +5,14 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="f7687932bb5a413c98eca79e3d8344bf" Name="Diagram1">
-        <EntityTypeShape EntityType="DbPublicationModel.Attachment" Width="1.5" PointX="5.25" PointY="1.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="DbPublicationModel.Author" Width="1.5" PointX="0.75" PointY="7.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="DbPublicationModel.ConferenceArticle" Width="1.5" PointX="5.25" PointY="4" IsExpanded="true" />
-        <EntityTypeShape EntityType="DbPublicationModel.JournalArticle" Width="1.5" PointX="5.25" PointY="7.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="DbPublicationModel.Publication" Width="1.5" PointX="3" PointY="6.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DbPublicationModel.QualificationThesis" Width="1.5" PointX="5.25" PointY="10.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="DbPublicationModel.TechnicalReport" Width="1.5" PointX="5.25" PointY="13.375" IsExpanded="true" />
-        <AssociationConnector Association="DbPublicationModel.FK_Attachment_Author" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="DbPublicationModel.Attachment" Width="1.5" PointX="1.625" PointY="9.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DbPublicationModel.Author" Width="1.5" PointX="1.625" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="DbPublicationModel.ConferenceArticle" Width="1.5" PointX="5.875" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DbPublicationModel.JournalArticle" Width="1.5" PointX="8" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DbPublicationModel.Publication" Width="1.5" PointX="3.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DbPublicationModel.QualificationThesis" Width="1.5" PointX="5.875" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DbPublicationModel.TechnicalReport" Width="1.5" PointX="8" PointY="8.875" IsExpanded="true" />
+        <AssociationConnector Association="DbPublicationModel.FK_Attachment_Author" ManuallyRouted="false" ></AssociationConnector>
         <AssociationConnector Association="DbPublicationModel.FK_ConferenceArticle_Publication" ManuallyRouted="false" />
         <AssociationConnector Association="DbPublicationModel.FK_JournalArticle_Publication" ManuallyRouted="false" />
         <AssociationConnector Association="DbPublicationModel.FK_QualificationThesis_Publication" ManuallyRouted="false" />

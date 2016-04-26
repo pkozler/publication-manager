@@ -94,7 +94,7 @@ namespace CLI
         /// </summary>
         public void UpdateBibliography()
         {
-            Publication publication = publicationModel.GetPublicationById(publicationId);
+            Publication publication = new Publication();
             WriteLine("Zadejte nový název BibTeX záznamu publikace:");
             string entry = ReadLine().Trim();
 
@@ -107,10 +107,13 @@ namespace CLI
 
             if (ReadYesNoAnswer("Chcete nastavit nový seznam autorů?"))
             {
-                WriteLine("Zadejte křestní jméno autora:");
-                authors = ReadNameList(
-                    "Zadejte křestní jméno dalšího autora nebo potvrďte hotový seznam autorů klávesou ENTER: (vložením prázdného řádku)",
-                    "Zadejte příjmení autora:");
+                WriteLine("Zadejte křestní jméno nového autora NEBO "
+                + "číslo představující ID již použitého autora:");
+                authors = ReadAuthorList(authorModel,
+                    "Zadejte křestní jméno dalšího nového autora NEBO "
+                    + "číslo představující ID již použitého autora NEBO "
+                    + "potvrďte hotový seznam autorů klávesou ENTER (tj. vložením prázdného řádku):",
+                    "Zadejte příjmení nového autora:");
             }
 
             WriteLine("Zadejte nový skutečný název publikace:");
@@ -150,7 +153,7 @@ namespace CLI
             }
             
             // předání načítání údajů dialogu pro zvolený typ publikace
-            PublicationType.GetTypeByName(publicationTypes, publication.Type)
+            PublicationType.GetTypeByName(publicationTypes, publicationModel.GetPublicationById(publicationId).Type)
                 .Dialog.UpdateSpecificBibliography(publicationId, publication, authors);
             WriteLine("Publikace s ID {0} byla úspěšně upravena.", publicationId);
         }
@@ -221,11 +224,17 @@ namespace CLI
         /// </summary>
         public void DeletePublication()
         {
+            if (!ReadYesNoAnswer("Opravdu chcete publikaci s ID {0} odstranit?"))
+            {
+                return;
+            }
+
             Publication publication = publicationModel.GetPublicationById(publicationId);
             PublicationType publicationType = PublicationType.GetTypeByName(
                 publicationTypes, publication.Type);
             publicationType.Dialog.DeleteSpecificBibliography(publicationId);
             WriteLine("Publikace s ID {0} byla úspěšně odstraněna.", publicationId);
+            ExitMenu();
         }
     }
 }

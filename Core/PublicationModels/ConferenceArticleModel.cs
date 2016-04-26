@@ -15,17 +15,15 @@ namespace Core
         /// Uchovává název typu pro použití v databázi.
         /// </summary>
         public const string NAME = "ConferenceArticle";
-        
+
         /// <summary>
-        /// Vrátí specifické údaje o publikaci příslušného typu.
+        /// Vytvoří instanci správce.
         /// </summary>
-        /// <param name="id">ID publikace</param>
-        /// <returns>specifické údaje o publikaci s uvedeným ID</returns>
-        /*public ConferenceArticle GetPublication(int id)
+        /// <param name="context">databázový kontext</param>
+        public ConferenceArticleModel(DbPublicationEntities context) : base(context)
         {
-            Publication publication = GetPublication(context, id);
-            return publication.ConferenceArticle;
-        }*/
+            // inicializace v nadřazené třídě
+        }
 
         /// <summary>
         /// Uloží novou publikaci příslušného typu a propojí záznam základních a specifických údajů.
@@ -64,12 +62,34 @@ namespace Core
             Publication oldPublication = GetPublication(id);
             UpdatePublication(oldPublication, publication, authors);
             ConferenceArticle oldConferenceArticle = oldPublication.ConferenceArticle;
-            oldConferenceArticle.Address = conferenceArticle.Address;
-            oldConferenceArticle.BookTitle = conferenceArticle.BookTitle;
+
+            if (conferenceArticle.Address != null)
+            {
+                oldConferenceArticle.Address = conferenceArticle.Address;
+            }
+            
+            if (conferenceArticle.BookTitle != null)
+            {
+                oldConferenceArticle.BookTitle = conferenceArticle.BookTitle;
+            }
+            
             oldConferenceArticle.FromPage = conferenceArticle.FromPage;
-            oldConferenceArticle.ISBN = conferenceArticle.ISBN;
-            oldConferenceArticle.ISSN = conferenceArticle.ISSN;
-            oldConferenceArticle.Publisher = conferenceArticle.Publisher;
+
+            if (conferenceArticle.ISBN != null)
+            {
+                oldConferenceArticle.ISBN = conferenceArticle.ISBN;
+            }
+            
+            if (conferenceArticle.ISSN != null)
+            {
+                oldConferenceArticle.ISSN = conferenceArticle.ISSN;
+            }
+            
+            if (conferenceArticle.Publisher != null)
+            {
+                oldConferenceArticle.Publisher = conferenceArticle.Publisher;
+            }
+            
             oldConferenceArticle.ToPage = conferenceArticle.ToPage;
             context.SaveChanges();
         }

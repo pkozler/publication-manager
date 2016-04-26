@@ -14,17 +14,15 @@ namespace Core
         /// Uchovává název typu pro použití v databázi.
         /// </summary>
         public const string NAME = "JournalArticle";
-        
+
         /// <summary>
-        /// Vrátí specifické údaje o publikaci příslušného typu.
+        /// Vytvoří instanci správce.
         /// </summary>
-        /// <param name="id">ID publikace</param>
-        /// <returns>specifické údaje o publikaci s uvedeným ID</returns>
-        /*public JournalArticle GetPublication(int id)
+        /// <param name="context">databázový kontext</param>
+        public JournalArticleModel(DbPublicationEntities context) : base(context)
         {
-            Publication publication = GetPublication(context, id);
-            return publication.JournalArticle;
-        }*/
+            // inicializace v nadřazené třídě
+        }
 
         /// <summary>
         /// Uloží novou publikaci příslušného typu a propojí záznam základních a specifických údajů.
@@ -56,10 +54,24 @@ namespace Core
             Publication oldPublication = GetPublication(id);
             UpdatePublication(oldPublication, publication, authors);
             JournalArticle oldJournalArticle = oldPublication.JournalArticle;
+            
             oldJournalArticle.FromPage = journalArticle.FromPage;
-            oldJournalArticle.ISSN = journalArticle.ISSN;
-            oldJournalArticle.JournalTitle = journalArticle.JournalTitle;
-            oldJournalArticle.Number = journalArticle.Number;
+
+            if (journalArticle.ISSN != null)
+            {
+                oldJournalArticle.ISSN = journalArticle.ISSN;
+            }
+            
+            if (journalArticle.JournalTitle != null)
+            {
+                oldJournalArticle.JournalTitle = journalArticle.JournalTitle;
+            }
+            
+            if (journalArticle.Number != null)
+            {
+                oldJournalArticle.Number = journalArticle.Number;
+            }
+            
             oldJournalArticle.ToPage = journalArticle.ToPage;
             context.SaveChanges();
         }

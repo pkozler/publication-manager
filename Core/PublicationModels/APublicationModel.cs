@@ -11,8 +11,16 @@ namespace Core
     /// </summary>
     public abstract class APublicationModel
     {
-        protected DbPublicationEntities context = new DbPublicationEntities();
-
+        /// <summary>
+        /// Uchovává databázový kontext.
+        /// </summary>
+        protected DbPublicationEntities context;
+        
+        public APublicationModel(DbPublicationEntities context)
+        {
+            this.context = context;
+        }
+        
         /// <summary>
         /// Z bibliografických údajů zadané publikace
         /// vygeneruje citaci podle ISO normy.
@@ -148,10 +156,16 @@ namespace Core
         /// <param name="publication">nové údaje</param>
         protected void UpdatePublication(Publication oldPublication, Publication publication, List<Author> authors)
         {
-            oldPublication.Entry = publication.Entry;
-            oldPublication.Title = publication.Title;
-            oldPublication.Year = publication.Year;
-
+            if (publication.Entry != null)
+            {
+                oldPublication.Entry = publication.Entry;
+            }
+            
+            if (publication.Title != null)
+            {
+                oldPublication.Title = publication.Title;
+            }
+            
             if (authors == null || authors.Count == 0)
             {
                 return;

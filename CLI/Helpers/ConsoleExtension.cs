@@ -10,18 +10,19 @@ namespace CLI
     /// <summary>
     /// Třída rozšiřuje funkcionalitu třídy Console o metody pro obvyklé způsoby
     /// zadávání různých typů bibliografických údajů (čísla, jména, názvy)
-    /// se základním ošetřením chybových vstupů a o metody pro výpisy často
-    /// vypisovaných údajů (seznam typů publikací).
+    /// a údajů o autorech se základním ošetřením chybových vstupů 
+    /// a o metody pro výpisy často vypisovaných údajů (seznam autorů a typů publikací).
     /// </summary>
-    class ConsoleExtension
+    sealed class ConsoleExtension
     {
         /// <summary>
         /// Načte od uživatele seznam autorů.
         /// </summary>
+        /// <param name="authorModel">správce záznamů o uložených autorech</param>
         /// <param name="nameMessage">výzva k zadání křestního jména</param>
         /// <param name="surnameMessage">výzva k zadání příjmení</param>
         /// <returns>seznam autorů</returns>
-        public static List<Author> ReadNameList(string nameMessage, string surnameMessage)
+        public static List<Author> ReadAuthorList(AuthorModel authorModel, string nameMessage, string surnameMessage)
         {
             List <Author> authors = new List<Author>();
             
@@ -44,9 +45,20 @@ namespace CLI
                     }
                 }
 
-                author.Name = name;
-                WriteLine(surnameMessage);
-                author.Surname = ReadNonEmptyString(surnameMessage);
+                // bylo zadáno číslo (považuje se za ID uloženého autora)
+                int authorId;
+                if (int.TryParse(name, out authorId))
+                {
+                    authorModel.GetAuthorById(authorId);
+                }
+                // byl zadán řetězec (považuje se za jméno nového autora)
+                else
+                {
+                    author.Name = name;
+                    WriteLine(surnameMessage);
+                    author.Surname = ReadNonEmptyString(surnameMessage);
+                }
+
                 authors.Add(author);
                 WriteLine(nameMessage);
             }
@@ -139,6 +151,22 @@ namespace CLI
             for (int i = 1; i < authors.Length; i++)
             {
                 Write($", {authors[i].Name} {authors[i].Surname}");
+            }
+
+            WriteLine();
+        }
+
+        /// <summary>
+        /// Vypíše seznam autorů s jejich ID.
+        /// </summary>
+        /// <param name="authorList">seznam autorů</param>
+        public static void WriteAuthorsWithId(List<Author> authorList)
+        {
+            WriteLine("ID\tJméno\tPříjmení");
+
+            foreach (Author author in authorList)
+            {
+                WriteLine($"{author.Id}\t{author.Name}\t{author.Surname}");
             }
 
             WriteLine();

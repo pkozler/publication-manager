@@ -30,12 +30,12 @@ namespace CLI
         /// <inheritDoc/>
         public void GetSpecificBibliography(Publication publication)
         {
-            QualificationThesis qualificationThesis = new QualificationThesis();
+            QualificationThesis qualificationThesis = publication.QualificationThesis;
             WriteLine("Místo vytvoření: " + qualificationThesis.Address);
             WriteLine("Název školy: " + qualificationThesis.School);
             WriteLine("Typ práce: " + 
-                qualificationThesis.ThesisType == QualificationThesisModel.TYPE_PHD_THESIS ? 
-                "disertační práce" : "diplomová práce");
+                (qualificationThesis.ThesisType == QualificationThesisModel.TYPE_PHD_THESIS ? 
+                "disertační práce" : "diplomová práce"));
         }
 
         /// <inheritDoc/>
@@ -59,7 +59,7 @@ namespace CLI
         /// <inheritDoc/>
         public void UpdateSpecificBibliography(int publicationId, Publication publication, List<Author> authors)
         {
-            QualificationThesis qualificationThesis = publication.QualificationThesis;
+            QualificationThesis qualificationThesis = new QualificationThesis();
 
             WriteLine("Zadejte nové místo vytvoření:");
             string address = ReadLine();
@@ -87,7 +87,8 @@ namespace CLI
                 QualificationThesisModel.TYPE_PHD_THESIS;
             }
 
-            model.UpdatePublication(publicationId, publication, authors[0], qualificationThesis);
+            model.UpdatePublication(publicationId, publication,
+                authors != null && authors.Count > 0 ? authors[0] : null, qualificationThesis);
         }
 
         /// <inheritDoc/>

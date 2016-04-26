@@ -30,7 +30,7 @@ namespace CLI
         /// <inheritDoc/>
         public void GetSpecificBibliography(Publication publication)
         {
-            JournalArticle journalArticle = new JournalArticle();
+            JournalArticle journalArticle = publication.JournalArticle;
             WriteLine("Časopis: " + journalArticle.JournalTitle);
             WriteLine("Číslo: " + journalArticle.Number);
             WriteLine(journalArticle.FromPage == journalArticle.ToPage ?
@@ -69,7 +69,7 @@ namespace CLI
         /// <inheritDoc/>
         public void UpdateSpecificBibliography(int publicationId, Publication publication, List<Author> authors)
         {
-            JournalArticle journalArticle = publication.JournalArticle;
+            JournalArticle journalArticle = new JournalArticle();
 
             WriteLine("Zadejte nový název časopisu, případně místo vydání a nakladatele:");
             string journalTitle = ReadLine();

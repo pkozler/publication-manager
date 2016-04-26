@@ -12,15 +12,15 @@ namespace CLI
         /// <summary>
         /// Inicializuje objekty pro správu jednotlivých dostupných typů publikací.
         /// </summary>
-        /// <param name="publicationModel">správce základních údajů publikací</param>
+        /// <param name="context">databázový kontext</param>
         /// <returns>seznam typů publikací s inicializovanými objekty pro jejich správu</returns>
-        private static List<PublicationType> initializePublicationTypes()
+        private static List<PublicationType> initializePublicationTypes(DbPublicationEntities context)
         {
             // vytvoření objektů pro správu dat specifických pro jednotlivé dostupné typy publikací
-            ConferenceArticleModel conferenceArticleModel = new ConferenceArticleModel();
-            JournalArticleModel journalArticleModel = new JournalArticleModel();
-            TechnicalReportModel technicalReportModel = new TechnicalReportModel();
-            QualificationThesisModel qualificationThesisModel = new QualificationThesisModel();
+            ConferenceArticleModel conferenceArticleModel = new ConferenceArticleModel(context);
+            JournalArticleModel journalArticleModel = new JournalArticleModel(context);
+            TechnicalReportModel technicalReportModel = new TechnicalReportModel(context);
+            QualificationThesisModel qualificationThesisModel = new QualificationThesisModel(context);
 
             /*
                 přiřazení dialogů uživatelského rozhraní k jednotlivým dostupným typům publikací,
@@ -45,13 +45,16 @@ namespace CLI
         /// <param name="args">parametry příkazového řádku</param>
         static void Main(string[] args)
         {
+            // vytvoření databázového kontextu
+            DbPublicationEntities context = new DbPublicationEntities();
+
             // vytvoření objektů pro správu dat společných pro všechny typy publikací
-            PublicationModel publicationModel = new PublicationModel();
-            AuthorModel authorModel = new AuthorModel();
-            AttachmentModel attachmentModel = new AttachmentModel();
+            PublicationModel publicationModel = new PublicationModel(context);
+            AuthorModel authorModel = new AuthorModel(context);
+            AttachmentModel attachmentModel = new AttachmentModel(context);
 
             // vytvoření seznamu typů publikací s přidruženými dialogy a objekty pro správu dat
-            List<PublicationType> publicationTypes = initializePublicationTypes();
+            List<PublicationType> publicationTypes = initializePublicationTypes(context);
 
             // vytvoření instance hlavního menu, která je propojena s vytvořenými objekty datové vrstvy
             MainMenu mainMenu = new MainMenu(publicationTypes, publicationModel, authorModel, attachmentModel);

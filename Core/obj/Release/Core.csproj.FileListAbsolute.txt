@@ -1,0 +1,14 @@
+C:\Users\pkout\Dropbox\cs\NET\Core\bin\Release\DbPublication.mdf
+C:\Users\pkout\Dropbox\cs\NET\Core\bin\Release\DbPublication_log.ldf
+C:\Users\pkout\Dropbox\cs\NET\Core\bin\Release\Antlr3.StringTemplate.dll
+C:\Users\pkout\Dropbox\cs\NET\Core\bin\Release\EntityFramework.dll
+C:\Users\pkout\Dropbox\cs\NET\Core\bin\Release\EntityFramework.SqlServer.dll
+C:\Users\pkout\Dropbox\cs\NET\Core\bin\Release\Antlr3.StringTemplate.pdb
+C:\Users\pkout\Dropbox\cs\NET\Core\bin\Release\EntityFramework.xml
+C:\Users\pkout\Dropbox\cs\NET\Core\bin\Release\EntityFramework.SqlServer.xml
+C:\Users\pkout\Dropbox\cs\NET\Core\obj\Release\Core.csprojResolveAssemblyReference.cache
+C:\Users\pkout\Dropbox\cs\NET\Core\bin\Release\PMCore.dll.config
+C:\Users\pkout\Dropbox\cs\NET\Core\bin\Release\PMCore.dll
+C:\Users\pkout\Dropbox\cs\NET\Core\bin\Release\PMCore.pdb
+C:\Users\pkout\Dropbox\cs\NET\Core\obj\Release\PMCore.dll
+C:\Users\pkout\Dropbox\cs\NET\Core\obj\Release\PMCore.pdb

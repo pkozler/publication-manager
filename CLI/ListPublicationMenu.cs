@@ -122,7 +122,7 @@ namespace CLI
 
             foreach (Publication publication in publications)
             {
-                Write($"{publication.Id}\t{publication.Entry}\t{publication.Type}\t{publication.Title}\t{publication.Year}\t");
+                Write($"{publication.Id}\t{publication.Entry}\t{PublicationType.GetTypeByName(publicationTypes, publication.Type).Description}\t{publication.Title}\t{publication.Year}\t");
                 WriteAuthors(publication.Author);
             }
 

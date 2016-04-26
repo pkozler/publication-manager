@@ -8,7 +8,7 @@
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CLI</RootNamespace>
-    <AssemblyName>CLI</AssemblyName>
+    <AssemblyName>PublicationManager</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -64,7 +64,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PublicationAttachmentMenu.cs" />
-    <Compile Include="PublicationAuthorMenu.cs" />
     <Compile Include="ListPublicationMenu.cs" />
     <Compile Include="Containers\PublicationType.cs" />
     <Compile Include="PublicationDialogs\QualificationThesisDialog.cs" />
@@ -72,11 +71,20 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="CLIClassDiagram.cd" />
     <None Include="packages.config" />
-    <None Include="Templates\conference-article.st" />
-    <None Include="Templates\journal-article.st" />
-    <None Include="Templates\qualification-thesis.st" />
-    <None Include="Templates\technical-report.st" />
+    <None Include="Templates\conference-article.st">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Templates\journal-article.st">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Templates\qualification-thesis.st">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Templates\technical-report.st">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj">
