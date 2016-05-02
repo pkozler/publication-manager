@@ -6,7 +6,7 @@ namespace Core
 {
     /// <summary>
     /// Rozšíření třídy DbPublicationEntities slouží k vylepšení chybové zprávy
-    /// při vyhození výjimky, tak aby zpráva obsahovala popis chyb, které se vyskytly při validaci.
+    /// při vyhození výjimky tak, aby zpráva obsahovala popis chyb, které se vyskytly při validaci.
     /// </summary>
     public partial class DbPublicationEntities : DbContext
     {
