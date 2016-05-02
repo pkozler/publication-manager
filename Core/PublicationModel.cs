@@ -49,7 +49,7 @@ namespace Core
                                 select p;
 
             List<Publication> publicationList = publications.ToList();
-            publicationList.Sort(new PublicationComparer());
+            publicationList.Sort(new EntityComparer());
 
             return publicationList;
         }

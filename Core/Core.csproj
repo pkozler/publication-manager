@@ -78,14 +78,13 @@
       <DependentUpon>DbPublicationModel.tt</DependentUpon>
     </Compile>
     <Compile Include="AuthorModel.cs" />
-    <Compile Include="Comparers\AttachmentComparer.cs" />
-    <Compile Include="Comparers\AuthorComparer.cs" />
-    <Compile Include="Comparers\PublicationComparer.cs" />
+    <Compile Include="Helpers\EntityComparer.cs" />
     <Compile Include="ConferenceArticle.cs">
       <DependentUpon>DbPublicationModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Exceptions\AttachmentException.cs" />
     <Compile Include="Exceptions\AuthorException.cs" />
+    <Compile Include="Helpers\BaseEntity.cs" />
     <Compile Include="Helpers\DbPublicationEntities.SaveChanges.cs" />
     <Compile Include="DbPublicationModel.Context.cs">
       <AutoGen>True</AutoGen>

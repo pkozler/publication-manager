@@ -60,12 +60,12 @@
     <Compile Include="ListAuthorMenu.cs" />
     <Compile Include="MainMenu.cs" />
     <Compile Include="PublicationMainMenu.cs" />
-    <Compile Include="Containers\MenuItem.cs" />
+    <Compile Include="Helpers\MenuItem.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PublicationAttachmentMenu.cs" />
     <Compile Include="ListPublicationMenu.cs" />
-    <Compile Include="Containers\PublicationType.cs" />
+    <Compile Include="Helpers\PublicationType.cs" />
     <Compile Include="PublicationDialogs\QualificationThesisDialog.cs" />
     <Compile Include="PublicationDialogs\TechnicalReportDialog.cs" />
   </ItemGroup>

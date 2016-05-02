@@ -12,7 +12,7 @@ namespace Core
     using System;
     using System.Collections.Generic;
     
-    public partial class Author
+    public partial class Author : BaseEntity
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Author()
@@ -20,7 +20,6 @@ namespace Core
             this.Publication = new HashSet<Publication>();
         }
     
-        public int Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
     
