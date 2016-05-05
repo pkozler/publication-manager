@@ -1,7 +1,6 @@
 ﻿using System.Text;
 using System.Collections.Generic;
 using Antlr3.ST;
-using System.IO;
 
 namespace Core
 {
@@ -156,16 +155,19 @@ namespace Core
         /// <param name="publication">nové údaje</param>
         protected void UpdatePublication(Publication oldPublication, Publication publication, List<Author> authors)
         {
+            // ponechání původního BibTeX klíče, pokud nový nebyl vyplněn
             if (publication.Entry != null)
             {
                 oldPublication.Entry = publication.Entry;
             }
-            
+
+            // ponechání původního názvu publikace, pokud nový nebyl vyplněn
             if (publication.Title != null)
             {
                 oldPublication.Title = publication.Title;
             }
-            
+
+            // ukončení úprav, pokud nebyl vyplněn nový seznam autorů
             if (authors == null || authors.Count == 0)
             {
                 return;

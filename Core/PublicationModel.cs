@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Diagnostics;
 
 namespace Core
 {
     /// <summary>
     /// Třída představuje správce základních bibliografických údajů společných
-    /// pro všechny typy publikací (zahrnují BibTeX klíč, název, rok a typ publikace).
+    /// pro všechny typy publikací (zahrnují BibTeX klíč, název, rok a typ publikace)
+    /// určený především pro výpis seznamu s volitelným filtrováním podle některých údajů.
     /// </summary>
     public class PublicationModel
     {
@@ -49,7 +49,7 @@ namespace Core
                                 select p;
 
             List<Publication> publicationList = publications.ToList();
-            publicationList.Sort(new EntityComparer());
+            publicationList.Sort(new IdEntityComparer());
 
             return publicationList;
         }

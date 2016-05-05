@@ -28,7 +28,7 @@ namespace CLI
             
             while (true)
             {
-                Author author = new Author();
+                Author author;
                 string name = ReadLine().Trim();
 
                 if (string.IsNullOrEmpty(name))
@@ -49,11 +49,12 @@ namespace CLI
                 int authorId;
                 if (int.TryParse(name, out authorId))
                 {
-                    authorModel.GetAuthorById(authorId);
+                    author = authorModel.GetAuthorById(authorId);
                 }
                 // byl zadán řetězec (považuje se za jméno nového autora)
                 else
                 {
+                    author = new Author();
                     author.Name = name;
                     WriteLine(surnameMessage);
                     author.Surname = ReadNonEmptyString(surnameMessage);

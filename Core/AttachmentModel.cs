@@ -35,7 +35,7 @@ namespace Core
                                 select a;
 
             List<Attachment> attachmentList = attachments.ToList();
-            attachmentList.Sort(new AttachmentComparer());
+            attachmentList.Sort(new IdEntityComparer());
 
             return attachmentList;
         }

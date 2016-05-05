@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace GUI
 {
     /// <summary>
-    /// Interaction logic for ConferenceArticleWindow.xaml
+    /// Interaction logic for PublicationWindow.xaml
     /// </summary>
-    public partial class ConferenceArticleWindow : Window
+    public partial class PublicationWindow : Window
     {
-        public ConferenceArticleWindow()
+        public PublicationWindow()
         {
             InitializeComponent();
         }

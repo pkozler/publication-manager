@@ -34,7 +34,7 @@ namespace Core
                             select a;
 
             List<Author> authorList = authors.ToList();
-            authorList.Sort(new AuthorComparer());
+            authorList.Sort(new IdEntityComparer());
 
             return authorList;
         }
@@ -77,6 +77,12 @@ namespace Core
             if (author == null)
             {
                 throw new AuthorException(string.Format("Autor s id {0} neexistuje.", id));
+            }
+
+            // prevence odstranění autora s publikacemi
+            if (author.Publication.Count > 0)
+            {
+                throw new AuthorException(string.Format("Autora s id {0} nelze odstranit, protože nemá prázdný seznam publikací.", id));
             }
 
             context.Author.Remove(author);

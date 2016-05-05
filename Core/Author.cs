@@ -12,7 +12,7 @@ namespace Core
     using System;
     using System.Collections.Generic;
     
-    public partial class Author : BaseEntity
+    public partial class Author : IdEntity
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Author()

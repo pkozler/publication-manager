@@ -5,7 +5,7 @@ namespace Core
     /// <summary>
     /// Třída definuje metodu pro řazení entit s ID.
     /// </summary>
-    class EntityComparer : IComparer<BaseEntity>
+    class IdEntityComparer : IComparer<IdEntity>
     {
         /// <summary>
         /// Vrátí výsledek porovnání entity podle ID za účelem seřazení.
@@ -13,7 +13,7 @@ namespace Core
         /// <param name="x">první entita</param>
         /// <param name="y">druhá entita</param>
         /// <returns>výsledek porovnání</returns>
-        public int Compare(BaseEntity x, BaseEntity y)
+        public int Compare(IdEntity x, IdEntity y)
         {
             return x.Id - y.Id;
         }

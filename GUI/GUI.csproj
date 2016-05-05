@@ -58,25 +58,14 @@
     <Compile Include="AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="QualificationThesisWindow.xaml.cs">
-      <DependentUpon>QualificationThesisWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="TechnicalReportWindow.xaml.cs">
-      <DependentUpon>TechnicalReportWindow.xaml</DependentUpon>
+    <Compile Include="PublicationWindow.xaml.cs">
+      <DependentUpon>PublicationWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="AboutWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="AuthorWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ConferenceArticleWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="JournalArticleWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -91,21 +80,11 @@
     <Compile Include="AuthorWindow.xaml.cs">
       <DependentUpon>AuthorWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ConferenceArticleWindow.xaml.cs">
-      <DependentUpon>ConferenceArticleWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="JournalArticleWindow.xaml.cs">
-      <DependentUpon>JournalArticleWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="QualificationThesisWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="TechnicalReportWindow.xaml">
+    <Page Include="PublicationWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
