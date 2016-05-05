@@ -1,6 +1,8 @@
 ﻿using System.Text;
 using System.Collections.Generic;
 using Antlr3.ST;
+using System.IO;
+using System;
 
 namespace Core
 {
@@ -13,11 +15,29 @@ namespace Core
         /// <summary>
         /// Uchovává databázový kontext.
         /// </summary>
-        protected DbPublicationEntities context;
-        
-        public APublicationModel(DbPublicationEntities context)
+        protected DbPublicationEntities Context;
+
+        /// <summary>
+        /// Uchovává stručný popis typu publikace pro výpis v uživatelském rozhraní..
+        /// </summary>
+        public readonly string TypeDescription;
+
+        /// <summary>
+        /// Uchovává cestu k výchozí šabloně pro export do HTML dokumentu.
+        /// </summary>
+        public readonly string DefaultTemplate;
+
+        /// <summary>
+        /// Vytvoří instanci správce.
+        /// </summary>
+        /// <param name="context">databázový kontext</param>
+        /// <param name="typeDescription">popis typu publikace</param>
+        /// <param name="defaultTemplate">výchozí HTML šablona typu publikace</param>
+        public APublicationModel(DbPublicationEntities context, string typeDescription, string defaultTemplate)
         {
-            this.context = context;
+            DefaultTemplate = defaultTemplate;
+            TypeDescription = typeDescription;
+            Context = context;
         }
         
         /// <summary>
@@ -37,12 +57,15 @@ namespace Core
         public abstract string GeneratePublicationBibtexEntry(Publication publication);
 
         /// <summary>
-        /// Pro zadanou publikaci sestaví HTML dokument
-        /// pro umístění publikace na webové stránky,
+        /// Pro zadanou publikaci sestaví HTML dokument pro umístění publikace na webové stránky.
+        /// V případě nezadání cesty k výstupnímu souboru vrátí řetězec pro případný výpis na obrazovku.
+        /// V případě zadání provede zápis a vrátí NULL.
         /// </summary>
         /// <param name="publication">publikace</param>
-        /// <returns>HTML dokument</returns>
-        public abstract string ExportPublicationToHtmlDocument(Publication publication, string publicationType, string templatePath);
+        /// <param name="templatePath">cesta k šabloně</param>
+        /// <param name="htmlPath">cesta k HTML dokumentu</param>
+        /// <returns>obsah HTML dokumentu nebo NULL v případě zápisu do souboru</returns>
+        public abstract string ExportPublicationToHtmlDocument(Publication publication, string templatePath, string htmlPath);
         
         /// <summary>
         /// Vygeneruje řetězec autorů publikace pro citaci ze seznamu autorů.
@@ -99,22 +122,67 @@ namespace Core
         }
 
         /// <summary>
-        /// Připraví HTML šablonu se základními bibliografickými údaji pro export.
+        /// Načte šablonu ze souboru na zadané cestě (nebo z výchozího souboru, pokud nebyla zadána)
+        /// a vypíše do ní základní bibliografické údaje pro HTML export.
         /// </summary>
         /// <param name="publication">publikace</param>
-        /// <param name="publicationType">typ publikace</param>
+        /// <param name="publicationType">popis typu publikace</param>
+        /// <param name="defaultTemplate">výchozí HTML šablona typu publikace</param>
         /// <param name="templatePath">cesta k šabloně</param>
         /// <returns>připravená šablona</returns>
-        protected StringTemplate PrepareHtmlTemplate(Publication publication, string publicationType, string template)
+        protected StringTemplate LoadHtmlTemplate(Publication publication, string templatePath)
         {
+            string template = null;
+
+            try
+            {
+                // načtení šablony ze souboru
+                File.ReadAllText(Path.GetFullPath(
+                    string.IsNullOrWhiteSpace(templatePath) ? DefaultTemplate : templatePath));
+            }
+            catch (Exception e)
+            {
+                throw new PublicationException("Chyba při čtení vstupního souboru šablony: " + e.Message);
+            }
+            
+            // vyplnění základních údajů pro všechny typy publikací
             StringTemplate stringTemplate = new StringTemplate(template);
             stringTemplate.SetAttribute("title", publication.Title);
             stringTemplate.SetAttribute("authors", GenerateAuthorCitationString(publication));
             stringTemplate.SetAttribute("year", publication.Year);
-            stringTemplate.SetAttribute("type", publicationType);
+            stringTemplate.SetAttribute("type", TypeDescription);
             stringTemplate.SetAttribute("text", publication.Text);
 
             return stringTemplate;
+        }
+
+        /// <summary>
+        /// Uloží ze šablony vygenerovaný HTML dokument do výstupního souboru na zadané cestě.
+        /// </summary>
+        /// <param name="stringTemplate">vyplněná šablona</param>
+        /// <param name="htmlPath">cesta k dokumentu</param>
+        /// <returns>obsah HTML dokumentu nebo NULL v případě zápisu do souboru</returns>
+        protected string SaveHtmlDocument(StringTemplate stringTemplate, string htmlPath)
+        {
+            string html = stringTemplate.ToString();
+            
+            // vrácení hotového HTML dokumentu, pokud nebyl zadán výstupní soubor
+            if (string.IsNullOrWhiteSpace(htmlPath))
+            {
+                return html;
+            }
+
+            try
+            {
+                // zápis HTML do souboru
+                File.WriteAllText(Path.GetFullPath(htmlPath), html);
+            }
+            catch (Exception e)
+            {
+                throw new PublicationException("Chyba při zápisu výstupního HTML dokumentu: " + e.Message);
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -124,7 +192,7 @@ namespace Core
         /// <returns>publikace</returns>
         protected Publication GetPublication(int id)
         {
-            return context.Publication.Find(id);
+            return Context.Publication.Find(id);
         }
 
         /// <summary>
@@ -133,7 +201,7 @@ namespace Core
         /// <param name="publication">údaje publikace</param>
         protected void CreatePublication(Publication publication, List<Author> authors)
         {
-            context.Publication.Add(publication);
+            Context.Publication.Add(publication);
 
             if (authors == null || authors.Count == 0)
             {
@@ -201,7 +269,7 @@ namespace Core
                 author.Publication.Remove(oldPublication);
             }
 
-            context.Publication.Remove(oldPublication);
+            Context.Publication.Remove(oldPublication);
         }
     }
 }

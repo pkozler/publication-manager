@@ -213,10 +213,8 @@ namespace CLI
             WriteLine("Zadejte cestu k výstupnímu souboru exportovaného dokumentu ve formátu HTML "
                 + "nebo ponechte prázdný řádek pro výpis HTML dokumentu na obrazovku:");
             string htmlPath = ReadLine();
-            string template = File.ReadAllText(string.IsNullOrWhiteSpace(templatePath) ? 
-                publicationType.Template : templatePath);
             publicationType.Dialog.PrintSpecificHtmlDocument(
-                publication, publicationType.Description, template, htmlPath);
+                publication, templatePath, htmlPath);
         }
 
         /// <summary>

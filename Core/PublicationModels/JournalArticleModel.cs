@@ -14,12 +14,10 @@ namespace Core
         /// Uchovává název typu pro použití v databázi.
         /// </summary>
         public const string NAME = "JournalArticle";
-
-        /// <summary>
-        /// Vytvoří instanci správce.
-        /// </summary>
-        /// <param name="context">databázový kontext</param>
-        public JournalArticleModel(DbPublicationEntities context) : base(context)
+        
+        /// <inheritDoc/>
+        public JournalArticleModel(DbPublicationEntities context, string typeDescription, string defaultTemplate)
+            : base(context, typeDescription, defaultTemplate)
         {
             // inicializace v nadřazené třídě
         }
@@ -39,8 +37,8 @@ namespace Core
             publication.JournalArticle = journalArticle;
             journalArticle.Publication = publication;
             CreatePublication(publication, authors);
-            context.JournalArticle.Add(journalArticle);
-            context.SaveChanges();
+            Context.JournalArticle.Add(journalArticle);
+            Context.SaveChanges();
         }
 
         /// <summary>
@@ -73,7 +71,7 @@ namespace Core
             }
             
             oldJournalArticle.ToPage = journalArticle.ToPage;
-            context.SaveChanges();
+            Context.SaveChanges();
         }
 
         /// <summary>
@@ -84,9 +82,9 @@ namespace Core
         {
             Publication oldPublication = GetPublication(id);
             JournalArticle oldJournalArticle = oldPublication.JournalArticle;
-            context.JournalArticle.Remove(oldJournalArticle);
+            Context.JournalArticle.Remove(oldJournalArticle);
             DeletePublication(oldPublication);
-            context.SaveChanges();
+            Context.SaveChanges();
         }
 
         /// <inheritDoc/>
@@ -127,9 +125,10 @@ namespace Core
         }
 
         /// <inheritDoc/>
-        public override string ExportPublicationToHtmlDocument(Publication publication, string publicationType, string template)
+        public override string ExportPublicationToHtmlDocument(Publication publication, string templatePath, string htmlPath)
         {
-            StringTemplate stringTemplate = PrepareHtmlTemplate(publication, publicationType, template);
+            StringTemplate stringTemplate = LoadHtmlTemplate(publication, templatePath);
+
             JournalArticle journalArticle = publication.JournalArticle;
             stringTemplate.SetAttribute("journaltitle", journalArticle.JournalTitle);
             stringTemplate.SetAttribute("number", journalArticle.Number);
@@ -138,7 +137,7 @@ namespace Core
                 (journalArticle.FromPage + " - " + journalArticle.ToPage));
             stringTemplate.SetAttribute("identification", journalArticle.ISSN);
 
-            return stringTemplate.ToString();
+            return SaveHtmlDocument(stringTemplate, htmlPath);
         }
     }
 }

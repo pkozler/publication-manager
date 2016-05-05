@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Text;
-using System.IO;
 using Antlr3.ST;
 
 namespace Core
@@ -15,12 +14,10 @@ namespace Core
         /// Uchovává název typu pro použití v databázi.
         /// </summary>
         public const string NAME = "ConferenceArticle";
-
-        /// <summary>
-        /// Vytvoří instanci správce.
-        /// </summary>
-        /// <param name="context">databázový kontext</param>
-        public ConferenceArticleModel(DbPublicationEntities context) : base(context)
+        
+        /// <inheritDoc/>
+        public ConferenceArticleModel(DbPublicationEntities context, string typeDescription, string defaultTemplate)
+            : base(context, typeDescription, defaultTemplate)
         {
             // inicializace v nadřazené třídě
         }
@@ -47,8 +44,8 @@ namespace Core
             publication.ConferenceArticle = conferenceArticle;
             conferenceArticle.Publication = publication;
             CreatePublication(publication, authors);
-            context.ConferenceArticle.Add(conferenceArticle);
-            context.SaveChanges();
+            Context.ConferenceArticle.Add(conferenceArticle);
+            Context.SaveChanges();
         }
 
         /// <summary>
@@ -91,7 +88,7 @@ namespace Core
             }
             
             oldConferenceArticle.ToPage = conferenceArticle.ToPage;
-            context.SaveChanges();
+            Context.SaveChanges();
         }
 
         /// <summary>
@@ -102,9 +99,9 @@ namespace Core
         {
             Publication oldPublication = GetPublication(id);
             ConferenceArticle oldConferenceArticle = oldPublication.ConferenceArticle;
-            context.ConferenceArticle.Remove(oldConferenceArticle);
+            Context.ConferenceArticle.Remove(oldConferenceArticle);
             DeletePublication(oldPublication);
-            context.SaveChanges();
+            Context.SaveChanges();
         }
 
         /// <inheritDoc/>
@@ -153,9 +150,10 @@ namespace Core
         }
 
         /// <inheritDoc/>
-        public override string ExportPublicationToHtmlDocument(Publication publication, string publicationType, string template)
+        public override string ExportPublicationToHtmlDocument(Publication publication, string templatePath, string htmlPath)
         {
-            StringTemplate stringTemplate = PrepareHtmlTemplate(publication, publicationType, template);
+            StringTemplate stringTemplate = LoadHtmlTemplate(publication, templatePath);
+
             ConferenceArticle conferenceArticle = publication.ConferenceArticle;
             stringTemplate.SetAttribute("booktitle", conferenceArticle.BookTitle);
             stringTemplate.SetAttribute("address", conferenceArticle.Address);
@@ -165,8 +163,8 @@ namespace Core
                 (conferenceArticle.FromPage + " - " + conferenceArticle.ToPage));
             stringTemplate.SetAttribute("identification", !string.IsNullOrEmpty(conferenceArticle.ISBN) ?
                 ("ISBN " + conferenceArticle.ISBN) : ("ISSN" + conferenceArticle.ISSN));
-            
-            return stringTemplate.ToString();
+
+            return SaveHtmlDocument(stringTemplate, htmlPath);
         }
     }
 }

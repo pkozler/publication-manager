@@ -28,6 +28,12 @@ namespace CLI
         }
 
         /// <inheritDoc/>
+        public APublicationModel GetModel()
+        {
+            return model as APublicationModel;
+        }
+
+        /// <inheritDoc/>
         public void GetSpecificBibliography(Publication publication)
         {
             ConferenceArticle conferenceArticle = publication.ConferenceArticle;
@@ -163,17 +169,13 @@ namespace CLI
         }
 
         /// <inheritDoc/>
-        public void PrintSpecificHtmlDocument(Publication publication, string typeDescription, string template, string htmlPath)
+        public void PrintSpecificHtmlDocument(Publication publication, string templatePath, string htmlPath)
         {
-            string html = model.ExportPublicationToHtmlDocument(publication, typeDescription, template);
-
-            if (string.IsNullOrWhiteSpace(htmlPath))
+            string html = model.ExportPublicationToHtmlDocument(publication, templatePath, htmlPath);
+            
+            if (html != null)
             {
                 WriteLine(html);
-            }
-            else
-            {
-                File.WriteAllText(htmlPath, html);
             }
         }
     }

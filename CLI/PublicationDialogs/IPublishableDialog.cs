@@ -10,6 +10,12 @@ namespace CLI
     public interface IPublishableDialog
     {
         /// <summary>
+        /// Vrátí objekt datové vrstvy pro správu příslušného typu publikací.
+        /// </summary>
+        /// <returns>objekt pro správu</returns>
+        APublicationModel GetModel();
+
+        /// <summary>
         /// Vypíše uložené specifické údaje aktuální zobrazené publikace konkrétního typu.
         /// </summary>
         /// <param name="publication">aktuální publikace</param>
@@ -46,10 +52,9 @@ namespace CLI
         /// Spustí generování HTML dokumentu a provede jeho výpis.
         /// </summary>
         /// <param name="publication">aktuální publikace</param>
-        /// <param name="typeDescription">popis typu publikace pro výpis v dokumentu</param>
         /// <param name="templatePath">cesta ke vstupnímu souboru se šablonou</param>
         /// <param name="htmlPath">cesta k výstupnímu HTML souboru</param>
-        void PrintSpecificHtmlDocument(Publication publication, string typeDescription, string templatePath, string htmlPath);
+        void PrintSpecificHtmlDocument(Publication publication, string templatePath, string htmlPath);
 
         /// <summary>
         /// Odstraní všechny údaje aktuálně zobrazené publikace.

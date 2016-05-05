@@ -17,10 +17,14 @@ namespace CLI
         private static List<PublicationType> initializePublicationTypes(DbPublicationEntities context)
         {
             // vytvoření objektů pro správu dat specifických pro jednotlivé dostupné typy publikací
-            ConferenceArticleModel conferenceArticleModel = new ConferenceArticleModel(context);
-            JournalArticleModel journalArticleModel = new JournalArticleModel(context);
-            TechnicalReportModel technicalReportModel = new TechnicalReportModel(context);
-            QualificationThesisModel qualificationThesisModel = new QualificationThesisModel(context);
+            ConferenceArticleModel conferenceArticleModel = new ConferenceArticleModel(
+                context, "Článek na konferenci", "default-templates/conference-article.st");
+            JournalArticleModel journalArticleModel = new JournalArticleModel(
+                context, "Článek do časopisu", "default-templates/journal-article.st");
+            TechnicalReportModel technicalReportModel = new TechnicalReportModel(
+                context, "Technická zpráva", "default-templates/technical-report.st");
+            QualificationThesisModel qualificationThesisModel = new QualificationThesisModel(
+                context, "Kvalifikační práce", "default-templates/qualification-thesis.st");
 
             /*
                 přiřazení dialogů uživatelského rozhraní k jednotlivým dostupným typům publikací,
@@ -28,14 +32,10 @@ namespace CLI
             */
             return new List<PublicationType>()
             {
-                new PublicationType(ConferenceArticleModel.NAME, 
-                    "Článek na konferenci", "Templates/conference-article.st", new ConferenceArticleDialog(conferenceArticleModel)),
-                new PublicationType(JournalArticleModel.NAME, 
-                    "Článek do časopisu", "Templates/journal-article.st", new JournalArticleDialog(journalArticleModel)),
-                new PublicationType(TechnicalReportModel.NAME, 
-                    "Technická zpráva", "Templates/technical-report.st", new TechnicalReportDialog(technicalReportModel)),
-                new PublicationType(QualificationThesisModel.NAME, 
-                    "Kvalifikační práce", "Templates/qualification-thesis.st", new QualificationThesisDialog(qualificationThesisModel)),
+                new PublicationType(ConferenceArticleModel.NAME, new ConferenceArticleDialog(conferenceArticleModel)),
+                new PublicationType(JournalArticleModel.NAME, new JournalArticleDialog(journalArticleModel)),
+                new PublicationType(TechnicalReportModel.NAME, new TechnicalReportDialog(technicalReportModel)),
+                new PublicationType(QualificationThesisModel.NAME, new QualificationThesisDialog(qualificationThesisModel)),
             };
         }
 

@@ -14,7 +14,7 @@ namespace Core
         /// Uchovává název typu pro použití v databázi.
         /// </summary>
         public const string NAME = "QualificationThesis";
-
+        
         /// <summary>
         /// Uchovává název označení typu 'diplomová práce' pro použití v databázi.
         /// </summary>
@@ -25,11 +25,9 @@ namespace Core
         /// </summary>
         public const string TYPE_PHD_THESIS = "PhdThesis";
 
-        /// <summary>
-        /// Vytvoří instanci správce.
-        /// </summary>
-        /// <param name="context">databázový kontext</param>
-        public QualificationThesisModel(DbPublicationEntities context) : base(context)
+        /// <inheritDoc/>
+        public QualificationThesisModel(DbPublicationEntities context, string typeDescription, string defaultTemplate)
+            : base(context, typeDescription, defaultTemplate)
         {
             // inicializace v nadřazené třídě
         }
@@ -49,9 +47,9 @@ namespace Core
             publication.QualificationThesis = qualificationThesis;
             qualificationThesis.Publication = publication;
             CreatePublication(publication, author == null ? null : new List<Author> { author });
-            context.QualificationThesis.Add(qualificationThesis);
+            Context.QualificationThesis.Add(qualificationThesis);
 
-            context.SaveChanges();
+            Context.SaveChanges();
         }
 
         /// <summary>
@@ -81,7 +79,7 @@ namespace Core
                 oldQualificationThesis.ThesisType = qualificationThesis.ThesisType;
             }
             
-            context.SaveChanges();
+            Context.SaveChanges();
         }
 
         /// <summary>
@@ -92,9 +90,9 @@ namespace Core
         {
             Publication oldPublication = GetPublication(id);
             QualificationThesis oldQualificationThesis = oldPublication.QualificationThesis;
-            context.QualificationThesis.Remove(oldQualificationThesis);
+            Context.QualificationThesis.Remove(oldQualificationThesis);
             DeletePublication(oldPublication);
-            context.SaveChanges();
+            Context.SaveChanges();
         }
 
         /// <inheritDoc/>
@@ -128,16 +126,17 @@ namespace Core
         }
 
         /// <inheritDoc/>
-        public override string ExportPublicationToHtmlDocument(Publication publication, string publicationType, string template)
+        public override string ExportPublicationToHtmlDocument(Publication publication, string templatePath, string htmlPath)
         {
-            StringTemplate stringTemplate = PrepareHtmlTemplate(publication, publicationType, template);
+            StringTemplate stringTemplate = LoadHtmlTemplate(publication, templatePath);
+
             QualificationThesis qualificationThesis = publication.QualificationThesis;
             stringTemplate.SetAttribute("address", qualificationThesis.Address);
             stringTemplate.SetAttribute("school", qualificationThesis.School);
             stringTemplate.SetAttribute("type", qualificationThesis.ThesisType == TYPE_MASTER_THESIS ? 
                 "diplomová práce" : "disertační práce");
 
-            return stringTemplate.ToString();
+            return SaveHtmlDocument(stringTemplate, htmlPath);
         }
     }
 }

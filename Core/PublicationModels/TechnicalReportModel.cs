@@ -14,12 +14,10 @@ namespace Core
         /// Uchovává název typu pro použití v databázi.
         /// </summary>
         public const string NAME = "TechnicalReport";
-
-        /// <summary>
-        /// Vytvoří instanci správce.
-        /// </summary>
-        /// <param name="context">databázový kontext</param>
-        public TechnicalReportModel(DbPublicationEntities context) : base(context)
+        
+        /// <inheritDoc/>
+        public TechnicalReportModel(DbPublicationEntities context, string typeDescription, string defaultTemplate)
+            : base(context, typeDescription, defaultTemplate)
         {
             // inicializace v nadřazené třídě
         }
@@ -34,8 +32,8 @@ namespace Core
             publication.TechnicalReport = technicalReport;
             technicalReport.Publication = publication;
             CreatePublication(publication, authors);
-            context.TechnicalReport.Add(technicalReport);
-            context.SaveChanges();
+            Context.TechnicalReport.Add(technicalReport);
+            Context.SaveChanges();
         }
 
         /// <summary>
@@ -65,7 +63,7 @@ namespace Core
                 oldTechnicalReport.Number = technicalReport.Number;
             }
             
-            context.SaveChanges();
+            Context.SaveChanges();
         }
 
         /// <summary>
@@ -76,9 +74,9 @@ namespace Core
         {
             Publication oldPublication = GetPublication(id);
             TechnicalReport oldTechnicalReport = oldPublication.TechnicalReport;
-            context.TechnicalReport.Remove(oldTechnicalReport);
+            Context.TechnicalReport.Remove(oldTechnicalReport);
             DeletePublication(oldPublication);
-            context.SaveChanges();
+            Context.SaveChanges();
         }
 
         /// <inheritDoc/>
@@ -109,15 +107,16 @@ namespace Core
         }
 
         /// <inheritDoc/>
-        public override string ExportPublicationToHtmlDocument(Publication publication, string publicationType, string template)
+        public override string ExportPublicationToHtmlDocument(Publication publication, string templatePath, string htmlPath)
         {
-            StringTemplate stringTemplate = PrepareHtmlTemplate(publication, publicationType, template);
+            StringTemplate stringTemplate = LoadHtmlTemplate(publication, templatePath);
+
             TechnicalReport technicalReport = publication.TechnicalReport;
             stringTemplate.SetAttribute("address", technicalReport.Address);
             stringTemplate.SetAttribute("institution", technicalReport.Institution);
             stringTemplate.SetAttribute("number", technicalReport.Number);
 
-            return stringTemplate.ToString();
+            return SaveHtmlDocument(stringTemplate, htmlPath);
         }
     }
 }
