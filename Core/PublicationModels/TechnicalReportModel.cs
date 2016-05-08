@@ -14,12 +14,17 @@ namespace Core
         /// Uchovává název typu pro použití v databázi.
         /// </summary>
         public const string NAME = "TechnicalReport";
-        
+
+        /// <summary>
+        /// Uchovává název souboru výchozí šablony.
+        /// </summary>
+        private const string TEMPLATE = "technical-report";
+
         /// <inheritDoc/>
-        public TechnicalReportModel(DbPublicationEntities context, string typeDescription, string defaultTemplate)
-            : base(context, typeDescription, defaultTemplate)
+        public TechnicalReportModel(DbPublicationEntities context, string typeDescription)
+            : base(context, typeDescription)
         {
-            // inicializace v nadřazené třídě
+            DefaultTemplateFile = TEMPLATE;
         }
 
         /// <summary>
@@ -97,13 +102,13 @@ namespace Core
         {
             TechnicalReport technicalReport = publication.TechnicalReport;
                 
-            return new StringBuilder($"@TechReport{{{publication.Entry},")
+            return new StringBuilder($"@TechReport{{{publication.Entry},\n")
                 .Append(GenerateAuthorBibtexString(publication))
-                .Append($"title={{{publication.Title}}},")
-                .Append($"address={{{technicalReport.Address}}},")
-                .Append($"institution={{{technicalReport.Institution}}},")
-                .Append($"year={{{publication.Year}}},")
-                .Append($"number={{{technicalReport.Number}}}}}").ToString();
+                .Append($"\ttitle={{{publication.Title}}},\n")
+                .Append($"\taddress={{{technicalReport.Address}}},\n")
+                .Append($"\tinstitution={{{technicalReport.Institution}}},\n")
+                .Append($"\tyear={{{publication.Year}}},\n")
+                .Append($"\tnumber={{{technicalReport.Number}}}\n}}\n").ToString();
         }
 
         /// <inheritDoc/>

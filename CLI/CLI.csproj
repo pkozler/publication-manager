@@ -72,18 +72,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="CLIClassDiagram.cd" />
-    <None Include="default-templates\conference-article.st">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="default-templates\journal-article.st">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="default-templates\qualification-thesis.st">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="default-templates\technical-report.st">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

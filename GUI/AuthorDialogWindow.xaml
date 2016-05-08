@@ -1,0 +1,21 @@
+﻿<Window x:Class="GUI.AuthorDialogWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GUI"
+        mc:Ignorable="d"
+        Title="Nový autor publikace" Height="160" Width="320" ResizeMode="NoResize">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="80"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <Label x:Name="nameLabel" Content="Jméno:" Margin="0,10,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="47"/>
+        <Label x:Name="surnameLabel" Content="Příjmení:" Margin="0,41,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="56"/>
+        <TextBox x:Name="nameTextBox" Height="23" Margin="10,13,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" ToolTip="Zadejte křestní jméno (jména) nového autora."/>
+        <TextBox x:Name="surnameTextBox" Height="23" Margin="10,44,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" ToolTip="Zadejte příjmení nového autora."/>
+        <Button x:Name="okButton" Content="Přidat" HorizontalAlignment="Right" Margin="0,0,57,10" VerticalAlignment="Bottom" BorderThickness="1" Padding="5,1" Grid.Column="1" IsDefault="True" Click="okButton_Click" ToolTip="Potvrdí vytvoření autora a jeho uložení do seznamu autorů publikace." IsEnabled="False"/>
+        <Button x:Name="cancelButton" Content="Zrušit" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Padding="5,1" Grid.Column="1" IsCancel="True" Click="cancelButton_Click"/>
+    </Grid>
+</Window>

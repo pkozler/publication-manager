@@ -33,8 +33,23 @@ namespace Core
         /// <param name="publicationTypeFilter">množina požadovaných typů publikací</param>
         /// <returns>filtrovaný seznam publikací</returns>
         public List<Publication> GetPublications(
-            HashSet<int> authorFilter, HashSet<int> yearFilter, HashSet<string> publicationTypeFilter)
+            HashSet<int> authorFilter = null, HashSet<int> yearFilter = null, HashSet<string> publicationTypeFilter = null)
         {
+            if (authorFilter == null)
+            {
+                authorFilter = new HashSet<int>();
+            }
+
+            if (yearFilter == null)
+            {
+                yearFilter = new HashSet<int>();
+            }
+
+            if (publicationTypeFilter == null)
+            {
+                publicationTypeFilter = new HashSet<string>();
+            }
+
             // výběr autorů ze seznamu evidovaných podle ID autorů ze zadané množiny
             var authors = from a in context.Author
                             where authorFilter.Contains(a.Id)

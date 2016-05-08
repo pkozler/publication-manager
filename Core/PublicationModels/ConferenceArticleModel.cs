@@ -14,12 +14,17 @@ namespace Core
         /// Uchovává název typu pro použití v databázi.
         /// </summary>
         public const string NAME = "ConferenceArticle";
+
+        /// <summary>
+        /// Uchovává název souboru výchozí šablony.
+        /// </summary>
+        private const string TEMPLATE = "conference-article"; 
         
         /// <inheritDoc/>
-        public ConferenceArticleModel(DbPublicationEntities context, string typeDescription, string defaultTemplate)
-            : base(context, typeDescription, defaultTemplate)
+        public ConferenceArticleModel(DbPublicationEntities context, string typeDescription)
+            : base(context, typeDescription)
         {
-            // inicializace v nadřazené třídě
+            DefaultTemplateFile = TEMPLATE;
         }
 
         /// <summary>
@@ -136,17 +141,17 @@ namespace Core
                 $"{conferenceArticle.FromPage}" :
                 $"{conferenceArticle.FromPage} -- {conferenceArticle.ToPage}";
 
-            return new StringBuilder($"@InProceedings{{{publication.Entry},")
+            return new StringBuilder($"@InProceedings{{{publication.Entry},\n")
                 .Append(GenerateAuthorBibtexString(publication))
-                .Append($"title={{{publication.Title}}},")
-                .Append($"booktitle={{{conferenceArticle.BookTitle}}},")
-                .Append($"address={{{conferenceArticle.Address}}},")
-                .Append($"publisher={{{conferenceArticle.Publisher}}},")
-                .Append($"year={{{publication.Year}}},")
-                .Append($"pages={{{pages}}},")
+                .Append($"\ttitle={{{publication.Title}}},\n")
+                .Append($"\tbooktitle={{{conferenceArticle.BookTitle}}},\n")
+                .Append($"\taddress={{{conferenceArticle.Address}}},\n")
+                .Append($"\tpublisher={{{conferenceArticle.Publisher}}},\n")
+                .Append($"\tyear={{{publication.Year}}},\n")
+                .Append($"\tpages={{{pages}}},\n")
                 .Append((!string.IsNullOrEmpty(conferenceArticle.ISBN) ? 
-                    $"isbn={{{conferenceArticle.ISBN}}}}}" : 
-                    $"issn={{{conferenceArticle.ISSN}}}}}")).ToString();
+                    $"\tisbn={{{conferenceArticle.ISBN}}}\n}}\n" : 
+                    $"\tissn={{{conferenceArticle.ISSN}}}\n}}\n")).ToString();
         }
 
         /// <inheritDoc/>

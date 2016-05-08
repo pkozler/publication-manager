@@ -12,3 +12,7 @@ C:\Users\pkout\Dropbox\cs\NET\Core\bin\Release\PMCore.dll
 C:\Users\pkout\Dropbox\cs\NET\Core\bin\Release\PMCore.pdb
 C:\Users\pkout\Dropbox\cs\NET\Core\obj\Release\PMCore.dll
 C:\Users\pkout\Dropbox\cs\NET\Core\obj\Release\PMCore.pdb
+C:\Users\pkout\Dropbox\cs\NET\Core\bin\Release\default-templates\conference-article.st
+C:\Users\pkout\Dropbox\cs\NET\Core\bin\Release\default-templates\journal-article.st
+C:\Users\pkout\Dropbox\cs\NET\Core\bin\Release\default-templates\qualification-thesis.st
+C:\Users\pkout\Dropbox\cs\NET\Core\bin\Release\default-templates\technical-report.st

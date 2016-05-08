@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Core;
+using System.IO;
 
 namespace CLI
 {
@@ -17,14 +18,10 @@ namespace CLI
         private static List<PublicationType> initializePublicationTypes(DbPublicationEntities context)
         {
             // vytvoření objektů pro správu dat specifických pro jednotlivé dostupné typy publikací
-            ConferenceArticleModel conferenceArticleModel = new ConferenceArticleModel(
-                context, "Článek na konferenci", "default-templates/conference-article.st");
-            JournalArticleModel journalArticleModel = new JournalArticleModel(
-                context, "Článek do časopisu", "default-templates/journal-article.st");
-            TechnicalReportModel technicalReportModel = new TechnicalReportModel(
-                context, "Technická zpráva", "default-templates/technical-report.st");
-            QualificationThesisModel qualificationThesisModel = new QualificationThesisModel(
-                context, "Kvalifikační práce", "default-templates/qualification-thesis.st");
+            ConferenceArticleModel conferenceArticleModel = new ConferenceArticleModel(context, "Článek na konferenci");
+            JournalArticleModel journalArticleModel = new JournalArticleModel(context, "Článek do časopisu");
+            TechnicalReportModel technicalReportModel = new TechnicalReportModel(context, "Technická zpráva");
+            QualificationThesisModel qualificationThesisModel = new QualificationThesisModel(context, "Kvalifikační práce");
 
             /*
                 přiřazení dialogů uživatelského rozhraní k jednotlivým dostupným typům publikací,

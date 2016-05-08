@@ -5,8 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
-        Title="O programu" Height="300" Width="300">
+        Title="O programu" Height="160" Width="320" ResizeMode="NoResize">
     <Grid>
-        
+        <TextBlock x:Name="titleTextBlock" Margin="10,10,8,0" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold" Height="20"><Run Text="Seznam publikací (Verze 2.0)"/></TextBlock>
+        <TextBlock x:Name="descriptionTextBlock" TextWrapping="Wrap" VerticalAlignment="Top" Height="40" Margin="10,35,8,0"><Run Text="Vytvořeno jako semestrální práce z předmětu"/><LineBreak/><Run Text="&quot;Programování v prostředí .NET&quot; (KIV/NET)."/></TextBlock>
+        <TextBlock x:Name="copyrightTextBlock" TextWrapping="Wrap" VerticalAlignment="Top" Text="Copyright (c) Petr Kozler, 2016" FontStyle="Italic" Height="20" UseLayoutRounding="False" Margin="10,80,8,0"/>
+        <Button x:Name="closeButton" Content="Zavřít" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" IsCancel="True" Click="closeButton_Click" Padding="5,1" RenderTransformOrigin="0.119,0.55"/>
     </Grid>
 </Window>

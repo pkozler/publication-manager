@@ -5,8 +5,38 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
-        Title="Seznam autorů" Height="300" Width="300">
+        Title="Seznam autorů" Height="480" Width="640">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StatusBar Height="25" VerticalAlignment="Bottom" Grid.ColumnSpan="2">
+            <Label x:Name="statusLabel" Content="Připraveno" Padding="0"/>
+        </StatusBar>
+        <DataGrid x:Name="authorDataGrid" Margin="10,41,10,55" SelectionChanged="authorDataGrid_SelectionChanged" IsReadOnly="True" AutoGenerateColumns="False" SelectionMode="Single">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
+                <DataGridTextColumn Header="Jméno" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Příjmení" Binding="{Binding Surname}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button x:Name="chooseAuthorButton" Content="Zvolit autora" HorizontalAlignment="Right" Margin="0,0,10,30" VerticalAlignment="Bottom" Padding="5,1" ToolTip="Vybere uloženého autora pro přidání do seznamu autorů zobrazené publikace." IsEnabled="False" IsDefault="True" Click="chooseAuthorButton_Click"/>
+        <Button x:Name="deleteAuthorButton" Content="Odstranit autora" Margin="10,0,0,30" Height="20" VerticalAlignment="Bottom" IsEnabled="False" Padding="5,1" ToolTip="Odstraní uložený záznam o autorovi bez přiřazených publikací vybraném ze zobrazeného seznamu autorů." Click="deleteAuthorButton_Click" Grid.Column="1" HorizontalAlignment="Left" Width="99"/>
+        <Label x:Name="authorPublicationLabel" Content="Přiřazené publikace:" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="authorListLabel" Content="Uložení autoři:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="closeButton" Content="Zavřít" Margin="0,0,10,30" VerticalAlignment="Bottom" Grid.Column="1" HorizontalAlignment="Right" Click="closeButton_Click" IsCancel="True" RenderTransformOrigin="4.14,0.52" Padding="5,1"/>
+        <DataGrid x:Name="authorPublicationDataGrid" Grid.Column="1" Margin="10,41,10,55" IsReadOnly="True" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
+                <DataGridTextColumn Header="Název" Binding="{Binding Title}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Label x:Name="authorPublicationCountLabel" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="130,10,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="authorListCountLabel" Content="" HorizontalAlignment="Left" Margin="102,10,0,0" VerticalAlignment="Top"/>
+
     </Grid>
 </Window>

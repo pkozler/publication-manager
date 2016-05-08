@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="GUI.UserControls.TechnicalReportUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GUI.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="400">
+    <Grid>
+        <Label x:Name="addressLabel" Content="Místo vydání:" HorizontalAlignment="Right" Margin="0,10,255,0" VerticalAlignment="Top"/>
+        <Label x:Name="institutionLabel" Content="Vydavatel:" HorizontalAlignment="Right" Margin="0,41,255,0" VerticalAlignment="Top"/>
+        <Label x:Name="numberLabel" Content="Označení a číslo zprávy:" HorizontalAlignment="Right" Margin="0,72,255,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="addressTextBox" HorizontalAlignment="Right" Height="23" Margin="0,13,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="240" ToolTip="Zadejte místo vydání citované zprávy."/>
+        <TextBox x:Name="institutionTextBox" HorizontalAlignment="Right" Height="23" Margin="0,44,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="240" ToolTip="Zadejte název instituce vydávající citovanou zprávu."/>
+        <TextBox x:Name="numberTextBox" HorizontalAlignment="Right" Margin="0,75,10,0" TextWrapping="Wrap" Width="240" Height="23" VerticalAlignment="Top" ToolTip="Zadejte označení citované zprávy spolu s číslem."/>
+
+    </Grid>
+</UserControl>

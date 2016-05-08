@@ -1,0 +1,29 @@
+﻿<UserControl x:Class="GUI.UserControls.ConferenceArticleUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GUI.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="400">
+    <Grid>
+        <Label x:Name="bookTitleLabel" Content="Sborník konference:" HorizontalAlignment="Right" Margin="0,10,275,0" VerticalAlignment="Top" ToolTip=""/>
+        <Label x:Name="addressLabel" Content="Místo vydání:" HorizontalAlignment="Right" Margin="0,41,275,0" VerticalAlignment="Top" ToolTip=""/>
+        <Label x:Name="publisherLabel" Content="Nakladatel:" HorizontalAlignment="Right" Margin="0,72,275,0" VerticalAlignment="Top" ToolTip=""/>
+        <Label x:Name="fromPageLabel" Content="Strany:" HorizontalAlignment="Right" Margin="0,103,275,0" VerticalAlignment="Top"/>
+        <Label x:Name="toPageLabel" Content="až" Margin="0,103,129,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="22"/>
+        <Label x:Name="identificationLabel" Content="Identifikátor:" HorizontalAlignment="Right" Margin="0,134,275,0" VerticalAlignment="Top" ToolTip=""/>
+        <TextBox x:Name="bookTitleTextBox" HorizontalAlignment="Right" Height="23" Margin="0,13,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="260" ToolTip="Zadejte název sborníku konference s citovaným článkem."/>
+        <TextBox x:Name="addressTextBox" HorizontalAlignment="Right" Height="23" Margin="0,44,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="260" ToolTip="Zadejte místo vydání sborníku."/>
+        <TextBox x:Name="publisherTextBox" HorizontalAlignment="Right" Height="23" Margin="0,75,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="260" ToolTip="Zadejte jméno nakladatele sborníku."/>
+        <TextBox x:Name="fromPageTextBox" Height="23" Margin="0,106,156,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Right" Width="114" ToolTip="Zadejte číslo strany, na které začíná citovaný text."/>
+        <TextBox x:Name="toPageTextBox" HorizontalAlignment="Right" Height="23" Margin="0,106,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="114" ToolTip="Zadejte číslo strany, na které končí citovaný text."/>
+        <TextBox x:Name="identificationTextBox" HorizontalAlignment="Right" Margin="0,137,10,0" TextWrapping="Wrap" Width="260" Height="23" VerticalAlignment="Top" ToolTip="Zadejte identifikační číslo sborníku (ISBN, nebo ISSN)."/>
+        <Label x:Name="identificationTypeLabel" Content="Typ identifikátoru:" HorizontalAlignment="Right" Margin="0,165,165,0" VerticalAlignment="Top"/>
+        <StackPanel HorizontalAlignment="Left" Height="13" Margin="290,171,0,0" VerticalAlignment="Top" Width="100" Orientation="Horizontal" ToolTip="Zvolte typ zadaného identifikátoru (tj. zda bylo uvedeno ISBN, nebo ISSN).">
+            <RadioButton x:Name="isbnRadioButton" Content="ISBN" HorizontalAlignment="Right" VerticalAlignment="Top" GroupName="identificationTypeGroup" Width="50"/>
+            <RadioButton x:Name="issnRadioButton" Content="ISSN" HorizontalAlignment="Right" VerticalAlignment="Top" GroupName="identificationTypeGroup"/>
+        </StackPanel>
+
+    </Grid>
+</UserControl>

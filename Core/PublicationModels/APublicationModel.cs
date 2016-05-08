@@ -13,29 +13,37 @@ namespace Core
     public abstract class APublicationModel
     {
         /// <summary>
+        /// Uchovává adresář s výchozími šablonami pro vytváření HTML dokumentů.
+        /// </summary>
+        private const string DEFAULT_TEMPLATE_DIRECTORY = "default-templates";
+
+        /// <summary>
+        /// Uchovává příponu výchozích šablon pro vytváření HTML dokumentů.
+        /// </summary>
+        private const string DEFAULT_TEMPLATE_EXTENSION = ".st";
+
+        /// <summary>
+        /// Uchovává stručný popis typu publikace pro výpis v uživatelském rozhraní.
+        /// </summary>
+        public string TypeDescription { get; private set; }
+
+        /// <summary>
+        /// Uchovává název souboru výchozí šablony pro daný typ publikace.
+        /// </summary>
+        protected string DefaultTemplateFile { get; set; }
+
+        /// <summary>
         /// Uchovává databázový kontext.
         /// </summary>
         protected DbPublicationEntities Context;
-
-        /// <summary>
-        /// Uchovává stručný popis typu publikace pro výpis v uživatelském rozhraní..
-        /// </summary>
-        public readonly string TypeDescription;
-
-        /// <summary>
-        /// Uchovává cestu k výchozí šabloně pro export do HTML dokumentu.
-        /// </summary>
-        public readonly string DefaultTemplate;
 
         /// <summary>
         /// Vytvoří instanci správce.
         /// </summary>
         /// <param name="context">databázový kontext</param>
         /// <param name="typeDescription">popis typu publikace</param>
-        /// <param name="defaultTemplate">výchozí HTML šablona typu publikace</param>
-        public APublicationModel(DbPublicationEntities context, string typeDescription, string defaultTemplate)
+        public APublicationModel(DbPublicationEntities context, string typeDescription)
         {
-            DefaultTemplate = defaultTemplate;
             TypeDescription = typeDescription;
             Context = context;
         }
@@ -75,11 +83,22 @@ namespace Core
         protected string GenerateAuthorCitationString(Publication publication)
         {
             Queue<Author> authors = new Queue<Author>(publication.Author);
+
+            if (authors.Count < 1)
+            {
+                throw new AuthorException("Pro zadanou publikaci nebyl nalezen seznam autorů. Pravděpodobně došlo k poškození dat.");
+            }
+
             StringBuilder sb = new StringBuilder();
 
             // výpis prvního jména
             Author author = authors.Dequeue();
             sb.Append(author.Surname.ToUpper()).Append(", ").Append(author.Name);
+
+            if (authors.Count < 1)
+            {
+                return sb.Append(". ").ToString();
+            }
 
             // výpis prostředních jmen
             while (authors.Count > 1)
@@ -103,7 +122,7 @@ namespace Core
         protected string GenerateAuthorBibtexString(Publication publication)
         {
             Queue<Author> authors = new Queue<Author>(publication.Author);
-            StringBuilder sb = new StringBuilder("author={");
+            StringBuilder sb = new StringBuilder("\tauthor={");
 
             // výpis prvního jména
             Author author = authors.Dequeue();
@@ -116,7 +135,7 @@ namespace Core
                 sb.Append(",").Append(author.Name).Append(" ").Append(author.Surname);
             }
             
-            sb.Append("},");
+            sb.Append("},\n");
 
             return sb.ToString();
         }
@@ -138,7 +157,9 @@ namespace Core
             {
                 // načtení šablony ze souboru
                 File.ReadAllText(Path.GetFullPath(
-                    string.IsNullOrWhiteSpace(templatePath) ? DefaultTemplate : templatePath));
+                    string.IsNullOrWhiteSpace(templatePath) ? 
+                    (DEFAULT_TEMPLATE_DIRECTORY + DefaultTemplateFile + DEFAULT_TEMPLATE_EXTENSION) :
+                    templatePath));
             }
             catch (Exception e)
             {

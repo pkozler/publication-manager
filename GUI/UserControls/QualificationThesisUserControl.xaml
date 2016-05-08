@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="GUI.UserControls.QualificationThesisUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GUI.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="400">
+    <Grid>
+        <Label x:Name="addressLabel" Content="Místo vytvoření:" HorizontalAlignment="Right" Margin="0,10,266,0" VerticalAlignment="Top"/>
+        <Label x:Name="schoolLabel" Content="Název školy:" HorizontalAlignment="Right" Margin="0,41,266,0" VerticalAlignment="Top"/>
+        <Label x:Name="thesisTypeLabel" Content="Typ kvalifikační práce:" HorizontalAlignment="Right" Margin="0,72,266,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="addressTextBox" HorizontalAlignment="Right" Height="23" Margin="0,13,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="251" ToolTip="Zadejte místo vytvoření citované práce."/>
+        <TextBox x:Name="schoolTextBox" HorizontalAlignment="Right" Height="23" Margin="0,44,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="251" ToolTip="Zadejte název školy, na které byla citovaná práce vytvořena."/>
+        <StackPanel HorizontalAlignment="Right" Height="15" Margin="0,78,10,0" VerticalAlignment="Top" Width="225" Orientation="Horizontal" ToolTip="Zvolte, jakého typu je citovaná práce.">
+            <RadioButton x:Name="masterThesisRadioButton" Content="Diplomová práce" HorizontalAlignment="Right" VerticalAlignment="Top" GroupName="thesisTypeGroup" Width="115"/>
+            <RadioButton x:Name="phdThesisRadioButton" Content="Disertační práce" HorizontalAlignment="Right" VerticalAlignment="Top" GroupName="thesisTypeGroup"/>
+        </StackPanel>
+
+    </Grid>
+</UserControl>

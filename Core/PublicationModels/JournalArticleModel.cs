@@ -14,12 +14,17 @@ namespace Core
         /// Uchovává název typu pro použití v databázi.
         /// </summary>
         public const string NAME = "JournalArticle";
-        
+
+        /// <summary>
+        /// Uchovává název souboru výchozí šablony.
+        /// </summary>
+        private const string TEMPLATE = "journal-article";
+
         /// <inheritDoc/>
-        public JournalArticleModel(DbPublicationEntities context, string typeDescription, string defaultTemplate)
-            : base(context, typeDescription, defaultTemplate)
+        public JournalArticleModel(DbPublicationEntities context, string typeDescription)
+            : base(context, typeDescription)
         {
-            // inicializace v nadřazené třídě
+            DefaultTemplateFile = TEMPLATE;
         }
 
         /// <summary>
@@ -114,14 +119,14 @@ namespace Core
                 $"{journalArticle.FromPage}" :
                 $"{journalArticle.FromPage} -- {journalArticle.ToPage}";
 
-            return new StringBuilder($"@Article{{{publication.Entry},")
+            return new StringBuilder($"@Article{{{publication.Entry},\n")
                 .Append(GenerateAuthorBibtexString(publication))
-                .Append($"title={{{publication.Title}}},")
-                .Append($"journal={{{journalArticle.JournalTitle}}},")
-                .Append($"year={{{publication.Year}}},")
-                .Append($"number={{{journalArticle.Number}}},")
-                .Append($"pages={{{pages}}},")
-                .Append($"issn={{{journalArticle.ISSN}}}}}").ToString();
+                .Append($"\ttitle={{{publication.Title}}},\n")
+                .Append($"\tjournal={{{journalArticle.JournalTitle}}},\n")
+                .Append($"\tyear={{{publication.Year}}},\n")
+                .Append($"\tnumber={{{journalArticle.Number}}},\n")
+                .Append($"\tpages={{{pages}}},\n")
+                .Append($"\tissn={{{journalArticle.ISSN}}}\n}}\n").ToString();
         }
 
         /// <inheritDoc/>

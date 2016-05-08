@@ -25,5 +25,12 @@ namespace Core
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Publication> Publication { get; set; }
+        
+        public override string ToString()
+        {
+            string id = Id < 1 ? "nový" : ("ID " + Id.ToString());
+
+            return $"{Name} {Surname} ({id})";
+        }
     }
 }

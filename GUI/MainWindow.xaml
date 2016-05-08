@@ -5,8 +5,109 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
-        Title="Seznam publikací" Height="350" Width="525">
+        Title="Seznam publikací" Height="720" Width="1280" Closing="window_Closing">
     <Grid>
-        
+        <Menu x:Name="menu" VerticalAlignment="Top" Height="25">
+            <MenuItem Header="Publikace">
+                <MenuItem x:Name="insertPublicationMenuItem" Header="Vložit publikaci" Click="insertPublicationMenuItem_Click"/>
+                <MenuItem x:Name="viewPublicationMenuItem" Header="Zobrazit publikaci" IsEnabled="False" Click="viewPublicationMenuItem_Click"/>
+                <MenuItem x:Name="exportPublicationMenuItem" Header="Exportovat publikaci" IsEnabled="False" Click="exportPublicationMenuItem_Click"/>
+                <Separator/>
+                <MenuItem x:Name="exitMenuItem" Header="Ukončit aplikaci" Click="exitMenuItem_Click"/>
+            </MenuItem>
+            <MenuItem Header="Seznamy">
+                <MenuItem x:Name="filterPublicationsMenuItem" Header="Obnovit seznam publikací" Click="filterPublicationsMenuItem_Click"/>
+                <Separator/>
+                <MenuItem x:Name="manageAuthorsMenuItem" Header="Spravovat seznam autorů" Click="manageAuthorsMenuItem_Click"/>
+            </MenuItem>
+            <MenuItem Header="Nápověda" Height="25">
+                <MenuItem x:Name="aboutMenuItem" Header="O programu" Click="aboutMenuItem_Click"/>
+            </MenuItem>
+        </Menu>
+        <StatusBar Height="25" VerticalAlignment="Bottom">
+            <Label x:Name="statusLabel" Content="Připraveno" Padding="0"/>
+        </StatusBar>
+        <Grid Margin="0,25">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="4*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <GroupBox x:Name="publicationFilterGroupBox" Header="Filtry publikací">
+                <Grid Margin="0,0,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="40"/>
+                    </Grid.RowDefinitions>
+                    <Button x:Name="filterPublicationsButton" Content="Obnovit seznam" Margin="0,10,10,10" Grid.Row="3" HorizontalAlignment="Right" ToolTip="Opětovně vypíše seznam publikací s nastavením zadaných filtrů." Padding="5,1" Click="filterPublicationsMenuItem_Click"/>
+                    <ListView x:Name="authorFilterListView" Margin="10,41,10,10" ToolTip="Vyberte autory, jejichž publikace budou zobrazeny v seznamu po obnovení výpisu, nebo ponechte výběr prázdný pro výpis publikací všech autorů." SelectionChanged="authorFilterListView_SelectionChanged">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <Label x:Name="authorFilterLabel" Content="ID autora:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="yearFilterLabel" Content="Rok vydání:" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top"/>
+                    <Label x:Name="typeFilterLabel" Content="Typ publikace:" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="2" VerticalAlignment="Top"/>
+                    <ListView x:Name="yearFilterListView" Margin="10,41,10,10" Grid.Row="1" ToolTip="Vyberte roky vydání publikací, které budou zobrazeny v seznamu po obnovení výpisu, nebo ponechte výběr prázdný pro výpis publikací vydaných v libovolném roce." SelectionChanged="yearFilterListView_SelectionChanged">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <ListView x:Name="typeFilterListView" Margin="10,41,10,10" Grid.Row="2" ToolTip="Vyberte podporované typy evidovaných publikací, které budou zobrazeny v seznamu po obnovení výpisu, nebo ponechte výběr prázdný pro výpis všech typů publikací." SelectionChanged="typeFilterListView_SelectionChanged">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
+            </GroupBox>
+            <GroupBox x:Name="publicationListGroupBox" Grid.Column="1" Header="Publikace">
+                <Grid Margin="0,0,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="4*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="40"/>
+                    </Grid.RowDefinitions>
+                    <Button x:Name="viewPublicationButton" Content="Zobrazit publikaci" Margin="0,10,134,10" Grid.Row="2" HorizontalAlignment="Right" Grid.Column="1" IsEnabled="False" IsDefault="True" ToolTip="Zobrazí formulář s vyplněnými údaji existující publikace vybrané ze seznamu, umožňující úpravu těchto údajů nebo odstranění publikace z evidence." Padding="5,1" Click="viewPublicationMenuItem_Click"/>
+                    <Button x:Name="insertPublicationButton" Content="Vložit publikaci" Margin="0,10,245,10" Grid.Row="2" HorizontalAlignment="Right" Grid.Column="1" ToolTip="Zobrazí formulář zadání údajů pro nově evidovanou publikaci." Padding="5,1" Click="insertPublicationMenuItem_Click"/>
+                    <DataGrid x:Name="publicationDataGrid" Margin="10,41,10,10" Grid.ColumnSpan="2" SelectionChanged="publicationDataGrid_SelectionChanged" IsReadOnly="True" AutoGenerateColumns="False" SelectionMode="Single">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
+                            <DataGridTextColumn Header="Klíč" Binding="{Binding Entry}"/>
+                            <DataGridTextColumn Header="Název" Binding="{Binding Title}"/>
+                            <DataGridTemplateColumn Header="Autoři">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ItemsControl ItemsSource="{Binding Author}" DisplayMemberPath="Fullname"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="Rok vydání" Binding="{Binding Year}"/>
+                            <DataGridTextColumn Header="Typ" Binding="{Binding Type}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Button x:Name="exportPublicationButton" Content="Exportovat publikaci" Margin="0,10,10,10" Grid.Row="2" HorizontalAlignment="Right" Grid.Column="1" IsEnabled="False" ToolTip="Exportuje zvolenou publikaci do HTML dokumentu podle načtené šablony pro publikace umístění na webové stránky." Padding="5,1" Click="exportPublicationMenuItem_Click"/>
+                    <Label x:Name="publicationListLabel" Content="Seznam publikací s výpisem základních bibliografických údajů:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="publicationCitationLabel" Content="Citace textu&#xD;&#xA;podle ČSN&#xD;&#xA;ISO 690:" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Height="60"/>
+                    <Label x:Name="publicationBibtexLabel" Content="BibTeX&#xD;&#xA;záznam&#xD;&#xA;citace:" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top"/>
+                    <TextBox x:Name="publicationCitationTextBox" Margin="87,13,10,10" Grid.Row="1" TextWrapping="Wrap" AcceptsReturn="True" AcceptsTab="True" IsReadOnly="True" VerticalScrollBarVisibility="Auto"/>
+                    <TextBox x:Name="publicationBibtexTextBox" Grid.Column="1" Margin="65,13,10,10" Grid.Row="1" TextWrapping="Wrap" AcceptsReturn="True" AcceptsTab="True" IsReadOnly="True" VerticalScrollBarVisibility="Auto"/>
+                </Grid>
+            </GroupBox>
+        </Grid>
+
     </Grid>
 </Window>

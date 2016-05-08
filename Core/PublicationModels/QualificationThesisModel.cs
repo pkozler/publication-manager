@@ -25,11 +25,16 @@ namespace Core
         /// </summary>
         public const string TYPE_PHD_THESIS = "PhdThesis";
 
+        /// <summary>
+        /// Uchovává název souboru výchozí šablony.
+        /// </summary>
+        private const string TEMPLATE = "qualification-thesis";
+
         /// <inheritDoc/>
-        public QualificationThesisModel(DbPublicationEntities context, string typeDescription, string defaultTemplate)
-            : base(context, typeDescription, defaultTemplate)
+        public QualificationThesisModel(DbPublicationEntities context, string typeDescription)
+            : base(context, typeDescription)
         {
-            // inicializace v nadřazené třídě
+            DefaultTemplateFile = TEMPLATE;
         }
 
         /// <summary>
@@ -116,13 +121,13 @@ namespace Core
             string thesisType = TYPE_PHD_THESIS.Equals(qualificationThesis.ThesisType) ?
                 TYPE_PHD_THESIS : TYPE_MASTER_THESIS;
 
-            return new StringBuilder($"@{thesisType}{{{publication.Entry},")
+            return new StringBuilder($"@{thesisType}{{{publication.Entry},\n")
                 .Append(GenerateAuthorBibtexString(publication))
-                .Append($"title={{{publication.Title}}},")
-                .Append($"address={{{qualificationThesis.Address}}},")
-                .Append($"year={{{publication.Year}}},")
-                .Append($"type={{{qualificationThesis.ThesisType}}},")
-                .Append($"school={{{qualificationThesis.School}}}}}").ToString();
+                .Append($"\ttitle={{{publication.Title}}},\n")
+                .Append($"\taddress={{{qualificationThesis.Address}}},\n")
+                .Append($"\tyear={{{publication.Year}}},\n")
+                .Append($"\ttype={{{qualificationThesis.ThesisType}}},\n")
+                .Append($"\tschool={{{qualificationThesis.School}}}\n}}\n").ToString();
         }
 
         /// <inheritDoc/>

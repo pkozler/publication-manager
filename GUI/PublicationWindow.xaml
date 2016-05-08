@@ -5,8 +5,97 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
-        Title="Publikace" Height="300" Width="300">
+        Title="Publikace" Height="768" Width="1024">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <StatusBar Height="25" VerticalAlignment="Bottom" Grid.ColumnSpan="2">
+            <Label x:Name="statusLabel" Content="Připraveno" Padding="0"/>
+        </StatusBar>
+        <Grid Margin="0,0,0,25">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+            <GroupBox x:Name="publicationBibliographyGroupBox" Header="Základní bibliografické údaje">
+                <Grid Margin="0,0,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="140"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="92"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="titleTextBox" Height="23" Margin="0,44,10,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Grid.Column="1" ToolTip="Zadejte plný název publikace."/>
+                    <Label x:Name="bibtexEntryLabel" Content="BibTeX klíč:" Margin="0,10,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="69" Height="26"/>
+                    <Label x:Name="titleLabel" Content="Název:" HorizontalAlignment="Right" Margin="0,41,10,0" VerticalAlignment="Top" Height="26" Width="45"/>
+                    <TextBox x:Name="yearTextBox" Height="23" Margin="0,75,10,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Grid.Column="1" ToolTip="Zadejte rok vydání publikace."/>
+                    <Label x:Name="yearLabel" Content="Rok vydání:" HorizontalAlignment="Right" Margin="0,72,10,0" VerticalAlignment="Top" Height="26" Width="70"/>
+                    <TextBox x:Name="bibtexEntryTextBox" Height="23" Margin="0,13,10,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Grid.Column="1" ToolTip="Zadejte klíč BibTeX záznamu."/>
+                    <Label x:Name="typeLabel" Content="Typ:" HorizontalAlignment="Right" Margin="0,103,10,0" VerticalAlignment="Top" Height="26" Width="31"/>
+                    <ComboBox x:Name="typeComboBox" Margin="0,104,10,0" Height="25" VerticalAlignment="Top" Grid.Column="1" ToolTip="Zvolte typ publikace." SelectionChanged="typeComboBox_SelectionChanged"/>
+                    <Grid Grid.Row="1" Grid.ColumnSpan="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <ListView x:Name="publicationAuthorListView" Margin="10,41,10,35" BorderThickness="1">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                        <Label x:Name="publicationAuthorLabel" Content="Seznam autorů publikace:" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="146"/>
+                        <Button x:Name="removeAuthorButton" Content="Odebrat" HorizontalAlignment="Right" Margin="0,0,10,10" Height="20" VerticalAlignment="Bottom" IsEnabled="False" Padding="5,1" ToolTip="Odebere vybraného autora ze seznamu autorů zobrazené publikace." Click="removeAuthorButton_Click"/>
+                        <Button x:Name="savedAuthorButton" Content="Přidat existujícího" HorizontalAlignment="Right" Margin="0,0,71,10" VerticalAlignment="Bottom" Padding="5,1" ToolTip="Přidá vybraného autora ze seznamu uložených do seznamu autorů zobrazené publikace." Click="savedAuthorButton_Click"/>
+                        <Button x:Name="newAuthorButton" Content="Přidat nového" Margin="0,0,181,10" VerticalAlignment="Bottom" Height="20" HorizontalAlignment="Right" Padding="5,1" ToolTip="Přidá nového neuloženého autora se zadaným jménem do seznamu autorů publikace (po vytvoření publikace je tento nový autor uložen do seznamu pro opětovné použití)." Click="newAuthorButton_Click"/>
+                    </Grid>
+                </Grid>
+            </GroupBox>
+            <GroupBox x:Name="publicationContentGroupBox" Header="Obsah publikace" Grid.Row="1">
+                <Grid Margin="0,0,0,0">
+                    <TextBox x:Name="contentTextBox" Margin="10,10,10,35" TextWrapping="Wrap" ToolTip="Vložte hlavní text publikace." AcceptsTab="True" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"/>
+                    <Button x:Name="saveTextButton" Content="Uložit" HorizontalAlignment="Right" Margin="0,0,60,10" VerticalAlignment="Bottom" Padding="5,1" ToolTip="Otevře dialogové okno pro uložení zadaného textu publikace do souboru." Click="saveTextButton_Click"/>
+                    <Button x:Name="loadTextButton" Content="Načíst" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Padding="5,1" ToolTip="Otevře dialogové okno pro načtení textu publikace ze zadaného souboru." Click="loadTextButton_Click"/>
+                </Grid>
+            </GroupBox>
+            <Button x:Name="insertPublicationButton" Content="Vložit publikaci" Margin="0,10,233,10" Grid.Row="2" Padding="5,1" HorizontalAlignment="Right" Width="92" ToolTip="Uloží záznam o nově evidované publikaci se zadanými údaji." Click="insertPublicationButton_Click"/>
+            <Button x:Name="editPublicationButton" Content="Upravit publikaci" Margin="0,10,127,10" Grid.Row="2" HorizontalAlignment="Right" Padding="5,1" IsEnabled="False" ToolTip="Upraví existující záznam o evidované publikaci podle zadaných údajů." Click="editPublicationButton_Click"/>
+            <Button x:Name="deletePublicationButton" Content="Odstranit publikaci" Margin="0,10,10,10" Grid.Row="2" HorizontalAlignment="Right" Padding="5,1" IsEnabled="False" ToolTip="Odstraní existující záznam o zadané publikaci." Click="deletePublicationButton_Click"/>
+        </Grid>
+        <Grid Grid.Column="1" Margin="0,0,0,25">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+            <GroupBox x:Name="publicationAttachmentListGroupBox" Header="Přílohy" Grid.Row="1">
+                <Grid Margin="0,0,0,0">
+                    <DataGrid x:Name="attachmentDataGrid" Margin="10" AutoGenerateColumns="False" IsReadOnly="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
+                            <DataGridTextColumn Header="Cesta" Binding="{Binding Path}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </GroupBox>
+            <Button x:Name="addAttachmentButton" Content="Přidat přílohu" Margin="10,10,0,10" Grid.Row="2" HorizontalAlignment="Left" Padding="5,1" ToolTip="Otevře dialogové okno výběru souboru pro připojení jako přílohy k publikaci." Click="addAttachmentButton_Click" IsEnabled="False"/>
+            <Button x:Name="removeAttachmentButton" Content="Odebrat přílohu" Margin="193,10,0,10" Grid.Row="2" HorizontalAlignment="Left" IsEnabled="False" Padding="5,1" ToolTip="Odebere ze seznamu vybranou přílohu z publikace." Click="removeAttachmentButton_Click"/>
+            <Button x:Name="closeButton" Content="Zavřít" Margin="0,10,10,10" Grid.Row="2" HorizontalAlignment="Right" Click="closeButton_Click" Padding="5,1"/>
+            <Grid Margin="6,10,6,6">
+                <GroupBox x:Name="typeSpecificBibliographyGroupBox" Header="Podrobné bibliografické údaje podle typu" Margin="0,-10,-6,-6"/>
+            </Grid>
+            <Button x:Name="openAttachmentButton" Content="Otevřít přílohu" HorizontalAlignment="Left" Margin="99,10,0,10" Grid.Row="2" IsEnabled="False" Padding="5,1" ToolTip="Otevře přílohu publikace vybranou ze seznamu." Click="openAttachmentButton_Click"/>
+        </Grid>
     </Grid>
 </Window>

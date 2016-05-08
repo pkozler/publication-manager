@@ -1,10 +1,12 @@
 ﻿
 
 FC:\Users\pkout\Dropbox\cs\NET\GUI\AboutWindow.xaml;;
+FC:\Users\pkout\Dropbox\cs\NET\GUI\AuthorDialogWindow.xaml;;
 FC:\Users\pkout\Dropbox\cs\NET\GUI\AuthorWindow.xaml;;
-FC:\Users\pkout\Dropbox\cs\NET\GUI\ConferenceArticleWindow.xaml;;
-FC:\Users\pkout\Dropbox\cs\NET\GUI\JournalArticleWindow.xaml;;
 FC:\Users\pkout\Dropbox\cs\NET\GUI\MainWindow.xaml;;
-FC:\Users\pkout\Dropbox\cs\NET\GUI\QualificationThesisWindow.xaml;;
-FC:\Users\pkout\Dropbox\cs\NET\GUI\TechnicalReportWindow.xaml;;
+FC:\Users\pkout\Dropbox\cs\NET\GUI\PublicationWindow.xaml;;
+FC:\Users\pkout\Dropbox\cs\NET\GUI\UserControls\ConferenceArticleUserControl.xaml;;
+FC:\Users\pkout\Dropbox\cs\NET\GUI\UserControls\JournalArticleUserControl.xaml;;
+FC:\Users\pkout\Dropbox\cs\NET\GUI\UserControls\QualificationThesisUserControl.xaml;;
+FC:\Users\pkout\Dropbox\cs\NET\GUI\UserControls\TechnicalReportUserControl.xaml;;
 
