@@ -8,6 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("example-texts/analyza-vlastnosti.txt")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("icon-publication.ico")]
 
 

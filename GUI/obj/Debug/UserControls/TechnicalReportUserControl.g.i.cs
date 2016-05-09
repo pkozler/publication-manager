@@ -100,7 +100,7 @@ namespace GUI.UserControls {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/GUI;component/usercontrols/technicalreportusercontrol.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/PublicationManager;component/usercontrols/technicalreportusercontrol.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\UserControls\TechnicalReportUserControl.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

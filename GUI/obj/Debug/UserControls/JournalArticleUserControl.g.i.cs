@@ -132,7 +132,7 @@ namespace GUI.UserControls {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/GUI;component/usercontrols/journalarticleusercontrol.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/PublicationManager;component/usercontrols/journalarticleusercontrol.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\UserControls\JournalArticleUserControl.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

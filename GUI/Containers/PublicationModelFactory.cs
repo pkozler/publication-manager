@@ -96,7 +96,7 @@ namespace GUI
         /// <param name="entry">publikace</param>
         private string ReadPublicationText(Publication publication)
         {
-            const string DIRECTORY = "../../example-texts/";
+            const string DIRECTORY = "../../resources/example-texts/";
             const string EXTENSION = ".txt";
 
             return File.ReadAllText(DIRECTORY + publication.Entry + EXTENSION);
