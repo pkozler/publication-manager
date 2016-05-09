@@ -14,13 +14,7 @@ namespace GUI
         /// </summary>
         /// <returns>objekt pro správu</returns>
         APublicationModel GetModel();
-
-        /// <summary>
-        /// Nastaví objekt datové vrstvy pro správu příslušného typu publikací.
-        /// </summary>
-        /// <param name="model">objekt pro správu</param>
-        void SetModel(APublicationModel model);
-
+        
         /// <summary>
         /// Vypíše uložené specifické údaje aktuální zobrazené publikace konkrétního typu.
         /// </summary>

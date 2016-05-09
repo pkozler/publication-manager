@@ -140,12 +140,13 @@ namespace GUI
 
         private void insertPublicationMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            new PublicationWindow(attachmentModel).ShowDialog();
+            new PublicationWindow(attachmentModel, publicationTypes).ShowDialog();
         }
 
         private void viewPublicationMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            new PublicationWindow(attachmentModel, publicationDataGrid.SelectedItem as Publication).ShowDialog();
+            new PublicationWindow(attachmentModel, publicationTypes,
+                publicationDataGrid.SelectedItem as Publication).ShowDialog();
         }
 
         private void exportPublicationMenuItem_Click(object sender, RoutedEventArgs e)

@@ -30,7 +30,7 @@ namespace GUI
         /// </summary>
         public JournalArticleUserControl()
         {
-            //InitializeComponent();
+            InitializeComponent();
         }
 
         public JournalArticleUserControl(APublicationModel journalArticleModel) : base()
@@ -44,11 +44,6 @@ namespace GUI
         }
 
         public void GetSpecificBibliography(Publication publication)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetModel(APublicationModel model)
         {
             throw new NotImplementedException();
         }

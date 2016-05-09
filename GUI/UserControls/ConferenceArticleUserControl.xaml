@@ -1,9 +1,9 @@
-﻿<UserControl x:Class="GUI.UserControls.ConferenceArticleUserControl"
+﻿<UserControl x:Class="GUI.ConferenceArticleUserControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:GUI.UserControls"
+             xmlns:local="clr-namespace:GUI"
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="400">
     <Grid>

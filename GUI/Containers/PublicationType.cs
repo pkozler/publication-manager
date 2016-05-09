@@ -41,7 +41,7 @@ namespace GUI
         /// <returns>název</returns>
         public override string ToString()
         {
-            return Name;
+            return Model.TypeDescription;
         }
         
         /// <summary>

@@ -31,17 +31,24 @@ namespace GUI
 
         private AttachmentModel attachmentModel;
 
-        public PublicationWindow(AttachmentModel attachmentModel)
+        private List<PublicationType> publicationTypes;
+
+        public PublicationWindow(AttachmentModel attachmentModel, List<PublicationType> publicationTypes)
         {
             this.attachmentModel = attachmentModel;
+            this.publicationTypes = publicationTypes;
             publication = new Publication();
 
             InitializeComponent();
+
+            typeComboBox.ItemsSource = publicationTypes;
+            attachmentDataGrid.IsEnabled = false;
         }
 
-        public PublicationWindow(AttachmentModel attachmentModel, Publication publication)
+        public PublicationWindow(AttachmentModel attachmentModel, List<PublicationType> publicationTypes, Publication publication)
         {
             this.attachmentModel = attachmentModel;
+            this.publicationTypes = publicationTypes;
             this.publication = publication;
 
             InitializeComponent();
@@ -52,7 +59,11 @@ namespace GUI
             bibtexEntryTextBox.Text = publication.Entry;
             titleTextBox.Text = publication.Title;
             yearTextBox.Text = publication.Year.ToString();
-            typeComboBox.Text = publication.Type;
+
+            typeComboBox.ItemsSource = publicationTypes;
+            typeComboBox.SelectedValue = PublicationType.GetTypeByName(publicationTypes, publication.Type);
+            typeComboBox.IsEnabled = false;
+
             publicationAuthorListView.ItemsSource = publication.Author;
             contentTextBox.Text = publication.Text;
         }
@@ -70,7 +81,12 @@ namespace GUI
         
         private void saveTextButton_Click(object sender, RoutedEventArgs e)
         {
+            /*if (typeComboBox.SelectedValue != null)
+            {
+                PublicationType publicationType = typeComboBox.SelectedValue as PublicationType;
 
+                typeSpecificBibliographyGroupBox.Content = publicationType.CreateForm(publicationType.Model) as UserControl;
+            }*/
         }
 
         private void loadTextButton_Click(object sender, RoutedEventArgs e)
