@@ -15,7 +15,7 @@ namespace Core
         /// <summary>
         /// Uchovává adresář s výchozími šablonami pro vytváření HTML dokumentů.
         /// </summary>
-        private const string DEFAULT_TEMPLATE_DIRECTORY = "default-templates";
+        private const string DEFAULT_TEMPLATE_DIRECTORY = "default-templates/";
 
         /// <summary>
         /// Uchovává příponu výchozích šablon pro vytváření HTML dokumentů.

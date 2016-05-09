@@ -7,12 +7,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="400">
     <Grid>
-        <Label x:Name="addressLabel" Content="Místo vytvoření:" HorizontalAlignment="Right" Margin="0,10,266,0" VerticalAlignment="Top"/>
-        <Label x:Name="schoolLabel" Content="Název školy:" HorizontalAlignment="Right" Margin="0,41,266,0" VerticalAlignment="Top"/>
-        <Label x:Name="thesisTypeLabel" Content="Typ kvalifikační práce:" HorizontalAlignment="Right" Margin="0,72,266,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="addressTextBox" HorizontalAlignment="Right" Height="23" Margin="0,13,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="251" ToolTip="Zadejte místo vytvoření citované práce."/>
-        <TextBox x:Name="schoolTextBox" HorizontalAlignment="Right" Height="23" Margin="0,44,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="251" ToolTip="Zadejte název školy, na které byla citovaná práce vytvořena."/>
-        <StackPanel HorizontalAlignment="Right" Height="15" Margin="0,78,10,0" VerticalAlignment="Top" Width="225" Orientation="Horizontal" ToolTip="Zvolte, jakého typu je citovaná práce.">
+        <Label x:Name="addressLabel" Content="Místo vytvoření:" HorizontalAlignment="Left" Margin="49,10,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="schoolLabel" Content="Název školy:" HorizontalAlignment="Left" Margin="74,39,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="thesisTypeLabel" Content="Typ kvalifikační práce:" HorizontalAlignment="Left" Margin="10,68,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="addressTextBox" Height="23" Margin="171,16,10,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="Zadejte místo vytvoření citované práce."/>
+        <TextBox x:Name="schoolTextBox" Height="23" Margin="171,45,10,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="Zadejte název školy, na které byla citovaná práce vytvořena."/>
+        <StackPanel HorizontalAlignment="Right" Height="15" Margin="0,76,4,0" VerticalAlignment="Top" Width="225" Orientation="Horizontal" ToolTip="Zvolte, jakého typu je citovaná práce.">
             <RadioButton x:Name="masterThesisRadioButton" Content="Diplomová práce" HorizontalAlignment="Right" VerticalAlignment="Top" GroupName="thesisTypeGroup" Width="115"/>
             <RadioButton x:Name="phdThesisRadioButton" Content="Disertační práce" HorizontalAlignment="Right" VerticalAlignment="Top" GroupName="thesisTypeGroup"/>
         </StackPanel>

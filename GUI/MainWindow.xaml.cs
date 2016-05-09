@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using System.IO;
 using Core;
 using System.Collections.ObjectModel;
+using Microsoft.Win32;
 
 namespace GUI
 {
@@ -50,21 +51,6 @@ namespace GUI
         /// pro jednotlivé typy publikací a objektů datové vrstvy pro jejich obsluhu.
         /// </summary>
         private List<PublicationType> publicationTypes;
-
-        /// <summary>
-        /// Množina ID požadovaných autorů pro filtrování seznamu publikací.
-        /// </summary>
-        private HashSet<int> authorFilter = new HashSet<int>();
-
-        /// <summary>
-        /// Množina požadovaných letopočtů pro filtrování seznamu publikací.
-        /// </summary>
-        private HashSet<int> yearFilter = new HashSet<int>();
-
-        /// <summary>
-        /// Množina požadovaných typů publikace pro filtrování seznamu publikací.
-        /// </summary>
-        private HashSet<string> publicationTypeFilter = new HashSet<string>();
 
         private ObservableCollection<Publication> publications;
         
@@ -140,41 +126,83 @@ namespace GUI
 
         private void insertPublicationMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            new PublicationWindow(attachmentModel, publicationTypes).ShowDialog();
+            new PublicationWindow(authorModel, attachmentModel, publicationTypes).ShowDialog();
         }
 
         private void viewPublicationMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            new PublicationWindow(attachmentModel, publicationTypes,
+            if (publicationDataGrid.SelectedItem == null)
+            {
+                return;
+            }
+
+            new PublicationWindow(authorModel, attachmentModel, publicationTypes,
                 publicationDataGrid.SelectedItem as Publication).ShowDialog();
         }
 
         private void exportPublicationMenuItem_Click(object sender, RoutedEventArgs e)
         {
+            if (publicationDataGrid.SelectedItem == null)
+            {
+                return;
+            }
 
+            string templatePath = null;
+            string htmlPath = null;
+
+            SaveFileDialog saveFile = new SaveFileDialog();
+            saveFile.Title = "Uložit do HTML";
+            saveFile.Filter = string.Format("HTML dokument ({0})|{0}", "*.html");
+
+            if (saveFile.ShowDialog() == true)
+            {
+                htmlPath = saveFile.FileName;
+            }
+            else
+            {
+                return;
+            }
+
+            OpenFileDialog openFile = new OpenFileDialog();
+            openFile.Title = "Načíst soubor šablony";
+            openFile.Filter = string.Format("Soubor šablony ({0})|{0}", "*.st");
+
+            if (openFile.ShowDialog() == true)
+            {
+                templatePath = openFile.FileName;
+            }
+
+            Publication publication = publicationDataGrid.SelectedItem as Publication;
+            PublicationType.GetTypeByName(publicationTypes, publication.Type).Model
+                .ExportPublicationToHtmlDocument(publication, templatePath, htmlPath);
         }
 
         private void filterPublicationsMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            /*Publications = new ObservableCollection<Publication>(publicationModel.GetPublications());
-            publicationDataGrid.ItemsSource = Publications;*/
+            HashSet<int> authorFilter = new HashSet<int>();
+            HashSet<int> yearFilter = new HashSet<int>();
+            HashSet<string> publicationTypeFilter = new HashSet<string>();
+
+            foreach (int authorId in authorFilterListView.Items)
+            {
+                authorFilter.Add(authorId);
+            }
+
+            foreach (int year in yearFilterListView.Items)
+            {
+                yearFilter.Add(year);
+            }
+
+            foreach (string type in typeFilterListView.Items)
+            {
+                publicationTypeFilter.Add(type);
+            }
+
+            publications = new ObservableCollection<Publication>(
+                publicationModel.GetPublications(authorFilter, yearFilter, publicationTypeFilter));
+            publicationDataGrid.ItemsSource = publications;
         }
-
-        private void authorFilterListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void yearFilterListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void typeFilterListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
+        
         private void setButtonsEnabled(bool enabled)
         {
             viewPublicationButton.IsEnabled = enabled;

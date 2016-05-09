@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Collections.ObjectModel;
 using Core;
+using Microsoft.Win32;
+using System.IO;
 
 namespace GUI
 {
@@ -31,25 +33,25 @@ namespace GUI
 
         private AttachmentModel attachmentModel;
 
+        private AuthorModel authorModel;
+
         private List<PublicationType> publicationTypes;
-
-        public PublicationWindow(AttachmentModel attachmentModel, List<PublicationType> publicationTypes)
+        
+        public PublicationWindow(AuthorModel authorModel, AttachmentModel attachmentModel, List<PublicationType> publicationTypes, Publication publication = null)
         {
+            this.authorModel = authorModel;
             this.attachmentModel = attachmentModel;
             this.publicationTypes = publicationTypes;
-            publication = new Publication();
 
-            InitializeComponent();
+            if (publication != null)
+            {
+                this.publication = publication;
+                InitializeComponent();
+                typeComboBox.ItemsSource = publicationTypes;
+                attachmentDataGrid.IsEnabled = false;
 
-            typeComboBox.ItemsSource = publicationTypes;
-            attachmentDataGrid.IsEnabled = false;
-        }
-
-        public PublicationWindow(AttachmentModel attachmentModel, List<PublicationType> publicationTypes, Publication publication)
-        {
-            this.attachmentModel = attachmentModel;
-            this.publicationTypes = publicationTypes;
-            this.publication = publication;
+                return;
+            }
 
             InitializeComponent();
 
@@ -81,6 +83,44 @@ namespace GUI
         
         private void saveTextButton_Click(object sender, RoutedEventArgs e)
         {
+            SaveFileDialog saveFile = new SaveFileDialog();
+
+            if (saveFile.ShowDialog() == true)
+            {
+                try
+                {
+                    File.WriteAllText(saveFile.FileName, contentTextBox.Text);
+                    statusLabel.Content = "Text byl uložen do souboru " + saveFile.FileName;
+                }
+                catch (IOException)
+                {
+                    MessageBox.Show("Chyba při ukládání textu do výstupního souboru.",
+                        "Chyba při zápisu", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void loadTextButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFile = new OpenFileDialog();
+
+            if (openFile.ShowDialog() == true)
+            {
+                try
+                {
+                    contentTextBox.Text = File.ReadAllText(openFile.FileName);
+                    statusLabel.Content = "Text byl načten ze souboru " + openFile.FileName;
+                }
+                catch (IOException)
+                {
+                    MessageBox.Show("Chyba při načítání textu ze vstupního souboru.",
+                        "Chyba při čtení", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void typeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
             /*if (typeComboBox.SelectedValue != null)
             {
                 PublicationType publicationType = typeComboBox.SelectedValue as PublicationType;
@@ -89,24 +129,26 @@ namespace GUI
             }*/
         }
 
-        private void loadTextButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void typeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
         private void newAuthorButton_Click(object sender, RoutedEventArgs e)
         {
+            AuthorDialogWindow authorDialog = new AuthorDialogWindow();
+            authorDialog.ShowDialog();
 
+            if (authorDialog.DialogResult == true)
+            {
+                publicationAuthorListView.Items.Add(authorDialog.Author);
+            }
         }
 
         private void savedAuthorButton_Click(object sender, RoutedEventArgs e)
         {
+            AuthorWindow authorDialog = new AuthorWindow(authorModel);
+            authorDialog.ShowDialog();
 
+            if (authorDialog.DialogResult == true)
+            {
+                publicationAuthorListView.Items.Add(authorDialog.Author);
+            }
         }
 
         private void removeAuthorButton_Click(object sender, RoutedEventArgs e)
@@ -116,7 +158,7 @@ namespace GUI
 
         private void insertPublicationButton_Click(object sender, RoutedEventArgs e)
         {
-
+            
         }
 
         private void editPublicationButton_Click(object sender, RoutedEventArgs e)
@@ -146,7 +188,7 @@ namespace GUI
 
         private void attachmentDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            removeAttachmentButton.IsEnabled = attachmentDataGrid.SelectedItem != null;
         }
     }
 }

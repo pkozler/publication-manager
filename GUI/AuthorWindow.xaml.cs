@@ -28,18 +28,26 @@ namespace GUI
     public partial class AuthorWindow : Window
     {
         /// <summary>
+        /// Uchovává vybraného autora pro formulář publikace.
+        /// </summary>
+        public Author Author { get; private set; }
+
+        /// <summary>
         /// Objekt datové vrstvy, který slouží jako správce záznamů autorů.
         /// </summary>
         private AuthorModel authorModel;
 
         private ObservableCollection<Author> authors;
 
+        private Publication publication;
+
         /// <summary>
         /// Provede inicializaci komponent.
         /// </summary>
-        public AuthorWindow(AuthorModel authorModel)
+        public AuthorWindow(AuthorModel authorModel, Publication publication = null)
         {
             this.authorModel = authorModel;
+            this.publication = publication;
 
             InitializeComponent();
 
@@ -65,27 +73,45 @@ namespace GUI
         /// <param name="e">data události</param>
         private void closeButton_Click(object sender, RoutedEventArgs e)
         {
+            DialogResult = false;
             Close();
         }
 
         private void chooseAuthorButton_Click(object sender, RoutedEventArgs e)
         {
-
+            if (publication != null && authorDataGrid.SelectedItem != null)
+            {
+                Author = authorDataGrid.SelectedItem as Author;
+                DialogResult = true;
+                Close();
+            }
         }
 
         private void deleteAuthorButton_Click(object sender, RoutedEventArgs e)
         {
-            
+            Author author = authorDataGrid.SelectedItem as Author;
+
+            if (author.Publication.Count < 0)
+            {
+                return;
+            }
+
+            authorModel.DeleteAuthor(author.Id);
         }
         
         private void authorDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (authorDataGrid.SelectedItem == null)
             {
+                chooseAuthorButton.IsEnabled = false;
+
                 return;
             }
 
+            chooseAuthorButton.IsEnabled = publication != null;
+
             Author author = authorDataGrid.SelectedItem as Author;
+            chooseAuthorButton.IsEnabled = true;
 
             if (author.Publication.Count > 0)
             {

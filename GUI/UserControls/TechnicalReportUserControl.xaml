@@ -7,12 +7,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="400">
     <Grid>
-        <Label x:Name="addressLabel" Content="Místo vydání:" HorizontalAlignment="Right" Margin="0,10,255,0" VerticalAlignment="Top"/>
-        <Label x:Name="institutionLabel" Content="Vydavatel:" HorizontalAlignment="Right" Margin="0,41,255,0" VerticalAlignment="Top"/>
-        <Label x:Name="numberLabel" Content="Označení a číslo zprávy:" HorizontalAlignment="Right" Margin="0,72,255,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="addressTextBox" HorizontalAlignment="Right" Height="23" Margin="0,13,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="240" ToolTip="Zadejte místo vydání citované zprávy."/>
-        <TextBox x:Name="institutionTextBox" HorizontalAlignment="Right" Height="23" Margin="0,44,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="240" ToolTip="Zadejte název instituce vydávající citovanou zprávu."/>
-        <TextBox x:Name="numberTextBox" HorizontalAlignment="Right" Margin="0,75,10,0" TextWrapping="Wrap" Width="240" Height="23" VerticalAlignment="Top" ToolTip="Zadejte označení citované zprávy spolu s číslem."/>
+        <Label x:Name="addressLabel" Content="Místo vydání:" HorizontalAlignment="Left" Margin="77,10,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="institutionLabel" Content="Vydavatel:" HorizontalAlignment="Left" Margin="97,39,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="numberLabel" Content="Označení a číslo zprávy:" HorizontalAlignment="Left" Margin="10,68,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="addressTextBox" Height="23" Margin="181,16,10,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="Zadejte místo vydání citované zprávy."/>
+        <TextBox x:Name="institutionTextBox" Height="23" Margin="181,45,10,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="Zadejte název instituce vydávající citovanou zprávu."/>
+        <TextBox x:Name="numberTextBox" Margin="181,74,10,0" TextWrapping="Wrap" Height="23" VerticalAlignment="Top" ToolTip="Zadejte označení citované zprávy spolu s číslem."/>
 
     </Grid>
 </UserControl>
