@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\pkout\Dropbox\cs\NET\GUI\App.xaml
-9-1615126309
+9-73166294
 
-16-1057211631
+16677749246
 17-610676084
-AboutWindow.xaml;AuthorDialogWindow.xaml;AuthorWindow.xaml;MainWindow.xaml;PublicationWindow.xaml;UserControls\ConferenceArticleUserControl.xaml;UserControls\JournalArticleUserControl.xaml;UserControls\QualificationThesisUserControl.xaml;UserControls\TechnicalReportUserControl.xaml;
+AboutWindow.xaml;AuthorDialogWindow.xaml;AuthorWindow.xaml;MainWindow.xaml;PublicationWindow.xaml;ConferenceArticleUserControl.xaml;JournalArticleUserControl.xaml;QualificationThesisUserControl.xaml;TechnicalReportUserControl.xaml;
 
 False
 

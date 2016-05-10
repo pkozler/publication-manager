@@ -48,7 +48,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <ListView x:Name="publicationAuthorListView" Margin="10,41,10,45" BorderThickness="1">
+                        <ListView x:Name="publicationAuthorListView" Margin="10,41,10,45" BorderThickness="1" SelectionChanged="publicationAuthorListView_SelectionChanged" SelectionMode="Single">
                             <ListView.View>
                                 <GridView>
                                     <GridViewColumn/>
@@ -81,7 +81,7 @@
             </Grid.RowDefinitions>
             <GroupBox x:Name="publicationAttachmentListGroupBox" Header="Přílohy" Grid.Row="1">
                 <Grid Margin="0,0,0,0">
-                    <DataGrid x:Name="attachmentDataGrid" Margin="10" AutoGenerateColumns="False" IsReadOnly="True">
+                    <DataGrid x:Name="attachmentDataGrid" Margin="10" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
                             <DataGridTextColumn Header="Cesta" Binding="{Binding Path}"/>
@@ -93,7 +93,14 @@
             <Button x:Name="removeAttachmentButton" Content="Odebrat přílohu" Margin="218,10,0,10" Grid.Row="2" HorizontalAlignment="Left" IsEnabled="False" Padding="5,1" ToolTip="Odebere ze seznamu vybranou přílohu z publikace." Click="removeAttachmentButton_Click" Height="30" FontSize="14"/>
             <Button x:Name="closeButton" Content="Zavřít" Margin="0,10,10,10" Grid.Row="2" HorizontalAlignment="Right" Click="closeButton_Click" Padding="5,1" RenderTransformOrigin="0.143,-0.4" Height="30" FontSize="14"/>
             <Grid Margin="6,10,6,6">
-                <GroupBox x:Name="typeSpecificBibliographyGroupBox" Header="Podrobné bibliografické údaje podle typu" Margin="0,-10,-6,-6"/>
+                <GroupBox x:Name="typeSpecificBibliographyGroupBox" Header="Podrobné bibliografické údaje podle typu" Margin="0,-10,-6,-6">
+                    <Grid x:Name="typeSpecificBibliographyGrid" Margin="0,0,0,0">
+                        <local:ConferenceArticleUserControl x:Name="conferenceArticleBibliography" Visibility="Collapsed"/>
+                        <local:JournalArticleUserControl x:Name="journalArticleBibliography" Visibility="Collapsed"/>
+                        <local:TechnicalReportUserControl x:Name="technicalReportBibliography" Visibility="Collapsed"/>
+                        <local:QualificationThesisUserControl x:Name="qualificationThesisBibliography" Visibility="Collapsed"/>
+                    </Grid>
+                </GroupBox>
             </Grid>
             <Button x:Name="openAttachmentButton" Content="Otevřít přílohu" HorizontalAlignment="Left" Margin="111,10,0,10" Grid.Row="2" IsEnabled="False" Padding="5,1" ToolTip="Otevře přílohu publikace vybranou ze seznamu." Click="openAttachmentButton_Click" Height="30" FontSize="14"/>
         </Grid>

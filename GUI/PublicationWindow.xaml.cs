@@ -30,30 +30,41 @@ namespace GUI
         private Publication publication;
 
         private ObservableCollection<Attachment> attachments;
-
+        
         private AttachmentModel attachmentModel;
 
         private AuthorModel authorModel;
 
         private List<PublicationType> publicationTypes;
+
+        private Dictionary<string, IPublishableForm> bibliographyForms;
+
+        private UserControl currentBibliographyForm = null;
         
         public PublicationWindow(AuthorModel authorModel, AttachmentModel attachmentModel, List<PublicationType> publicationTypes, Publication publication = null)
         {
+            InitializeComponent();
+
             this.authorModel = authorModel;
             this.attachmentModel = attachmentModel;
             this.publicationTypes = publicationTypes;
+            
+            bibliographyForms = new Dictionary<string, IPublishableForm>()
+            {
+                { ConferenceArticleModel.NAME, conferenceArticleBibliography },
+                { JournalArticleModel.NAME, journalArticleBibliography },
+                { TechnicalReportModel.NAME, technicalReportBibliography },
+                { QualificationThesisModel.NAME, qualificationThesisBibliography },
+            };
 
-            if (publication != null)
+            if (publication == null)
             {
                 this.publication = publication;
-                InitializeComponent();
                 typeComboBox.ItemsSource = publicationTypes;
                 attachmentDataGrid.IsEnabled = false;
 
                 return;
             }
-
-            InitializeComponent();
 
             attachments = new ObservableCollection<Attachment>(attachmentModel.GetAttachmentsByPublication(publication));
             attachmentDataGrid.ItemsSource = attachments;
@@ -121,14 +132,20 @@ namespace GUI
 
         private void typeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            /*if (typeComboBox.SelectedValue != null)
+            if (typeComboBox.SelectedValue != null)
             {
                 PublicationType publicationType = typeComboBox.SelectedValue as PublicationType;
+                
+                if (currentBibliographyForm != null)
+                {
+                    currentBibliographyForm.Visibility = Visibility.Collapsed;
+                }
 
-                typeSpecificBibliographyGroupBox.Content = publicationType.CreateForm(publicationType.Model) as UserControl;
-            }*/
+                currentBibliographyForm = bibliographyForms[publicationType.Name] as UserControl;
+                currentBibliographyForm.Visibility = Visibility.Visible;
+            }
         }
-
+        
         private void newAuthorButton_Click(object sender, RoutedEventArgs e)
         {
             AuthorDialogWindow authorDialog = new AuthorDialogWindow();
@@ -153,7 +170,19 @@ namespace GUI
 
         private void removeAuthorButton_Click(object sender, RoutedEventArgs e)
         {
+            if (publicationAuthorListView.SelectedItem == null)
+            {
+                return;
+            }
 
+            Author author = publicationAuthorListView.SelectedItem as Author;
+            publicationAuthorListView.Items.Remove(author);
+        }
+
+        private void publicationAuthorListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            removeAuthorButton.IsEnabled = publicationAuthorListView.SelectedItem != null
+                && publicationAuthorListView.Items.Count > 1;
         }
 
         private void insertPublicationButton_Click(object sender, RoutedEventArgs e)

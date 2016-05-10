@@ -93,17 +93,17 @@
     <Compile Include="PublicationWindow.xaml.cs">
       <DependentUpon>PublicationWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\ConferenceArticleUserControl.xaml.cs">
+    <Compile Include="ConferenceArticleUserControl.xaml.cs">
       <DependentUpon>ConferenceArticleUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\IPublishableForm.cs" />
-    <Compile Include="UserControls\JournalArticleUserControl.xaml.cs">
+    <Compile Include="IPublishableForm.cs" />
+    <Compile Include="JournalArticleUserControl.xaml.cs">
       <DependentUpon>JournalArticleUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\QualificationThesisUserControl.xaml.cs">
+    <Compile Include="QualificationThesisUserControl.xaml.cs">
       <DependentUpon>QualificationThesisUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\TechnicalReportUserControl.xaml.cs">
+    <Compile Include="TechnicalReportUserControl.xaml.cs">
       <DependentUpon>TechnicalReportUserControl.xaml</DependentUpon>
     </Compile>
     <Page Include="AboutWindow.xaml">
@@ -137,19 +137,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\ConferenceArticleUserControl.xaml">
+    <Page Include="ConferenceArticleUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\JournalArticleUserControl.xaml">
+    <Page Include="JournalArticleUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\QualificationThesisUserControl.xaml">
+    <Page Include="QualificationThesisUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\TechnicalReportUserControl.xaml">
+    <Page Include="TechnicalReportUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
