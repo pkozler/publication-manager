@@ -189,26 +189,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="resources\example-texts\logika-matematika.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="resources\example-texts\aktualni-trendy.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="resources\example-texts\directed-design.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="resources\example-texts\analyza-vlastnosti.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="resources\window-icons\icon-publication.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -222,6 +202,30 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\example-texts\aktualni-trendy.txt" />
+    <Resource Include="resources\example-texts\analyza-vlastnosti.txt" />
+    <Resource Include="resources\example-texts\archeologicky-vyzkum.txt" />
+    <Resource Include="resources\example-texts\deformation-method.txt" />
+    <Resource Include="resources\example-texts\directed-design.txt" />
+    <Resource Include="resources\example-texts\flux-characteristics.txt" />
+    <Resource Include="resources\example-texts\gaussian-mixtures.txt" />
+    <Resource Include="resources\example-texts\genderove-aspekty.txt" />
+    <Resource Include="resources\example-texts\logika-matematika.txt" />
+    <Resource Include="resources\example-texts\maje-okoli.txt" />
+    <Resource Include="resources\example-texts\mereni-charakteristik.txt" />
+    <Resource Include="resources\example-texts\mobilni-pracoviste.txt" />
+    <Resource Include="resources\example-texts\prispevek-studiu.txt" />
+    <Resource Include="resources\example-texts\sezonni-dynamika.txt" />
+    <Resource Include="resources\example-texts\space-reduction.txt" />
+    <Resource Include="resources\example-texts\studium-problematiky.txt" />
+    <Resource Include="resources\example-texts\technologie-vyroby.txt" />
+    <Resource Include="resources\example-texts\tools-utilization.txt" />
+    <Resource Include="resources\example-texts\tyl-cechy.txt" />
+    <Resource Include="resources\example-texts\vlivy-modulaci.txt" />
+    <Resource Include="resources\example-texts\vyuka-oboru.txt" />
+    <Resource Include="resources\example-texts\vyzkum-casopis.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

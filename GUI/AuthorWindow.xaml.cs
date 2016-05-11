@@ -79,12 +79,14 @@ namespace GUI
 
         private void chooseAuthorButton_Click(object sender, RoutedEventArgs e)
         {
-            if (publication != null && authorDataGrid.SelectedItem != null)
+            if (publication == null || authorDataGrid.SelectedItem == null)
             {
-                Author = authorDataGrid.SelectedItem as Author;
-                DialogResult = true;
-                Close();
+                return;
             }
+
+            Author = authorDataGrid.SelectedItem as Author;
+            DialogResult = true;
+            Close();
         }
 
         private void deleteAuthorButton_Click(object sender, RoutedEventArgs e)

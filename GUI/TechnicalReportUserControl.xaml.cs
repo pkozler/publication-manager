@@ -24,28 +24,48 @@ namespace GUI
     public partial class TechnicalReportUserControl : UserControl, IPublishableForm
     {
         private TechnicalReportModel technicalReportModel;
-
-        /// <summary>
-        /// Provede inicializaci komponent.
-        /// </summary>
-        public TechnicalReportUserControl()
-        {
-            InitializeComponent();
-        }
-
+        
         public TechnicalReportUserControl(APublicationModel technicalReportModel) : base()
         {
+            InitializeComponent();
             this.technicalReportModel = technicalReportModel as TechnicalReportModel;
         }
 
-        public APublicationModel GetModel()
+        public void ViewPublication(Publication publication)
         {
-            throw new NotImplementedException();
+            TechnicalReport technicalReport = publication.TechnicalReport;
+
+            addressTextBox.Text = technicalReport.Address;
+            institutionTextBox.Text = technicalReport.Institution;
+            numberTextBox.Text = technicalReport.Number;
         }
 
-        public void GetSpecificBibliography(Publication publication)
+        private TechnicalReport getPublicationTypeSpecificBibliography()
         {
-            throw new NotImplementedException();
+            TechnicalReport technicalReport = new TechnicalReport();
+
+            technicalReport.Address = addressTextBox.Text;
+            technicalReport.Institution = institutionTextBox.Text;
+            technicalReport.Number = numberTextBox.Text;
+
+            return technicalReport;
+        }
+
+        public void InsertPublication(Publication publication, List<Author> authors)
+        {
+            TechnicalReport technicalReport = getPublicationTypeSpecificBibliography();
+            technicalReportModel.CreatePublication(publication, authors, technicalReport);
+        }
+
+        public void EditPublication(int publicationId, Publication publication, List<Author> authors)
+        {
+            TechnicalReport technicalReport = getPublicationTypeSpecificBibliography();
+            technicalReportModel.UpdatePublication(publicationId, publication, authors, technicalReport);
+        }
+
+        public void DeletePublication(int publicationId)
+        {
+            technicalReportModel.DeletePublication(publicationId);
         }
     }
 }

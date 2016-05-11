@@ -24,28 +24,64 @@ namespace GUI
     public partial class QualificationThesisUserControl : UserControl, IPublishableForm
     {
         private QualificationThesisModel qualificationThesisModel;
-
-        /// <summary>
-        /// Provede inicializaci komponent.
-        /// </summary>
-        public QualificationThesisUserControl()
-        {
-            InitializeComponent();
-        }
-
+        
         public QualificationThesisUserControl(APublicationModel qualificationThesisModel) : base()
         {
+            InitializeComponent();
             this.qualificationThesisModel = qualificationThesisModel as QualificationThesisModel;
         }
 
-        public APublicationModel GetModel()
+        public void ViewPublication(Publication publication)
         {
-            throw new NotImplementedException();
+            QualificationThesis qualificationThesis = publication.QualificationThesis;
+
+            addressTextBox.Text = qualificationThesis.Address;
+            schoolTextBox.Text = qualificationThesis.School;
+
+            if (qualificationThesis.ThesisType == QualificationThesisModel.TYPE_MASTER_THESIS)
+            {
+                masterThesisRadioButton.IsChecked = true;
+            }
+            else if (qualificationThesis.ThesisType == QualificationThesisModel.TYPE_PHD_THESIS)
+            {
+                phdThesisRadioButton.IsChecked = true;
+            }
         }
 
-        public void GetSpecificBibliography(Publication publication)
+        private QualificationThesis getPublicationTypeSpecificBibliography()
         {
-            throw new NotImplementedException();
+            QualificationThesis qualificationThesis = new QualificationThesis();
+
+            qualificationThesis.Address = addressTextBox.Text;
+            qualificationThesis.School = schoolTextBox.Text;
+
+            if (masterThesisRadioButton.IsChecked == true)
+            {
+                qualificationThesis.ThesisType = QualificationThesisModel.TYPE_MASTER_THESIS;
+            }
+            else if (phdThesisRadioButton.IsChecked == true)
+            {
+                qualificationThesis.ThesisType = QualificationThesisModel.TYPE_PHD_THESIS;
+            }
+
+            return qualificationThesis;
+        }
+
+        public void InsertPublication(Publication publication, List<Author> authors)
+        {
+            QualificationThesis qualificationThesis = getPublicationTypeSpecificBibliography();
+            qualificationThesisModel.CreatePublication(publication, authors[0], qualificationThesis);
+        }
+
+        public void EditPublication(int publicationId, Publication publication, List<Author> authors)
+        {
+            QualificationThesis qualificationThesis = getPublicationTypeSpecificBibliography();
+            qualificationThesisModel.UpdatePublication(publicationId, publication, authors[0], qualificationThesis);
+        }
+
+        public void DeletePublication(int publicationId)
+        {
+            qualificationThesisModel.DeletePublication(publicationId);
         }
     }
 }

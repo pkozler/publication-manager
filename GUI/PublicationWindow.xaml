@@ -65,8 +65,8 @@
             <GroupBox x:Name="publicationContentGroupBox" Header="Obsah publikace" Grid.Row="1">
                 <Grid Margin="0,0,0,0">
                     <TextBox x:Name="contentTextBox" Margin="10,10,10,45" TextWrapping="Wrap" ToolTip="Vložte hlavní text publikace." AcceptsTab="True" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch"/>
-                    <Button x:Name="saveTextButton" Content="Uložit" HorizontalAlignment="Right" Margin="0,0,65,10" Padding="5,1" ToolTip="Otevře dialogové okno pro uložení zadaného textu publikace do souboru." Click="saveTextButton_Click" Height="30" FontSize="14" VerticalAlignment="Bottom"/>
-                    <Button x:Name="loadTextButton" Content="Načíst" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Padding="5,1" ToolTip="Otevře dialogové okno pro načtení textu publikace ze zadaného souboru." Click="loadTextButton_Click" Height="30" FontSize="14"/>
+                    <Button x:Name="copyTextButton" Content="Zkopírovat" HorizontalAlignment="Right" Margin="0,0,62,10" Padding="5,1" ToolTip="Zkopíruje text publikace do schránky." Height="30" FontSize="14" VerticalAlignment="Bottom" Click="copyTextButton_Click"/>
+                    <Button x:Name="pasteTextButton" Content="Vložit" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Padding="5,1" ToolTip="Vloží text publikace ze schránky." Height="30" FontSize="14" Click="pasteTextButton_Click"/>
                 </Grid>
             </GroupBox>
             <Button x:Name="insertPublicationButton" Content="Vložit publikaci" Margin="0,10,264,10" Grid.Row="2" Padding="5,1" HorizontalAlignment="Right" ToolTip="Uloží záznam o nově evidované publikaci se zadanými údaji." Click="insertPublicationButton_Click" Height="30" FontSize="14"/>
@@ -95,14 +95,10 @@
             <Grid Margin="6,10,6,6">
                 <GroupBox x:Name="typeSpecificBibliographyGroupBox" Header="Podrobné bibliografické údaje podle typu" Margin="0,-10,-6,-6">
                     <Grid x:Name="typeSpecificBibliographyGrid" Margin="0,0,0,0">
-                        <local:ConferenceArticleUserControl x:Name="conferenceArticleBibliography" Visibility="Collapsed"/>
-                        <local:JournalArticleUserControl x:Name="journalArticleBibliography" Visibility="Collapsed"/>
-                        <local:TechnicalReportUserControl x:Name="technicalReportBibliography" Visibility="Collapsed"/>
-                        <local:QualificationThesisUserControl x:Name="qualificationThesisBibliography" Visibility="Collapsed"/>
                     </Grid>
                 </GroupBox>
             </Grid>
-            <Button x:Name="openAttachmentButton" Content="Otevřít přílohu" HorizontalAlignment="Left" Margin="111,10,0,10" Grid.Row="2" IsEnabled="False" Padding="5,1" ToolTip="Otevře přílohu publikace vybranou ze seznamu." Click="openAttachmentButton_Click" Height="30" FontSize="14"/>
+            <Button x:Name="copyAttachmentButton" Content="Otevřít přílohu" HorizontalAlignment="Left" Margin="111,10,0,10" Grid.Row="2" IsEnabled="False" Padding="5,1" ToolTip="Otevře přílohu publikace vybranou ze seznamu." Height="30" FontSize="14" Click="copyAttachmentButton_Click"/>
         </Grid>
     </Grid>
 </Window>

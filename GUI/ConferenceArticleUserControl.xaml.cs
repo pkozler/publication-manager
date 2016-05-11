@@ -24,28 +24,74 @@ namespace GUI
     public partial class ConferenceArticleUserControl : UserControl, IPublishableForm
     {
         private ConferenceArticleModel conferenceArticleModel;
-
-        /// <summary>
-        /// Provede inicializaci komponent.
-        /// </summary>
-        public ConferenceArticleUserControl()
-        {
-            InitializeComponent();
-        }
-
+        
         public ConferenceArticleUserControl(APublicationModel conferenceArticleModel) : base()
         {
+            InitializeComponent();
             this.conferenceArticleModel = conferenceArticleModel as ConferenceArticleModel;
         }
 
-        public APublicationModel GetModel()
+        public void ViewPublication(Publication publication)
         {
-            throw new NotImplementedException();
+            ConferenceArticle conferenceArticle = publication.ConferenceArticle;
+
+            bookTitleTextBox.Text = conferenceArticle.BookTitle;
+            addressTextBox.Text = conferenceArticle.Address;
+            publisherTextBox.Text = conferenceArticle.Publisher;
+            fromPageTextBox.Text = conferenceArticle.FromPage.ToString();
+            toPageTextBox.Text = conferenceArticle.ToPage.ToString();
+            identificationTextBox.Text = string.IsNullOrEmpty(conferenceArticle.ISSN) ?
+                conferenceArticle.ISBN : conferenceArticle.ISSN;
+
+            if (!string.IsNullOrEmpty(conferenceArticle.ISBN))
+            {
+                isbnRadioButton.IsChecked = true;
+            }
+            else if (!string.IsNullOrEmpty(conferenceArticle.ISSN))
+            {
+                issnRadioButton.IsChecked = true;
+            }
         }
 
-        public void GetSpecificBibliography(Publication publication)
+        private ConferenceArticle getPublicationTypeSpecificBibliography()
         {
-            throw new NotImplementedException();
+            ConferenceArticle conferenceArticle = new ConferenceArticle();
+
+            conferenceArticle.BookTitle = bookTitleTextBox.Text;
+            conferenceArticle.Address = addressTextBox.Text;
+            conferenceArticle.Publisher = publisherTextBox.Text;
+            conferenceArticle.FromPage = int.Parse(fromPageTextBox.Text);
+            conferenceArticle.ToPage = int.Parse(toPageTextBox.Text);
+            identificationTextBox.Text = string.IsNullOrEmpty(conferenceArticle.ISSN) ?
+                conferenceArticle.ISBN : conferenceArticle.ISSN;
+
+            if (isbnRadioButton.IsChecked == true)
+            {
+                conferenceArticle.ISBN = identificationTextBox.Text;
+            }
+            else if (issnRadioButton.IsChecked == true)
+            {
+                conferenceArticle.ISSN = identificationTextBox.Text;
+            }
+
+            return conferenceArticle;
+        }
+
+        public void InsertPublication(Publication publication, List<Author> authors)
+        {
+            ConferenceArticle conferenceArticle = getPublicationTypeSpecificBibliography();
+            conferenceArticleModel.CreatePublication(publication, authors, conferenceArticle);
+        }
+
+        public void EditPublication(int publicationId, Publication publication, List<Author> authors)
+        {
+            ConferenceArticle conferenceArticle = getPublicationTypeSpecificBibliography();
+            conferenceArticleModel.UpdatePublication(publicationId, publication, authors, conferenceArticle);
+        }
+
+        public void DeletePublication(int publicationId)
+        {
+            conferenceArticleModel.DeletePublication(publicationId);
         }
     }
 }

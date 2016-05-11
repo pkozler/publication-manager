@@ -10,9 +10,9 @@
         <Label x:Name="addressLabel" Content="Místo vydání:" HorizontalAlignment="Left" Margin="77,10,0,0" VerticalAlignment="Top"/>
         <Label x:Name="institutionLabel" Content="Vydavatel:" HorizontalAlignment="Left" Margin="97,39,0,0" VerticalAlignment="Top"/>
         <Label x:Name="numberLabel" Content="Označení a číslo zprávy:" HorizontalAlignment="Left" Margin="10,68,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="addressTextBox" Height="23" Margin="181,16,10,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="Zadejte místo vydání citované zprávy."/>
-        <TextBox x:Name="institutionTextBox" Height="23" Margin="181,45,10,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="Zadejte název instituce vydávající citovanou zprávu."/>
-        <TextBox x:Name="numberTextBox" Margin="181,74,10,0" TextWrapping="Wrap" Height="23" VerticalAlignment="Top" ToolTip="Zadejte označení citované zprávy spolu s číslem."/>
+        <TextBox x:Name="addressTextBox" Height="23" Margin="181,16,10,0" VerticalAlignment="Top" ToolTip="Zadejte místo vydání citované zprávy."/>
+        <TextBox x:Name="institutionTextBox" Height="23" Margin="181,45,10,0" VerticalAlignment="Top" ToolTip="Zadejte název instituce vydávající citovanou zprávu."/>
+        <TextBox x:Name="numberTextBox" Margin="181,74,10,0" Height="23" VerticalAlignment="Top" ToolTip="Zadejte označení citované zprávy spolu s číslem."/>
 
     </Grid>
 </UserControl>

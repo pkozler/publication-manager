@@ -1,8 +1,8 @@
+C:\Users\pkout\Dropbox\cs\NET\GUI\bin\Debug\DbPublication.mdf
 C:\Users\pkout\Dropbox\cs\NET\GUI\bin\Debug\default-templates\conference-article.st
 C:\Users\pkout\Dropbox\cs\NET\GUI\bin\Debug\default-templates\journal-article.st
 C:\Users\pkout\Dropbox\cs\NET\GUI\bin\Debug\default-templates\qualification-thesis.st
 C:\Users\pkout\Dropbox\cs\NET\GUI\bin\Debug\default-templates\technical-report.st
-C:\Users\pkout\Dropbox\cs\NET\GUI\bin\Debug\DbPublication.mdf
 C:\Users\pkout\Dropbox\cs\NET\GUI\bin\Debug\DbPublication_log.ldf
 C:\Users\pkout\Dropbox\cs\NET\GUI\bin\Debug\PublicationManager.exe.config
 C:\Users\pkout\Dropbox\cs\NET\GUI\bin\Debug\PublicationManager.exe
@@ -43,4 +43,3 @@ C:\Users\pkout\Dropbox\cs\NET\GUI\obj\Debug\GUI.Properties.Resources.resources
 C:\Users\pkout\Dropbox\cs\NET\GUI\obj\Debug\GUI.csproj.GenerateResource.Cache
 C:\Users\pkout\Dropbox\cs\NET\GUI\obj\Debug\PublicationManager.exe
 C:\Users\pkout\Dropbox\cs\NET\GUI\obj\Debug\PublicationManager.pdb
-C:\Users\pkout\Dropbox\cs\NET\GUI\obj\Debug\GeneratedInternalTypeHelper.g.cs

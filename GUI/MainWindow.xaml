@@ -54,13 +54,6 @@
                     <Label x:Name="authorFilterLabel" Content="ID autora:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
                     <Label x:Name="yearFilterLabel" Content="Rok vydání:" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top"/>
                     <Label x:Name="typeFilterLabel" Content="Typ publikace:" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="2" VerticalAlignment="Top"/>
-                    <ListView x:Name="yearFilterListView" Margin="10,44,10,10" Grid.Row="1" ToolTip="Vyberte roky vydání publikací, které budou zobrazeny v seznamu po obnovení výpisu, nebo ponechte výběr prázdný pro výpis publikací vydaných v libovolném roce.">
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn/>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
                     <ListView x:Name="typeFilterListView" Margin="10,44,10,10" Grid.Row="2" ToolTip="Vyberte podporované typy evidovaných publikací, které budou zobrazeny v seznamu po obnovení výpisu, nebo ponechte výběr prázdný pro výpis všech typů publikací.">
                         <ListView.View>
                             <GridView>
@@ -68,6 +61,10 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
+                    <TextBox x:Name="yearFilterTextbox" Margin="10,44,10,10" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Stretch" ToolTip="Zadejte roky vydání publikací (každý na jeden řádek), které budou zobrazeny v seznamu po obnovení výpisu, nebo ponechte pole prázdné pro výpis publikací vydaných v libovolném roce." AcceptsTab="True" AcceptsReturn="True"/>
+                    <Button x:Name="clearAuthorFilterButton" Content="Všechny" HorizontalAlignment="Right" Margin="0,15,10,0" VerticalAlignment="Top" Click="clearAuthorFilterButton_Click"/>
+                    <Button x:Name="clearYearFilterButton" Content="Všechny" HorizontalAlignment="Right" Margin="0,15,10,0" VerticalAlignment="Top" Grid.Row="1" Click="clearYearFilterButton_Click"/>
+                    <Button x:Name="clearTypeFilterButton" Content="Všechny" HorizontalAlignment="Right" Margin="0,15,10,0" VerticalAlignment="Top" Grid.Row="2" Click="clearTypeFilterButton_Click"/>
                 </Grid>
             </GroupBox>
             <GroupBox x:Name="publicationListGroupBox" Grid.Column="1" Header="Publikace">
@@ -90,7 +87,7 @@
                             <DataGridTemplateColumn Header="Autoři">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <ItemsControl ItemsSource="{Binding Author}" DisplayMemberPath="Fullname"/>
+                                        <ItemsControl ItemsSource="{Binding Author}" DisplayMemberPath="Surname"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>

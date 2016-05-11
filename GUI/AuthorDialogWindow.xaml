@@ -13,8 +13,8 @@
         </Grid.ColumnDefinitions>
         <Label x:Name="nameLabel" Content="Jméno:" Margin="0,10,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Height="29"/>
         <Label x:Name="surnameLabel" Content="Příjmení:" Margin="0,44,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Height="29"/>
-        <TextBox x:Name="nameTextBox" Height="23" Margin="10,16,10,0" VerticalAlignment="Top" Grid.Column="1" ToolTip="Zadejte křestní jméno (jména) nového autora."/>
-        <TextBox x:Name="surnameTextBox" Height="23" Margin="10,50,10,0" VerticalAlignment="Top" Grid.Column="1" ToolTip="Zadejte příjmení nového autora."/>
+        <TextBox x:Name="nameTextBox" Height="23" Margin="10,16,10,0" VerticalAlignment="Top" Grid.Column="1" ToolTip="Zadejte křestní jméno (jména) nového autora." TextChanged="textBoxes_TextChanged"/>
+        <TextBox x:Name="surnameTextBox" Height="23" Margin="10,50,10,0" VerticalAlignment="Top" Grid.Column="1" ToolTip="Zadejte příjmení nového autora." TextChanged="textBoxes_TextChanged"/>
         <Button x:Name="okButton" Content="Přidat" HorizontalAlignment="Right" Margin="0,0,62,10" VerticalAlignment="Bottom" BorderThickness="1" Padding="5,1" Grid.Column="1" IsDefault="True" Click="okButton_Click" ToolTip="Potvrdí vytvoření autora a jeho uložení do seznamu autorů publikace." IsEnabled="False" Height="30" FontSize="14"/>
         <Button x:Name="cancelButton" Content="Zrušit" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Padding="5,1" Grid.Column="1" IsCancel="True" Click="cancelButton_Click" Height="30" FontSize="14"/>
     </Grid>

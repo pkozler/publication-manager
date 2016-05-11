@@ -24,28 +24,52 @@ namespace GUI
     public partial class JournalArticleUserControl : UserControl, IPublishableForm
     {
         private JournalArticleModel journalArticleModel;
-
-        /// <summary>
-        /// Provede inicializaci komponent.
-        /// </summary>
-        public JournalArticleUserControl()
-        {
-            InitializeComponent();
-        }
-
+        
         public JournalArticleUserControl(APublicationModel journalArticleModel) : base()
         {
+            InitializeComponent();
             this.journalArticleModel = journalArticleModel as JournalArticleModel;
         }
 
-        public APublicationModel GetModel()
+        public void ViewPublication(Publication publication)
         {
-            throw new NotImplementedException();
+            JournalArticle journalArticle = publication.JournalArticle;
+
+            journalTitleTextBox.Text = journalArticle.JournalTitle;
+            numberTextBox.Text = journalArticle.Number;
+            fromPageTextBox.Text = journalArticle.FromPage.ToString();
+            toPageTextBox.Text = journalArticle.ToPage.ToString();
+            issnTextBox.Text = journalArticle.ISSN;
         }
 
-        public void GetSpecificBibliography(Publication publication)
+        private JournalArticle getPublicationTypeSpecificBibliography()
         {
-            throw new NotImplementedException();
+            JournalArticle journalArticle = new JournalArticle();
+
+            journalArticle.JournalTitle = journalTitleTextBox.Text;
+            journalArticle.Number = numberTextBox.Text;
+            journalArticle.FromPage = int.Parse(fromPageTextBox.Text);
+            journalArticle.ToPage = int.Parse(toPageTextBox.Text);
+            journalArticle.ISSN = issnTextBox.Text;
+
+            return journalArticle;
+        }
+
+        public void InsertPublication(Publication publication, List<Author> authors)
+        {
+            JournalArticle journalArticle = getPublicationTypeSpecificBibliography();
+            journalArticleModel.CreatePublication(publication, authors, journalArticle);
+        }
+
+        public void EditPublication(int publicationId, Publication publication, List<Author> authors)
+        {
+            JournalArticle journalArticle = getPublicationTypeSpecificBibliography();
+            journalArticleModel.UpdatePublication(publicationId, publication, authors, journalArticle);
+        }
+
+        public void DeletePublication(int publicationId)
+        {
+            journalArticleModel.DeletePublication(publicationId);
         }
     }
 }

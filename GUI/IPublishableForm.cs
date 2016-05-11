@@ -9,16 +9,12 @@ namespace GUI
 {
     public interface IPublishableForm
     {
-        /// <summary>
-        /// Vrátí objekt datové vrstvy pro správu příslušného typu publikací.
-        /// </summary>
-        /// <returns>objekt pro správu</returns>
-        APublicationModel GetModel();
+        void ViewPublication(Publication publication);
         
-        /// <summary>
-        /// Vypíše uložené specifické údaje aktuální zobrazené publikace konkrétního typu.
-        /// </summary>
-        /// <param name="publication">aktuální publikace</param>
-        void GetSpecificBibliography(Publication publication);
+        void InsertPublication(Publication publication, List<Author> authors);
+        
+        void EditPublication(int publicationId, Publication publication, List<Author> authors);
+        
+        void DeletePublication(int publicationId);
     }
 }

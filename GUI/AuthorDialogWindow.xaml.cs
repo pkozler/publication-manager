@@ -47,5 +47,11 @@ namespace GUI
             DialogResult = false;
             Close();
         }
+
+        private void textBoxes_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            okButton.IsEnabled = !string.IsNullOrWhiteSpace(nameTextBox.Text)
+                && !string.IsNullOrWhiteSpace(surnameTextBox.Text);
+        }
     }
 }

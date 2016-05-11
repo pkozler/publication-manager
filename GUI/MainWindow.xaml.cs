@@ -76,6 +76,9 @@ namespace GUI
 
             publications = new ObservableCollection<Publication>(publicationModel.GetPublications());
             publicationDataGrid.ItemsSource = publications;
+
+            authorFilterListView.ItemsSource = authorModel.GetAuthors();
+            typeFilterListView.ItemsSource = publicationTypes;
         }
 
         /// <summary>
@@ -177,30 +180,59 @@ namespace GUI
                 .ExportPublicationToHtmlDocument(publication, templatePath, htmlPath);
         }
 
+        private void clearAuthorFilterButton_Click(object sender, RoutedEventArgs e)
+        {
+            authorFilterListView.SelectedItems.Clear();
+        }
+
+        private void clearYearFilterButton_Click(object sender, RoutedEventArgs e)
+        {
+            yearFilterTextbox.Clear();
+        }
+
+        private void clearTypeFilterButton_Click(object sender, RoutedEventArgs e)
+        {
+            typeFilterListView.SelectedItems.Clear();
+        }
+
         private void filterPublicationsMenuItem_Click(object sender, RoutedEventArgs e)
         {
             HashSet<int> authorFilter = new HashSet<int>();
             HashSet<int> yearFilter = new HashSet<int>();
             HashSet<string> publicationTypeFilter = new HashSet<string>();
 
-            foreach (int authorId in authorFilterListView.Items)
+            foreach (Author author in authorFilterListView.SelectedItems)
             {
-                authorFilter.Add(authorId);
+                authorFilter.Add(author.Id);
             }
 
-            foreach (int year in yearFilterListView.Items)
+            string[] lines = yearFilterTextbox.Text.Split('\n');
+
+            foreach (string line in lines)
             {
+                int year;
+
+                if (!int.TryParse(line, out year))
+                {
+                    continue;
+                }
+
                 yearFilter.Add(year);
             }
 
-            foreach (string type in typeFilterListView.Items)
+            foreach (PublicationType type in typeFilterListView.SelectedItems)
             {
-                publicationTypeFilter.Add(type);
+                publicationTypeFilter.Add(type.Name);
             }
 
-            publications = new ObservableCollection<Publication>(
-                publicationModel.GetPublications(authorFilter, yearFilter, publicationTypeFilter));
-            publicationDataGrid.ItemsSource = publications;
+            List<Publication> publicationList = publicationModel.GetPublications(
+                authorFilter, yearFilter, publicationTypeFilter);
+            publications.Clear();
+
+            foreach (Publication publication in publicationList)
+            {
+                publications.Add(publication);
+            }
         }
         
         private void setButtonsEnabled(bool enabled)

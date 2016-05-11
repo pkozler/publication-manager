@@ -10,11 +10,11 @@
         <Label x:Name="addressLabel" Content="Místo vytvoření:" HorizontalAlignment="Left" Margin="49,10,0,0" VerticalAlignment="Top"/>
         <Label x:Name="schoolLabel" Content="Název školy:" HorizontalAlignment="Left" Margin="74,39,0,0" VerticalAlignment="Top"/>
         <Label x:Name="thesisTypeLabel" Content="Typ kvalifikační práce:" HorizontalAlignment="Left" Margin="10,68,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="addressTextBox" Height="23" Margin="171,16,10,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="Zadejte místo vytvoření citované práce."/>
-        <TextBox x:Name="schoolTextBox" Height="23" Margin="171,45,10,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="Zadejte název školy, na které byla citovaná práce vytvořena."/>
-        <StackPanel HorizontalAlignment="Right" Height="15" Margin="0,76,4,0" VerticalAlignment="Top" Width="225" Orientation="Horizontal" ToolTip="Zvolte, jakého typu je citovaná práce.">
-            <RadioButton x:Name="masterThesisRadioButton" Content="Diplomová práce" HorizontalAlignment="Right" VerticalAlignment="Top" GroupName="thesisTypeGroup" Width="115"/>
-            <RadioButton x:Name="phdThesisRadioButton" Content="Disertační práce" HorizontalAlignment="Right" VerticalAlignment="Top" GroupName="thesisTypeGroup"/>
+        <TextBox x:Name="addressTextBox" Height="23" Margin="171,16,10,0" VerticalAlignment="Top" ToolTip="Zadejte místo vytvoření citované práce."/>
+        <TextBox x:Name="schoolTextBox" Height="23" Margin="171,45,10,0" VerticalAlignment="Top" ToolTip="Zadejte název školy, na které byla citovaná práce vytvořena."/>
+        <StackPanel HorizontalAlignment="Left" Height="21" Margin="171,76,0,0" VerticalAlignment="Top" Width="180" Orientation="Horizontal" ToolTip="Zvolte, jakého typu je citovaná práce.">
+            <RadioButton x:Name="masterThesisRadioButton" Content="Diplomová" HorizontalAlignment="Right" GroupName="thesisTypeGroup" Width="90" FontSize="14" Height="18" VerticalAlignment="Top"/>
+            <RadioButton x:Name="phdThesisRadioButton" Content="Disertační" HorizontalAlignment="Right" VerticalAlignment="Top" GroupName="thesisTypeGroup" FontSize="14" Width="90"/>
         </StackPanel>
 
     </Grid>
