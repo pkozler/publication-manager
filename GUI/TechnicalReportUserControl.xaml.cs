@@ -40,27 +40,51 @@ namespace GUI
             numberTextBox.Text = technicalReport.Number;
         }
 
-        private TechnicalReport getPublicationTypeSpecificBibliography()
+        public List<string> ValidatePublicationTypeSpecificBibliography(
+            Publication publication, List<Author> authors, out ASpecificPublication specificPublication)
         {
-            TechnicalReport technicalReport = new TechnicalReport();
+            List<string> errors = new List<string>();
+            specificPublication = new TechnicalReport();
+            TechnicalReport technicalReport = specificPublication as TechnicalReport;
 
-            technicalReport.Address = addressTextBox.Text;
-            technicalReport.Institution = institutionTextBox.Text;
-            technicalReport.Number = numberTextBox.Text;
+            if (string.IsNullOrWhiteSpace(addressTextBox.Text))
+            {
+                errors.Add("Místo vydání nesmí být prázdné.");
+            }
+            else
+            {
+                technicalReport.Address = addressTextBox.Text;
+            }
 
-            return technicalReport;
+            if (string.IsNullOrWhiteSpace(institutionTextBox.Text))
+            {
+                errors.Add("Jméno vydavatele nesmí být prázdné.");
+            }
+            else
+            {
+                technicalReport.Institution = institutionTextBox.Text;
+            }
+
+            if (string.IsNullOrWhiteSpace(numberTextBox.Text))
+            {
+                errors.Add("Číslo s označením zprávy nesmí být prázdné.");
+            }
+            else
+            {
+                technicalReport.Number = numberTextBox.Text;
+            }
+            
+            return errors;
         }
 
-        public void InsertPublication(Publication publication, List<Author> authors)
+        public void InsertPublication(Publication publication, List<Author> authors, ASpecificPublication specificPublication)
         {
-            TechnicalReport technicalReport = getPublicationTypeSpecificBibliography();
-            technicalReportModel.CreatePublication(publication, authors, technicalReport);
+            technicalReportModel.CreatePublication(publication, authors, specificPublication as TechnicalReport);
         }
 
-        public void EditPublication(int publicationId, Publication publication, List<Author> authors)
+        public void EditPublication(int publicationId, Publication publication, List<Author> authors, ASpecificPublication specificPublication)
         {
-            TechnicalReport technicalReport = getPublicationTypeSpecificBibliography();
-            technicalReportModel.UpdatePublication(publicationId, publication, authors, technicalReport);
+            technicalReportModel.UpdatePublication(publicationId, publication, authors, specificPublication as TechnicalReport);
         }
 
         public void DeletePublication(int publicationId)

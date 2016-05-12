@@ -14,8 +14,8 @@
         <Label x:Name="issnLabel" Content="ISSN:" HorizontalAlignment="Left" Margin="149,97,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="journalTitleTextBox" Height="23" Margin="199,16,8,0" VerticalAlignment="Top" ToolTip="Zadejte název časopisu s citovaným článkem, volitelně i s místem vydání a jménem nakladatele."/>
         <TextBox x:Name="numberTextBox" Height="23" Margin="199,45,8,0" VerticalAlignment="Top" ToolTip="Zadejte číslo časopisu s citovaným článkem."/>
-        <TextBox x:Name="fromPageTextBox" Height="23" Margin="199,74,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="78" ToolTip="Zadejte číslo strany, na které začíná citovaný text."/>
-        <TextBox x:Name="toPageTextBox" HorizontalAlignment="Left" Height="23" Margin="312,74,0,0" VerticalAlignment="Top" Width="78" ToolTip="Zadejte číslo strany, na které končí citovaný text."/>
+        <TextBox x:Name="fromPageTextBox" Height="23" Margin="199,74,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="78" ToolTip="Zadejte číslo strany, na které začíná citovaný text." Text="1"/>
+        <TextBox x:Name="toPageTextBox" HorizontalAlignment="Left" Height="23" Margin="312,74,0,0" VerticalAlignment="Top" Width="78" ToolTip="Zadejte číslo strany, na které končí citovaný text." Text="1"/>
         <TextBox x:Name="issnTextBox" Margin="199,103,8,0" Height="23" VerticalAlignment="Top" ToolTip="Zadejte identifikační číslo (ISSN) časopisu."/>
     </Grid>
 </UserControl>

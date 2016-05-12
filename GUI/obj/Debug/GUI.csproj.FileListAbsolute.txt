@@ -43,3 +43,5 @@ C:\Users\pkout\Dropbox\cs\NET\GUI\obj\Debug\PublicationManager.exe
 C:\Users\pkout\Dropbox\cs\NET\GUI\obj\Debug\PublicationManager.pdb
 C:\Users\pkout\Dropbox\cs\NET\GUI\bin\Debug\DbPublication.mdf
 C:\Users\pkout\Dropbox\cs\NET\GUI\bin\Debug\DbPublication_log.ldf
+C:\Users\pkout\Dropbox\cs\NET\GUI\obj\Debug\ErrorWindow.g.cs
+C:\Users\pkout\Dropbox\cs\NET\GUI\obj\Debug\ErrorWindow.baml

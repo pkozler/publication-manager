@@ -12,7 +12,7 @@ namespace Core
     using System;
     using System.Collections.Generic;
     
-    public partial class ConferenceArticle
+    public partial class ConferenceArticle : ASpecificPublication
     {
         public int PublicationId { get; set; }
         public string BookTitle { get; set; }

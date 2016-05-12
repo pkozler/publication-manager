@@ -16,6 +16,7 @@ using System.IO;
 using System.Diagnostics;
 using Microsoft.Win32;
 using Core;
+using System.Data.Entity.Validation;
 
 namespace GUI
 {
@@ -28,7 +29,7 @@ namespace GUI
     /// </summary>
     public partial class PublicationWindow : Window
     {
-        private Publication publication;
+        private Publication originalPublication;
 
         private ObservableCollection<Attachment> attachments;
         
@@ -41,19 +42,20 @@ namespace GUI
         private IPublishableForm currentBibliographyForm = null;
         
         public PublicationWindow(AuthorModel authorModel, AttachmentModel attachmentModel,
-            List<PublicationType> publicationTypes, Publication publication = null)
+            List<PublicationType> publicationTypes, Publication originalPublication = null)
         {
             InitializeComponent();
 
             this.authorModel = authorModel;
             this.attachmentModel = attachmentModel;
             this.publicationTypes = publicationTypes;
-            this.publication = publication;
+            this.originalPublication = originalPublication;
+            typeComboBox.ItemsSource = publicationTypes;
 
-            if (publication == null)
+            if (originalPublication == null)
             {
-                typeComboBox.ItemsSource = publicationTypes;
                 attachmentDataGrid.IsEnabled = false;
+                originalPublication = new Publication();
 
                 return;
             }
@@ -66,22 +68,25 @@ namespace GUI
             removeAttachmentButton.IsEnabled = true;
 
             attachments = new ObservableCollection<Attachment>(
-                attachmentModel.GetAttachmentsByPublication(publication));
+                attachmentModel.GetAttachmentsByPublication(originalPublication));
             attachmentDataGrid.ItemsSource = attachments;
 
-            bibtexEntryTextBox.Text = publication.Entry;
-            titleTextBox.Text = publication.Title;
-            yearTextBox.Text = publication.Year.ToString();
-
-            typeComboBox.ItemsSource = publicationTypes;
-            typeComboBox.SelectedValue = PublicationType.GetTypeByName(publicationTypes, publication.Type);
+            bibtexEntryTextBox.Text = originalPublication.Entry;
+            titleTextBox.Text = originalPublication.Title;
+            yearTextBox.Text = originalPublication.Year.ToString();
+            
+            typeComboBox.SelectedValue = PublicationType.GetTypeByName(publicationTypes, originalPublication.Type);
             typeComboBox.IsEnabled = false;
 
-            publicationAuthorListView.ItemsSource = publication.Author;
-            contentTextBox.Text = publication.Text;
+            foreach (Author author in originalPublication.Author)
+            {
+                publicationAuthorListView.Items.Add(author);
+            }
+
+            contentTextBox.Text = originalPublication.Text;
 
             setBibliographyForm();
-            currentBibliographyForm.ViewPublication(publication);
+            currentBibliographyForm.ViewPublication(originalPublication);
         }
 
         private void setBibliographyForm()
@@ -146,7 +151,7 @@ namespace GUI
 
         private void savedAuthorButton_Click(object sender, RoutedEventArgs e)
         {
-            AuthorWindow authorDialog = new AuthorWindow(authorModel);
+            AuthorWindow authorDialog = new AuthorWindow(authorModel, originalPublication);
             authorDialog.ShowDialog();
 
             if (authorDialog.DialogResult == true)
@@ -172,49 +177,155 @@ namespace GUI
                 && publicationAuthorListView.Items.Count > 1;
         }
 
-        private Publication getPublicationBibliography()
+        private List<string> validatePublicationBibliography(out Publication publication)
         {
-            Publication publication = new Publication();
+            List<string> errors = new List<string>();
+            publication = new Publication();
 
-            publication.Entry = bibtexEntryTextBox.Text;
-            publication.Title = titleTextBox.Text;
-            publication.Year = int.Parse(yearTextBox.Text);
-            publication.Type = (typeComboBox.SelectedItem as PublicationType).Name;
+            if (string.IsNullOrWhiteSpace(bibtexEntryTextBox.Text))
+            {
+                errors.Add("BibTeX klíč nesmí být prázdný.");
+            }
+            else
+            {
+                publication.Entry = bibtexEntryTextBox.Text;
+            }
 
-            return publication;
+            if (string.IsNullOrWhiteSpace(titleTextBox.Text))
+            {
+                errors.Add("Název publikace nesmí být prázdný.");
+            }
+            else
+            {
+                publication.Title = titleTextBox.Text;
+            }
+
+            int year;
+            // omezení hodnot pro případ změny datového typu sloupce pro letopočet v databázi na typ "datum"
+            if (!int.TryParse(yearTextBox.Text, out year) || year < 0 || year > 9999)
+            {
+                errors.Add("Rok vydání musí být platné celé číslo, nesmí být menší než 0 ani větší než 9999.");
+            }
+            else
+            {
+                publication.Year = year;
+            }
+
+            if (string.IsNullOrWhiteSpace(contentTextBox.Text))
+            {
+                errors.Add("Obsah publikace nesmí být prázdný.");
+            }
+            else
+            {
+                publication.Text = contentTextBox.Text;
+            }
+
+            if (typeComboBox.SelectedItem == null)
+            {
+                errors.Add("Musí být vybrán typ publikace.");
+            }
+            else
+            {
+                publication.Type = (typeComboBox.SelectedItem as PublicationType).Name;
+            }
+            
+            return errors;
         }
 
-        private List<Author> getAuthorList()
+        private List<string> validateAuthorList(out List<Author> authors)
         {
-            List<Author> authors = new List<Author>();
+            List<string> errors = new List<string>();
+            authors = new List<Author>();
 
+            if (authors.Count < 1)
+            {
+                errors.Add("Musí být uveden alespoň jeden autor publikace.");
+            }
+            
             foreach (Author author in publicationAuthorListView.Items)
             {
                 authors.Add(author);
             }
 
-            return authors;
+            return errors;
+        }
+
+        private PublicationData getValidPublicationData(string errorMessage)
+        {
+            Publication publication;
+            List<Author> authors;
+            ASpecificPublication specificPublication;
+
+            List<string> publicationErrors = validatePublicationBibliography(out publication);
+            List<string> authorErrors = validateAuthorList(out authors);
+            List<string> specificPublicationErrors = currentBibliographyForm.
+                ValidatePublicationTypeSpecificBibliography(publication, authors, out specificPublication);
+
+            if (publicationErrors.Count > 0 || authorErrors.Count > 0 || specificPublicationErrors.Count > 0)
+            {
+                new ErrorWindow(errorMessage, publicationErrors, authorErrors, specificPublicationErrors).ShowDialog();
+
+                return null;
+            }
+
+            return new PublicationData(publication, authors, specificPublication);
         }
 
         private void insertPublicationButton_Click(object sender, RoutedEventArgs e)
         {
-            Publication publication = getPublicationBibliography();
-            List<Author> authors = getAuthorList();
-            currentBibliographyForm.InsertPublication(publication, authors);
+            PublicationData publicationData = getValidPublicationData("Neplatné údaje pro novou publikaci:");
+
+            if (publicationData == null)
+            {
+                return;
+            }
+
+            try
+            {
+                currentBibliographyForm.InsertPublication(
+                    publicationData.Publication, publicationData.Authors, publicationData.SpecificPublication);
+            }
+            catch (DbEntityValidationException ex)
+            {
+                MessageBox.Show("Chyba při vkládání záznamu publikace do databáze: " + ex.Message);
+            }
+            
             Close();
         }
 
         private void editPublicationButton_Click(object sender, RoutedEventArgs e)
         {
-            Publication publication = getPublicationBibliography();
-            List<Author> authors = getAuthorList();
-            currentBibliographyForm.EditPublication(this.publication.Id, publication, authors);
+            PublicationData publicationData = getValidPublicationData("Neplatné nové údaje pro publikaci:");
+
+            if (publicationData == null)
+            {
+                return;
+            }
+            
+            try
+            {
+                currentBibliographyForm.EditPublication(originalPublication.Id,
+                    publicationData.Publication, publicationData.Authors, publicationData.SpecificPublication);
+            }
+            catch (DbEntityValidationException ex)
+            {
+                MessageBox.Show("Chyba při editaci záznamu publikace v databázi: " + ex.Message);
+            }
+
             Close();
         }
 
         private void deletePublicationButton_Click(object sender, RoutedEventArgs e)
         {
-            currentBibliographyForm.DeletePublication(publication.Id);
+            try
+            {
+                currentBibliographyForm.DeletePublication(originalPublication.Id);
+            }
+            catch (DbEntityValidationException ex)
+            {
+                MessageBox.Show("Chyba při odstraňování záznamu publikace z databáze: " + ex.Message);
+            }
+
             Close();
         }
 
@@ -229,7 +340,7 @@ namespace GUI
             
             try
             {
-                attachmentModel.AddAttachmentToPublication(publication, openFile.FileName);
+                attachmentModel.AddAttachmentToPublication(originalPublication, openFile.FileName);
                 statusLabel.Content = "Soubor připojen." + openFile.FileName;
             }
             catch (IOException)
@@ -257,7 +368,7 @@ namespace GUI
 
             try
             {
-                attachmentModel.CopyAttachmentOfPublication(publication, saveFile.FileName, attachment.Id);
+                attachmentModel.CopyAttachmentOfPublication(originalPublication, saveFile.FileName, attachment.Id);
                 statusLabel.Content = "Soubor zkopírován." + saveFile.FileName;
             }
             catch (IOException)
@@ -275,7 +386,7 @@ namespace GUI
             }
 
             Attachment attachment = attachmentDataGrid.SelectedItem as Attachment;
-            attachmentModel.RemoveAttachmentFromPublication(publication, attachment.Id);
+            attachmentModel.RemoveAttachmentFromPublication(originalPublication, attachment.Id);
         }
 
         private void attachmentDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)

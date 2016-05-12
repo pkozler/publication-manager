@@ -12,7 +12,7 @@ namespace Core
     using System;
     using System.Collections.Generic;
     
-    public partial class QualificationThesis
+    public partial class QualificationThesis : ASpecificPublication
     {
         public int PublicationId { get; set; }
         public string School { get; set; }

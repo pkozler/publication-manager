@@ -53,40 +53,117 @@ namespace GUI
             }
         }
 
-        private ConferenceArticle getPublicationTypeSpecificBibliography()
+        public List<string> ValidatePublicationTypeSpecificBibliography(
+            Publication publication, List<Author> authors, out ASpecificPublication specificPublication)
         {
-            ConferenceArticle conferenceArticle = new ConferenceArticle();
-
-            conferenceArticle.BookTitle = bookTitleTextBox.Text;
-            conferenceArticle.Address = addressTextBox.Text;
-            conferenceArticle.Publisher = publisherTextBox.Text;
-            conferenceArticle.FromPage = int.Parse(fromPageTextBox.Text);
-            conferenceArticle.ToPage = int.Parse(toPageTextBox.Text);
-            identificationTextBox.Text = string.IsNullOrEmpty(conferenceArticle.ISSN) ?
-                conferenceArticle.ISBN : conferenceArticle.ISSN;
-
-            if (isbnRadioButton.IsChecked == true)
+            List<string> errors = new List<string>();
+            specificPublication = new ConferenceArticle();
+            ConferenceArticle conferenceArticle = specificPublication as ConferenceArticle;
+            
+            if (string.IsNullOrWhiteSpace(bookTitleTextBox.Text))
             {
-                conferenceArticle.ISBN = identificationTextBox.Text;
+                errors.Add("Název sborníku nesmí být prázdný.");
             }
-            else if (issnRadioButton.IsChecked == true)
+            else
             {
-                conferenceArticle.ISSN = identificationTextBox.Text;
+                conferenceArticle.BookTitle = bookTitleTextBox.Text;
             }
 
-            return conferenceArticle;
+            if (string.IsNullOrWhiteSpace(addressTextBox.Text))
+            {
+                errors.Add("Místo vydání nesmí být prázdné.");
+            }
+            else
+            {
+                conferenceArticle.Address = addressTextBox.Text;
+            }
+
+            if (string.IsNullOrWhiteSpace(publisherTextBox.Text))
+            {
+                errors.Add("Jméno vydavatele nesmí být prázdné.");
+            }
+            else
+            {
+                conferenceArticle.Publisher = publisherTextBox.Text;
+            }
+
+            int fromPage;
+            bool isFromPageEmpty = string.IsNullOrWhiteSpace(fromPageTextBox.Text);
+            bool isFromPageValid = int.TryParse(fromPageTextBox.Text, out fromPage) && fromPage > 0;
+
+            if (!isFromPageEmpty)
+            {
+                if (!isFromPageValid)
+                {
+
+                    errors.Add("Číslo počáteční strany sborníku s citovaným textem musí být platné kladné celé číslo.");
+                }
+                else
+                {
+                    conferenceArticle.FromPage = fromPage;
+                }
+            }
+
+            int toPage;
+            bool isToPageEmpty = string.IsNullOrWhiteSpace(toPageTextBox.Text);
+            bool isToPageValid = int.TryParse(toPageTextBox.Text, out toPage) && toPage > 0;
+
+            if (!isToPageEmpty)
+            {
+                if (!isToPageValid)
+                {
+                    errors.Add("Číslo poslední strany sborníku s citovaným textem musí být platné kladné celé číslo.");
+                }
+                else
+                {
+                    conferenceArticle.ToPage = toPage;
+                }
+            }
+
+            if (isToPageEmpty && isFromPageValid)
+            {
+                conferenceArticle.ToPage = fromPage;
+            }
+            else if (isFromPageEmpty && isToPageValid)
+            {
+                conferenceArticle.FromPage = 1;
+            }
+            else
+            {
+                errors.Add("Musí být uvedena alespoň jedna ze stran sborníku, které ohraničují citovaný text.");
+            }
+
+            if (string.IsNullOrWhiteSpace(identificationTextBox.Text))
+            {
+                errors.Add("Identifikační číslo (ISBN/ISSN) nesmí být prázdné.");
+            }
+            else
+            {
+                if (isbnRadioButton.IsChecked == true)
+                {
+                    conferenceArticle.ISBN = identificationTextBox.Text;
+                }
+                else if (issnRadioButton.IsChecked == true)
+                {
+                    conferenceArticle.ISSN = identificationTextBox.Text;
+                }
+                else
+                {
+                    errors.Add("Musí být vybrán typ identifikačního čísla.");
+                }
+            }
+            
+            return errors;
         }
 
-        public void InsertPublication(Publication publication, List<Author> authors)
+        public void InsertPublication(Publication publication, List<Author> authors, ASpecificPublication specificPublication)
         {
-            ConferenceArticle conferenceArticle = getPublicationTypeSpecificBibliography();
-            conferenceArticleModel.CreatePublication(publication, authors, conferenceArticle);
+            conferenceArticleModel.CreatePublication(publication, authors, specificPublication as ConferenceArticle);
         }
 
-        public void EditPublication(int publicationId, Publication publication, List<Author> authors)
+        public void EditPublication(int publicationId, Publication publication, List<Author> authors, ASpecificPublication specificPublication)
         {
-            ConferenceArticle conferenceArticle = getPublicationTypeSpecificBibliography();
-            conferenceArticleModel.UpdatePublication(publicationId, publication, authors, conferenceArticle);
+            conferenceArticleModel.UpdatePublication(publicationId, publication, authors, specificPublication as ConferenceArticle);
         }
 
         public void DeletePublication(int publicationId)

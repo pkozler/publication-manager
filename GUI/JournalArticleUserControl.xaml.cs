@@ -42,29 +42,97 @@ namespace GUI
             issnTextBox.Text = journalArticle.ISSN;
         }
 
-        private JournalArticle getPublicationTypeSpecificBibliography()
+        public List<string> ValidatePublicationTypeSpecificBibliography(
+            Publication publication, List<Author> authors, out ASpecificPublication specificPublication)
         {
-            JournalArticle journalArticle = new JournalArticle();
+            List<string> errors = new List<string>();
+            specificPublication = new JournalArticle();
+            JournalArticle journalArticle = specificPublication as JournalArticle;
 
-            journalArticle.JournalTitle = journalTitleTextBox.Text;
-            journalArticle.Number = numberTextBox.Text;
-            journalArticle.FromPage = int.Parse(fromPageTextBox.Text);
-            journalArticle.ToPage = int.Parse(toPageTextBox.Text);
-            journalArticle.ISSN = issnTextBox.Text;
+            if (string.IsNullOrWhiteSpace(journalTitleTextBox.Text))
+            {
+                errors.Add("Název časopisu nesmí být prázdný.");
+            }
+            else
+            {
+                journalArticle.JournalTitle = journalTitleTextBox.Text;
+            }
 
-            return journalArticle;
+            if (string.IsNullOrWhiteSpace(numberTextBox.Text))
+            {
+                errors.Add("Číslo časopisu nesmí být prázdné.");
+            }
+            else
+            {
+                journalArticle.Number = numberTextBox.Text;
+            }
+
+            int fromPage;
+            bool isFromPageEmpty = string.IsNullOrWhiteSpace(fromPageTextBox.Text);
+            bool isFromPageValid = int.TryParse(fromPageTextBox.Text, out fromPage) && fromPage > 0;
+
+            if (!isFromPageEmpty)
+            {
+                if (!isFromPageValid)
+                {
+
+                    errors.Add("Číslo počáteční strany časopisu s citovaným textem musí být platné kladné celé číslo.");
+                }
+                else
+                {
+                    journalArticle.FromPage = fromPage;
+                }
+            }
+
+            int toPage;
+            bool isToPageEmpty = string.IsNullOrWhiteSpace(toPageTextBox.Text);
+            bool isToPageValid = int.TryParse(toPageTextBox.Text, out toPage) && toPage > 0;
+
+            if (!isToPageEmpty)
+            {
+                if (!isToPageValid)
+                {
+                    errors.Add("Číslo poslední strany časopisu s citovaným textem musí být platné kladné celé číslo.");
+                }
+                else
+                {
+                    journalArticle.ToPage = toPage;
+                }
+            }
+
+            if (isToPageEmpty && isFromPageValid)
+            {
+                journalArticle.ToPage = fromPage;
+            }
+            else if (isFromPageEmpty && isToPageValid)
+            {
+                journalArticle.FromPage = 1;
+            }
+            else
+            {
+                errors.Add("Musí být uvedena alespoň jedna ze stran časopisu, které ohraničují citovaný text.");
+            }
+
+            if (string.IsNullOrWhiteSpace(issnTextBox.Text))
+            {
+                errors.Add("ISSN nesmí být prázdné.");
+            }
+            else
+            {
+                journalArticle.ISSN = issnTextBox.Text;
+            }
+            
+            return errors;
         }
 
-        public void InsertPublication(Publication publication, List<Author> authors)
+        public void InsertPublication(Publication publication, List<Author> authors, ASpecificPublication specificPublication)
         {
-            JournalArticle journalArticle = getPublicationTypeSpecificBibliography();
-            journalArticleModel.CreatePublication(publication, authors, journalArticle);
+            journalArticleModel.CreatePublication(publication, authors, specificPublication as JournalArticle);
         }
 
-        public void EditPublication(int publicationId, Publication publication, List<Author> authors)
+        public void EditPublication(int publicationId, Publication publication, List<Author> authors, ASpecificPublication specificPublication)
         {
-            JournalArticle journalArticle = getPublicationTypeSpecificBibliography();
-            journalArticleModel.UpdatePublication(publicationId, publication, authors, journalArticle);
+            journalArticleModel.UpdatePublication(publicationId, publication, authors, specificPublication as JournalArticle);
         }
 
         public void DeletePublication(int publicationId)

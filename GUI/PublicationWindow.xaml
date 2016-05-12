@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
-        Title="Publikace" Height="768" Width="1034" Icon="resources/window-icons/icon-publication.ico">
+        Title="Publikace" Height="768" Width="1034" Icon="resources/window-icons/icon-publication.ico" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -39,7 +39,7 @@
                     <TextBox x:Name="titleTextBox" Height="23" Margin="5,44,10,0" Text="" VerticalAlignment="Top" Grid.Column="1" ToolTip="Zadejte plný název publikace."/>
                     <Label x:Name="bibtexEntryLabel" Content="BibTeX klíč:" Margin="0,10,4,0" VerticalAlignment="Top" HorizontalAlignment="Right" Height="31"/>
                     <Label x:Name="titleLabel" Content="Název:" HorizontalAlignment="Right" Margin="0,41,4,0" VerticalAlignment="Top" Height="31"/>
-                    <TextBox x:Name="yearTextBox" Height="23" Margin="5,75,10,0" Text="" VerticalAlignment="Top" Grid.Column="1" ToolTip="Zadejte rok vydání publikace."/>
+                    <TextBox x:Name="yearTextBox" Height="23" Margin="5,75,10,0" Text="0" VerticalAlignment="Top" Grid.Column="1" ToolTip="Zadejte rok vydání publikace."/>
                     <Label x:Name="yearLabel" Content="Rok vydání:" HorizontalAlignment="Right" Margin="0,72,4,0" VerticalAlignment="Top" Height="31"/>
                     <TextBox x:Name="bibtexEntryTextBox" Height="23" Margin="5,13,10,0" Text="" VerticalAlignment="Top" Grid.Column="1" ToolTip="Zadejte klíč BibTeX záznamu."/>
                     <Label x:Name="typeLabel" Content="Typ:" HorizontalAlignment="Right" Margin="0,103,5,0" VerticalAlignment="Top" Height="32"/>
