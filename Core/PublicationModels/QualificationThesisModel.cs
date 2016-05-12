@@ -105,7 +105,7 @@ namespace Core
         {
             QualificationThesis qualificationThesis = publication.QualificationThesis;
 
-            return new StringBuilder(GenerateAuthorCitationString(publication))
+            return new StringBuilder($"{GenerateAuthorCitationString(publication)}. ")
                 .Append($"{publication.Title}. ")
                 .Append($"{qualificationThesis.Address}, ")
                 .Append($"{publication.Year}. ")

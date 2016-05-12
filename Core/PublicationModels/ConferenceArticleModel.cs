@@ -122,7 +122,7 @@ namespace Core
                 + (string.IsNullOrEmpty(conferenceArticle.ISSN) ?
                 "" : $" ISSN {conferenceArticle.ISSN}");
 
-            return new StringBuilder(GenerateAuthorCitationString(publication))
+            return new StringBuilder($"{GenerateAuthorCitationString(publication)}. ")
                 .Append($"{publication.Title}. ")
                 .Append($"In: {conferenceArticle.BookTitle}. ")
                 .Append($"{conferenceArticle.Address}: ")

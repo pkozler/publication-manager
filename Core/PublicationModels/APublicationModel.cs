@@ -97,7 +97,7 @@ namespace Core
 
             if (authors.Count < 1)
             {
-                return sb.Append(". ").ToString();
+                return sb.ToString();
             }
 
             // výpis prostředních jmen
@@ -109,7 +109,7 @@ namespace Core
 
             // výpis posledního jména
             author = authors.Dequeue();
-            sb.Append(" a ").Append(author.Surname.ToUpper()).Append(", ").Append(author.Name).Append(". ");
+            sb.Append(" a ").Append(author.Surname.ToUpper()).Append(", ").Append(author.Name);
 
             return sb.ToString();
         }
@@ -156,7 +156,7 @@ namespace Core
             try
             {
                 // načtení šablony ze souboru
-                File.ReadAllText(Path.GetFullPath(
+                template = File.ReadAllText(Path.GetFullPath(
                     string.IsNullOrWhiteSpace(templatePath) ? 
                     (DEFAULT_TEMPLATE_DIRECTORY + DefaultTemplateFile + DEFAULT_TEMPLATE_EXTENSION) :
                     templatePath));
@@ -168,11 +168,12 @@ namespace Core
             
             // vyplnění základních údajů pro všechny typy publikací
             StringTemplate stringTemplate = new StringTemplate(template);
+            stringTemplate.SetAttribute("id", publication.Id);
             stringTemplate.SetAttribute("title", publication.Title);
             stringTemplate.SetAttribute("authors", GenerateAuthorCitationString(publication));
             stringTemplate.SetAttribute("year", publication.Year);
             stringTemplate.SetAttribute("type", TypeDescription);
-            stringTemplate.SetAttribute("text", publication.Text);
+            stringTemplate.SetAttribute("text", publication.Text.Replace(Environment.NewLine, "<br/>"));
 
             return stringTemplate;
         }

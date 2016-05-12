@@ -101,7 +101,7 @@ namespace Core
                 $"{journalArticle.FromPage}" :
                 $"{journalArticle.FromPage}-{journalArticle.ToPage}";
 
-            return new StringBuilder(GenerateAuthorCitationString(publication))
+            return new StringBuilder($"{GenerateAuthorCitationString(publication)}. ")
                 .Append($"{publication.Title}. ")
                 .Append($"{journalArticle.JournalTitle}. ")
                 .Append($"{publication.Year}, ")

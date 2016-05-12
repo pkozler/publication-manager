@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
-        Title="Publikace" Height="768" Width="1024" Icon="resources/window-icons/icon-publication.ico">
+        Title="Publikace" Height="768" Width="1034" Icon="resources/window-icons/icon-publication.ico">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>

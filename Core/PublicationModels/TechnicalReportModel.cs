@@ -89,7 +89,7 @@ namespace Core
         {
             TechnicalReport technicalReport = publication.TechnicalReport;
 
-            return new StringBuilder(GenerateAuthorCitationString(publication))
+            return new StringBuilder($"{GenerateAuthorCitationString(publication)}. ")
                 .Append($"{publication.Title}. ")
                 .Append($"{technicalReport.Address}: ")
                 .Append($"{technicalReport.Institution}, ")

@@ -2,8 +2,6 @@ C:\Users\pkout\Dropbox\cs\NET\Core\bin\Debug\default-templates\conference-articl
 C:\Users\pkout\Dropbox\cs\NET\Core\bin\Debug\default-templates\journal-article.st
 C:\Users\pkout\Dropbox\cs\NET\Core\bin\Debug\default-templates\qualification-thesis.st
 C:\Users\pkout\Dropbox\cs\NET\Core\bin\Debug\default-templates\technical-report.st
-C:\Users\pkout\Dropbox\cs\NET\Core\bin\Debug\DbPublication.mdf
-C:\Users\pkout\Dropbox\cs\NET\Core\bin\Debug\DbPublication_log.ldf
 C:\Users\pkout\Dropbox\cs\NET\Core\bin\Debug\PMCore.dll.config
 C:\Users\pkout\Dropbox\cs\NET\Core\bin\Debug\PMCore.dll
 C:\Users\pkout\Dropbox\cs\NET\Core\bin\Debug\PMCore.pdb
@@ -16,3 +14,5 @@ C:\Users\pkout\Dropbox\cs\NET\Core\bin\Debug\EntityFramework.SqlServer.xml
 C:\Users\pkout\Dropbox\cs\NET\Core\obj\Debug\PMCore.dll
 C:\Users\pkout\Dropbox\cs\NET\Core\obj\Debug\PMCore.pdb
 C:\Users\pkout\Dropbox\cs\NET\Core\obj\Debug\Core.csprojResolveAssemblyReference.cache
+C:\Users\pkout\Dropbox\cs\NET\Core\bin\Debug\DbPublication.mdf
+C:\Users\pkout\Dropbox\cs\NET\Core\bin\Debug\DbPublication_log.ldf
