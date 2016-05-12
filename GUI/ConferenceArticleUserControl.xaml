@@ -16,8 +16,8 @@
         <TextBox x:Name="bookTitleTextBox" Height="23" Margin="157,16,10,0" VerticalAlignment="Top" ToolTip="Zadejte název sborníku konference s citovaným článkem."/>
         <TextBox x:Name="addressTextBox" Height="23" Margin="157,45,10,0" VerticalAlignment="Top" ToolTip="Zadejte místo vydání sborníku."/>
         <TextBox x:Name="publisherTextBox" Height="23" Margin="157,74,10,0" VerticalAlignment="Top" ToolTip="Zadejte jméno nakladatele sborníku."/>
-        <TextBox x:Name="fromPageTextBox" Height="23" Margin="157,103,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="99" ToolTip="Zadejte číslo strany, na které začíná citovaný text." Text="1"/>
-        <TextBox x:Name="toPageTextBox" HorizontalAlignment="Left" Height="23" Margin="291,103,0,0" VerticalAlignment="Top" Width="99" ToolTip="Zadejte číslo strany, na které končí citovaný text." Text="1"/>
+        <TextBox x:Name="fromPageTextBox" Height="23" Margin="157,103,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="99" ToolTip="Zadejte číslo strany, na které začíná citovaný text." Text="1" PreviewTextInput="previewPageTextInput" DataObject.Pasting="handlePageTextBoxPasting"/>
+        <TextBox x:Name="toPageTextBox" HorizontalAlignment="Left" Height="23" Margin="291,103,0,0" VerticalAlignment="Top" Width="99" ToolTip="Zadejte číslo strany, na které končí citovaný text." Text="1" PreviewTextInput="previewPageTextInput" DataObject.Pasting="handlePageTextBoxPasting"/>
         <TextBox x:Name="identificationTextBox" Margin="157,132,10,0" Height="23" VerticalAlignment="Top" ToolTip="Zadejte identifikační číslo sborníku (ISBN, nebo ISSN)."/>
         <Label x:Name="identificationTypeLabel" Content="Typ identifikátoru:" HorizontalAlignment="Left" Margin="153,160,0,0" VerticalAlignment="Top"/>
         <StackPanel HorizontalAlignment="Left" Height="21" Margin="290,168,0,0" VerticalAlignment="Top" Width="100" Orientation="Horizontal" ToolTip="Zvolte typ zadaného identifikátoru (tj. zda bylo uvedeno ISBN, nebo ISSN).">

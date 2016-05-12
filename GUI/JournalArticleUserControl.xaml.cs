@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Core;
+using System.Text.RegularExpressions;
 
 namespace GUI
 {
@@ -24,7 +25,9 @@ namespace GUI
     public partial class JournalArticleUserControl : UserControl, IPublishableForm
     {
         private JournalArticleModel journalArticleModel;
-        
+
+        private PageNumberValidator pageNumberValidator = new PageNumberValidator();
+
         public JournalArticleUserControl(APublicationModel journalArticleModel) : base()
         {
             InitializeComponent();
@@ -68,50 +71,11 @@ namespace GUI
             }
 
             int fromPage;
-            bool isFromPageEmpty = string.IsNullOrWhiteSpace(fromPageTextBox.Text);
-            bool isFromPageValid = int.TryParse(fromPageTextBox.Text, out fromPage) && fromPage > 0;
-
-            if (!isFromPageEmpty)
-            {
-                if (!isFromPageValid)
-                {
-
-                    errors.Add("Číslo počáteční strany časopisu s citovaným textem musí být platné kladné celé číslo.");
-                }
-                else
-                {
-                    journalArticle.FromPage = fromPage;
-                }
-            }
-
             int toPage;
-            bool isToPageEmpty = string.IsNullOrWhiteSpace(toPageTextBox.Text);
-            bool isToPageValid = int.TryParse(toPageTextBox.Text, out toPage) && toPage > 0;
-
-            if (!isToPageEmpty)
-            {
-                if (!isToPageValid)
-                {
-                    errors.Add("Číslo poslední strany časopisu s citovaným textem musí být platné kladné celé číslo.");
-                }
-                else
-                {
-                    journalArticle.ToPage = toPage;
-                }
-            }
-
-            if (isToPageEmpty && isFromPageValid)
-            {
-                journalArticle.ToPage = fromPage;
-            }
-            else if (isFromPageEmpty && isToPageValid)
-            {
-                journalArticle.FromPage = 1;
-            }
-            else
-            {
-                errors.Add("Musí být uvedena alespoň jedna ze stran časopisu, které ohraničují citovaný text.");
-            }
+            pageNumberValidator.ValidatePageNumbers(errors,
+                fromPageTextBox.Text, toPageTextBox.Text, out fromPage, out toPage);
+            journalArticle.FromPage = fromPage;
+            journalArticle.ToPage = toPage;
 
             if (string.IsNullOrWhiteSpace(issnTextBox.Text))
             {
@@ -138,6 +102,26 @@ namespace GUI
         public void DeletePublication(int publicationId)
         {
             journalArticleModel.DeletePublication(publicationId);
+        }
+
+        /// <summary>
+        /// Ošetřuje naplatný vstup do textových polí pro zadání čísla stránky sborníku.
+        /// </summary>
+        /// <param name="sender">původce události</param>
+        /// <param name="e">data události</param>
+        private void handlePageTextBoxPasting(object sender, DataObjectPastingEventArgs e)
+        {
+            pageNumberValidator.HandlePageTextBoxPasting(sender, e);
+        }
+
+        /// <summary>
+        /// Zabraňuje zadání neplatného čísla stránky sborníku.
+        /// </summary>
+        /// <param name="sender">původce události</param>
+        /// <param name="e">data události</param>
+        private void previewPageTextInput(object sender, TextCompositionEventArgs e)
+        {
+            pageNumberValidator.PreviewPageTextInput(sender, e);
         }
     }
 }

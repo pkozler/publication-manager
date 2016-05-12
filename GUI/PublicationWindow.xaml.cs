@@ -54,37 +54,45 @@ namespace GUI
 
             if (originalPublication == null)
             {
-                attachmentDataGrid.IsEnabled = false;
-                originalPublication = new Publication();
-
-                return;
+                initializeNewPublicationMode();
             }
+            else
+            {
+                initializeExistingPublicationMode();
+            }
+        }
 
+        private void initializeNewPublicationMode()
+        {
+            originalPublication = new Publication();
+            typeComboBox.SelectedIndex = 0;
+        }
+
+        private void initializeExistingPublicationMode()
+        {
+            typeComboBox.IsEnabled = false;
             insertPublicationButton.IsEnabled = false;
             editPublicationButton.IsEnabled = true;
             deletePublicationButton.IsEnabled = true;
+            attachmentDataGrid.IsEnabled = true;
             addAttachmentButton.IsEnabled = true;
-            copyAttachmentButton.IsEnabled = true;
-            removeAttachmentButton.IsEnabled = true;
-
-            attachments = new ObservableCollection<Attachment>(
-                attachmentModel.GetAttachmentsByPublication(originalPublication));
-            attachmentDataGrid.ItemsSource = attachments;
+            attachmentDataGrid.ToolTip = "Vyberte přílohu k načtení nebo odstranění.";
 
             bibtexEntryTextBox.Text = originalPublication.Entry;
             titleTextBox.Text = originalPublication.Title;
-            yearTextBox.Text = originalPublication.Year.ToString();
-            
-            typeComboBox.SelectedValue = PublicationType.GetTypeByName(publicationTypes, originalPublication.Type);
-            typeComboBox.IsEnabled = false;
+            yearNumericUpDown.Value = originalPublication.Year;
+            contentTextBox.Text = originalPublication.Text;
 
             foreach (Author author in originalPublication.Author)
             {
                 publicationAuthorListView.Items.Add(author);
             }
 
-            contentTextBox.Text = originalPublication.Text;
+            attachments = new ObservableCollection<Attachment>(
+                attachmentModel.GetAttachmentsByPublication(originalPublication));
+            attachmentDataGrid.ItemsSource = attachments;
 
+            typeComboBox.SelectedValue = PublicationType.GetTypeByName(publicationTypes, originalPublication.Type);
             setBibliographyForm();
             currentBibliographyForm.ViewPublication(originalPublication);
         }
@@ -200,9 +208,9 @@ namespace GUI
                 publication.Title = titleTextBox.Text;
             }
 
-            int year;
+            int year = (int) yearNumericUpDown.Value;
             // omezení hodnot pro případ změny datového typu sloupce pro letopočet v databázi na typ "datum"
-            if (!int.TryParse(yearTextBox.Text, out year) || year < 0 || year > 9999)
+            if (year < 0 || year > 9999)
             {
                 errors.Add("Rok vydání musí být platné celé číslo, nesmí být menší než 0 ani větší než 9999.");
             }
@@ -391,6 +399,7 @@ namespace GUI
 
         private void attachmentDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            copyAttachmentButton.IsEnabled = attachmentDataGrid.SelectedItem != null;
             removeAttachmentButton.IsEnabled = attachmentDataGrid.SelectedItem != null;
         }
     }
