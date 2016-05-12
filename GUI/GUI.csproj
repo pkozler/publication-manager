@@ -98,7 +98,7 @@
     <Compile Include="ErrorWindow.xaml.cs">
       <DependentUpon>ErrorWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\PageNumberValidator.cs" />
+    <Compile Include="Helpers\PageNumberHelper.cs" />
     <Compile Include="PublicationWindow.xaml.cs">
       <DependentUpon>PublicationWindow.xaml</DependentUpon>
     </Compile>

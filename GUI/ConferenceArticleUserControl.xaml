@@ -4,26 +4,30 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GUI"
+             xmlns:extra="clr-namespace:TAlex.WPF.Controls;assembly=TAlex.WPF.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="200" d:DesignWidth="400">
+             d:DesignHeight="300" d:DesignWidth="400">
     <Grid>
         <Label x:Name="bookTitleLabel" Content="Sborník konference:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" ToolTip=""/>
         <Label x:Name="addressLabel" Content="Místo vydání:" HorizontalAlignment="Left" Margin="53,39,0,0" VerticalAlignment="Top" ToolTip=""/>
         <Label x:Name="publisherLabel" Content="Nakladatel:" HorizontalAlignment="Left" Margin="67,68,0,0" VerticalAlignment="Top" ToolTip=""/>
         <Label x:Name="fromPageLabel" Content="Strany:" HorizontalAlignment="Left" Margin="96,97,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="toPageLabel" Content="až" Margin="262,97,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
-        <Label x:Name="identificationLabel" Content="Identifikátor:" HorizontalAlignment="Left" Margin="53,126,0,0" VerticalAlignment="Top" ToolTip=""/>
+        <Label x:Name="toPageLabel" Content="až" Margin="261,125,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+        <Label x:Name="identificationLabel" Content="Identifikátor:" HorizontalAlignment="Left" Margin="53,153,0,0" VerticalAlignment="Top" ToolTip=""/>
         <TextBox x:Name="bookTitleTextBox" Height="23" Margin="157,16,10,0" VerticalAlignment="Top" ToolTip="Zadejte název sborníku konference s citovaným článkem."/>
         <TextBox x:Name="addressTextBox" Height="23" Margin="157,45,10,0" VerticalAlignment="Top" ToolTip="Zadejte místo vydání sborníku."/>
         <TextBox x:Name="publisherTextBox" Height="23" Margin="157,74,10,0" VerticalAlignment="Top" ToolTip="Zadejte jméno nakladatele sborníku."/>
-        <TextBox x:Name="fromPageTextBox" Height="23" Margin="157,103,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="99" ToolTip="Zadejte číslo strany, na které začíná citovaný text." Text="1" PreviewTextInput="previewPageTextInput" DataObject.Pasting="handlePageTextBoxPasting"/>
-        <TextBox x:Name="toPageTextBox" HorizontalAlignment="Left" Height="23" Margin="291,103,0,0" VerticalAlignment="Top" Width="99" ToolTip="Zadejte číslo strany, na které končí citovaný text." Text="1" PreviewTextInput="previewPageTextInput" DataObject.Pasting="handlePageTextBoxPasting"/>
-        <TextBox x:Name="identificationTextBox" Margin="157,132,10,0" Height="23" VerticalAlignment="Top" ToolTip="Zadejte identifikační číslo sborníku (ISBN, nebo ISSN)."/>
-        <Label x:Name="identificationTypeLabel" Content="Typ identifikátoru:" HorizontalAlignment="Left" Margin="153,160,0,0" VerticalAlignment="Top"/>
-        <StackPanel HorizontalAlignment="Left" Height="21" Margin="290,168,0,0" VerticalAlignment="Top" Width="100" Orientation="Horizontal" ToolTip="Zvolte typ zadaného identifikátoru (tj. zda bylo uvedeno ISBN, nebo ISSN).">
+        <TextBox x:Name="identificationTextBox" Margin="157,159,10,0" Height="23" VerticalAlignment="Top" ToolTip="Zadejte identifikační číslo sborníku (ISBN, nebo ISSN)."/>
+        <Label x:Name="identificationTypeLabel" Content="Typ identifikátoru:" HorizontalAlignment="Left" Margin="153,187,0,0" VerticalAlignment="Top"/>
+        <StackPanel HorizontalAlignment="Left" Height="21" Margin="290,193,0,0" VerticalAlignment="Top" Width="100" Orientation="Horizontal" ToolTip="Zvolte typ zadaného identifikátoru (tj. zda bylo uvedeno ISBN, nebo ISSN).">
             <RadioButton x:Name="isbnRadioButton" Content="ISBN" HorizontalAlignment="Right" VerticalAlignment="Top" GroupName="identificationTypeGroup" Width="50" FontSize="14"/>
             <RadioButton x:Name="issnRadioButton" Content="ISSN" HorizontalAlignment="Right" VerticalAlignment="Top" GroupName="identificationTypeGroup" Width="50" FontSize="14"/>
         </StackPanel>
-
+        <StackPanel HorizontalAlignment="Left" Height="21" Margin="157,103,0,0" VerticalAlignment="Top" Orientation="Horizontal" ToolTip="Zvolte, zda bude zadána pouze jedna strana, nebo rozsah.">
+            <RadioButton x:Name="pageSingleRadioButton" Content="Jedna" HorizontalAlignment="Right" VerticalAlignment="Top" GroupName="pageIntervalGroup" FontSize="14" Checked="setPageInterval"/>
+            <RadioButton x:Name="pageRangeRadioButton" Content="Interval" HorizontalAlignment="Right" VerticalAlignment="Top" GroupName="pageIntervalGroup" FontSize="14" Checked="setPageInterval"/>
+        </StackPanel>
+        <extra:NumericUpDown x:Name="fromPageNumericUpDown" Margin="157,129,0,0" Height="25" ToolTip="Zadejte číslo strany, na které začíná citovaný text." Maximum="99999999" VerticalAlignment="Top" Minimum="1" HorizontalAlignment="Left" Width="99" />
+        <extra:NumericUpDown x:Name="toPageNumericUpDown" Margin="291,129,0,0" Height="25" ToolTip="Zadejte číslo strany, na které končí citovaný text." Maximum="99999999" VerticalAlignment="Top" Minimum="1" HorizontalAlignment="Left" Width="99" IsEnabled="False" />
     </Grid>
 </UserControl>

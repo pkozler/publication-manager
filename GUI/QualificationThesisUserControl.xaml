@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GUI"
              mc:Ignorable="d" 
-             d:DesignHeight="200" d:DesignWidth="400">
+             d:DesignHeight="300" d:DesignWidth="400">
     <Grid>
         <Label x:Name="addressLabel" Content="Místo vytvoření:" HorizontalAlignment="Left" Margin="49,10,0,0" VerticalAlignment="Top"/>
         <Label x:Name="schoolLabel" Content="Název školy:" HorizontalAlignment="Left" Margin="74,39,0,0" VerticalAlignment="Top"/>

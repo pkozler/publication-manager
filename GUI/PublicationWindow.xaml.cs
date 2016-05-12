@@ -76,7 +76,6 @@ namespace GUI
             deletePublicationButton.IsEnabled = true;
             attachmentDataGrid.IsEnabled = true;
             addAttachmentButton.IsEnabled = true;
-            attachmentDataGrid.ToolTip = "Vyberte přílohu k načtení nebo odstranění.";
 
             bibtexEntryTextBox.Text = originalPublication.Entry;
             titleTextBox.Text = originalPublication.Title;
@@ -212,7 +211,7 @@ namespace GUI
             // omezení hodnot pro případ změny datového typu sloupce pro letopočet v databázi na typ "datum"
             if (year < 0 || year > 9999)
             {
-                errors.Add("Rok vydání musí být platné celé číslo, nesmí být menší než 0 ani větší než 9999.");
+                errors.Add("Rok vydání nesmí být menší než 0 ani větší než 9999.");
             }
             else
             {

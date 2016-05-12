@@ -26,7 +26,7 @@ namespace GUI
     {
         private JournalArticleModel journalArticleModel;
 
-        private PageNumberValidator pageNumberValidator = new PageNumberValidator();
+        private PageNumberHelper pageNumberHelper = new PageNumberHelper();
 
         public JournalArticleUserControl(APublicationModel journalArticleModel) : base()
         {
@@ -40,8 +40,18 @@ namespace GUI
 
             journalTitleTextBox.Text = journalArticle.JournalTitle;
             numberTextBox.Text = journalArticle.Number;
-            fromPageTextBox.Text = journalArticle.FromPage.ToString();
-            toPageTextBox.Text = journalArticle.ToPage.ToString();
+            fromPageNumericUpDown.Value = journalArticle.FromPage;
+            toPageNumericUpDown.Value = journalArticle.ToPage;
+
+            if (journalArticle.FromPage == journalArticle.ToPage)
+            {
+                pageSingleRadioButton.IsChecked = true;
+            }
+            else
+            {
+                pageRangeRadioButton.IsChecked = true;
+            }
+
             issnTextBox.Text = journalArticle.ISSN;
         }
 
@@ -70,12 +80,11 @@ namespace GUI
                 journalArticle.Number = numberTextBox.Text;
             }
 
-            int fromPage;
-            int toPage;
-            pageNumberValidator.ValidatePageNumbers(errors,
-                fromPageTextBox.Text, toPageTextBox.Text, out fromPage, out toPage);
-            journalArticle.FromPage = fromPage;
-            journalArticle.ToPage = toPage;
+            journalArticle.FromPage = pageNumberHelper.
+                validateFromPageNumber(errors, fromPageNumericUpDown);
+            journalArticle.ToPage = pageNumberHelper.
+                validateToPageNumber(errors, toPageNumericUpDown, pageSingleRadioButton,
+                pageRangeRadioButton, journalArticle.FromPage);
 
             if (string.IsNullOrWhiteSpace(issnTextBox.Text))
             {
@@ -104,24 +113,10 @@ namespace GUI
             journalArticleModel.DeletePublication(publicationId);
         }
 
-        /// <summary>
-        /// Ošetřuje naplatný vstup do textových polí pro zadání čísla stránky sborníku.
-        /// </summary>
-        /// <param name="sender">původce události</param>
-        /// <param name="e">data události</param>
-        private void handlePageTextBoxPasting(object sender, DataObjectPastingEventArgs e)
+        private void setPageInterval(object sender, RoutedEventArgs e)
         {
-            pageNumberValidator.HandlePageTextBoxPasting(sender, e);
-        }
-
-        /// <summary>
-        /// Zabraňuje zadání neplatného čísla stránky sborníku.
-        /// </summary>
-        /// <param name="sender">původce události</param>
-        /// <param name="e">data události</param>
-        private void previewPageTextInput(object sender, TextCompositionEventArgs e)
-        {
-            pageNumberValidator.PreviewPageTextInput(sender, e);
+            pageNumberHelper.SetNumericUpDownControls(
+                pageSingleRadioButton, pageRangeRadioButton, fromPageNumericUpDown, toPageNumericUpDown);
         }
     }
 }

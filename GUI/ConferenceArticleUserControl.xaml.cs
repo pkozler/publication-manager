@@ -26,8 +26,8 @@ namespace GUI
     {
         private ConferenceArticleModel conferenceArticleModel;
 
-        private PageNumberValidator pageNumberValidator = new PageNumberValidator();
-        
+        private PageNumberHelper pageNumberHelper = new PageNumberHelper();
+
         public ConferenceArticleUserControl(APublicationModel conferenceArticleModel) : base()
         {
             InitializeComponent();
@@ -41,8 +41,18 @@ namespace GUI
             bookTitleTextBox.Text = conferenceArticle.BookTitle;
             addressTextBox.Text = conferenceArticle.Address;
             publisherTextBox.Text = conferenceArticle.Publisher;
-            fromPageTextBox.Text = conferenceArticle.FromPage.ToString();
-            toPageTextBox.Text = conferenceArticle.ToPage.ToString();
+            fromPageNumericUpDown.Value = conferenceArticle.FromPage;
+            toPageNumericUpDown.Value = conferenceArticle.ToPage;
+
+            if (conferenceArticle.FromPage == conferenceArticle.ToPage)
+            {
+                pageSingleRadioButton.IsChecked = true;
+            }
+            else
+            {
+                pageRangeRadioButton.IsChecked = true;
+            }
+
             identificationTextBox.Text = string.IsNullOrEmpty(conferenceArticle.ISSN) ?
                 conferenceArticle.ISBN : conferenceArticle.ISSN;
 
@@ -90,12 +100,11 @@ namespace GUI
                 conferenceArticle.Publisher = publisherTextBox.Text;
             }
 
-            int fromPage;
-            int toPage;
-            pageNumberValidator.ValidatePageNumbers(errors,
-                fromPageTextBox.Text, toPageTextBox.Text, out fromPage, out toPage);
-            conferenceArticle.FromPage = fromPage;
-            conferenceArticle.ToPage = toPage;
+            conferenceArticle.FromPage = pageNumberHelper.
+                validateFromPageNumber(errors, fromPageNumericUpDown);
+            conferenceArticle.ToPage = pageNumberHelper.
+                validateToPageNumber(errors, toPageNumericUpDown, pageSingleRadioButton,
+                pageRangeRadioButton, conferenceArticle.FromPage);
             
             if (string.IsNullOrWhiteSpace(identificationTextBox.Text))
             {
@@ -134,25 +143,11 @@ namespace GUI
         {
             conferenceArticleModel.DeletePublication(publicationId);
         }
-
-        /// <summary>
-        /// Ošetřuje naplatný vstup do textových polí pro zadání čísla stránky časopisu.
-        /// </summary>
-        /// <param name="sender">původce události</param>
-        /// <param name="e">data události</param>
-        private void handlePageTextBoxPasting(object sender, DataObjectPastingEventArgs e)
+        
+        private void setPageInterval(object sender, RoutedEventArgs e)
         {
-            pageNumberValidator.HandlePageTextBoxPasting(sender, e);
-        }
-
-        /// <summary>
-        /// Zabraňuje zadání neplatného čísla stránky časopisu.
-        /// </summary>
-        /// <param name="sender">původce události</param>
-        /// <param name="e">data události</param>
-        private void previewPageTextInput(object sender, TextCompositionEventArgs e)
-        {
-            pageNumberValidator.PreviewPageTextInput(sender, e);
+            pageNumberHelper.SetNumericUpDownControls(
+                pageSingleRadioButton, pageRangeRadioButton, fromPageNumericUpDown, toPageNumericUpDown);
         }
     }
 }
