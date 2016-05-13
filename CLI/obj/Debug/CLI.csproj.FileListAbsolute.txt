@@ -18,3 +18,5 @@ C:\Users\pkout\Dropbox\cs\NET\CLI\bin\Debug\default-templates\conference-article
 C:\Users\pkout\Dropbox\cs\NET\CLI\bin\Debug\default-templates\journal-article.st
 C:\Users\pkout\Dropbox\cs\NET\CLI\bin\Debug\default-templates\qualification-thesis.st
 C:\Users\pkout\Dropbox\cs\NET\CLI\bin\Debug\default-templates\technical-report.st
+C:\Users\pkout\Dropbox\cs\NET\CLI\bin\Debug\PublicationManager.exe.CodeAnalysisLog.xml
+C:\Users\pkout\Dropbox\cs\NET\CLI\bin\Debug\PublicationManager.exe.lastcodeanalysissucceeded

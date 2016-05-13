@@ -27,8 +27,9 @@ namespace GUI
         
         public TechnicalReportUserControl(APublicationModel technicalReportModel) : base()
         {
-            InitializeComponent();
             this.technicalReportModel = technicalReportModel as TechnicalReportModel;
+
+            InitializeComponent();
         }
 
         public void ViewPublication(Publication publication)

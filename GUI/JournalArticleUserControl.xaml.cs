@@ -30,8 +30,10 @@ namespace GUI
 
         public JournalArticleUserControl(APublicationModel journalArticleModel) : base()
         {
-            InitializeComponent();
             this.journalArticleModel = journalArticleModel as JournalArticleModel;
+
+            InitializeComponent();
+            pageSingleRadioButton.IsChecked = true;
         }
 
         public void ViewPublication(Publication publication)

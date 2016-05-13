@@ -27,8 +27,10 @@ namespace GUI
         
         public QualificationThesisUserControl(APublicationModel qualificationThesisModel) : base()
         {
-            InitializeComponent();
             this.qualificationThesisModel = qualificationThesisModel as QualificationThesisModel;
+
+            InitializeComponent();
+            masterThesisRadioButton.IsChecked = true;
         }
 
         public void ViewPublication(Publication publication)

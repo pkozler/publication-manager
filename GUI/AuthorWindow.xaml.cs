@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Core;
+using System.Data.Entity.Validation;
 
 namespace GUI
 {
@@ -36,9 +37,7 @@ namespace GUI
         /// Objekt datové vrstvy, který slouží jako správce záznamů autorů.
         /// </summary>
         private AuthorModel authorModel;
-
-        private ObservableCollection<Author> authors;
-
+        
         private Publication publication;
 
         /// <summary>
@@ -51,18 +50,7 @@ namespace GUI
 
             InitializeComponent();
 
-            authors = new ObservableCollection<Author>(authorModel.GetAuthors());
-
-            if (authors.Count > 0)
-            {
-                authorListCountLabel.Content = authors.Count + " celkem";
-            }
-            else
-            {
-                authorListCountLabel.Content = "žádní";
-            }
-
-            authorDataGrid.ItemsSource = authors;
+            refreshAuthors();
         }
         
         /// <summary>
@@ -91,16 +79,58 @@ namespace GUI
 
         private void deleteAuthorButton_Click(object sender, RoutedEventArgs e)
         {
-            Author author = authorDataGrid.SelectedItem as Author;
-
-            if (author.Publication.Count < 0)
+            if (authorDataGrid.SelectedItem == null)
             {
                 return;
             }
 
-            authorModel.DeleteAuthor(author.Id);
+            Author author = authorDataGrid.SelectedItem as Author;
+
+            if (author.Publication.Count > 0)
+            {
+                return;
+            }
+
+            if (MessageBox.Show("Opravdu chcete odstranit vybraného autora?", "Odstranění autora",
+                MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
+            {
+                return;
+            }
+
+            try
+            {
+                authorModel.DeleteAuthor(author.Id);
+                refreshAuthors();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                MessageBox.Show("Chyba při odstraňování záznamu autora z databáze: " + ex.Message);
+            }
         }
-        
+
+        private void refreshAuthors()
+        {
+            List<Author> authorList = authorModel.GetAuthors();
+
+            if (authorList.Count > 0)
+            {
+                authorListCountLabel.Content = authorList.Count + " celkem";
+            }
+            else
+            {
+                authorListCountLabel.Content = "žádní";
+            }
+            
+            authorDataGrid.ItemsSource = null;
+            authorDataGrid.ItemsSource = authorList;
+        }
+
+        private void refreshPublications(Author publicationAuthor)
+        {
+            authorPublicationDataGrid.ItemsSource = null;
+            authorPublicationDataGrid.ItemsSource = publicationAuthor.Publication;
+        }
+
         private void authorDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (authorDataGrid.SelectedItem == null)
@@ -126,7 +156,7 @@ namespace GUI
                 deleteAuthorButton.IsEnabled = true;
             }
 
-            authorPublicationDataGrid.ItemsSource = author.Publication;
+            refreshPublications(author);
         }
     }
 }

@@ -58,7 +58,7 @@ namespace CLI
             Attachment attachment = new Attachment();
             attachment.Path = path;
             attachmentModel.AddAttachmentToPublication(
-                publicationModel.GetPublicationById(publicationId), attachment);
+                publicationModel.GetPublicationById(publicationId), attachment.Path);
 
             GetAttachmentList();
         }

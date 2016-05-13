@@ -93,7 +93,6 @@
       <DependentUpon>AuthorDialogWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Containers\PublicationData.cs" />
-    <Compile Include="Containers\PublicationModelFactory.cs" />
     <Compile Include="Containers\PublicationType.cs" />
     <Compile Include="ErrorWindow.xaml.cs">
       <DependentUpon>ErrorWindow.xaml</DependentUpon>

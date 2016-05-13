@@ -244,7 +244,7 @@ namespace GUI
             List<string> errors = new List<string>();
             authors = new List<Author>();
 
-            if (authors.Count < 1)
+            if (publicationAuthorListView.Items.Count < 1)
             {
                 errors.Add("Musí být uveden alespoň jeden autor publikace.");
             }
@@ -324,6 +324,12 @@ namespace GUI
 
         private void deletePublicationButton_Click(object sender, RoutedEventArgs e)
         {
+            if (MessageBox.Show("Opravdu chcete odstranit vybranou publikaci?", "Odstranění publikace",
+                MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
+            {
+                return;
+            }
+
             try
             {
                 currentBibliographyForm.DeletePublication(originalPublication.Id);
@@ -334,6 +340,17 @@ namespace GUI
             }
 
             Close();
+        }
+
+        private void refreshAttachments()
+        {
+            List<Attachment> attachmentList = attachmentModel.GetAttachmentsByPublication(originalPublication);
+            attachments.Clear();
+
+            foreach (Attachment a in attachmentList)
+            {
+                attachments.Add(a);
+            }
         }
 
         private void addAttachmentButton_Click(object sender, RoutedEventArgs e)
@@ -363,7 +380,7 @@ namespace GUI
             {
                 return;
             }
-
+            
             SaveFileDialog saveFile = new SaveFileDialog();
 
             if (saveFile.ShowDialog() != true)
@@ -393,7 +410,22 @@ namespace GUI
             }
 
             Attachment attachment = attachmentDataGrid.SelectedItem as Attachment;
-            attachmentModel.RemoveAttachmentFromPublication(originalPublication, attachment.Id);
+
+            if (MessageBox.Show("Opravdu chcete odstranit vybranou přílohu?", "Odstranění přílohy",
+                MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
+            {
+                return;
+            }
+
+            try
+            {
+                attachmentModel.RemoveAttachmentFromPublication(originalPublication, attachment.Id);
+                refreshAttachments();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                MessageBox.Show("Chyba při odstraňování záznamu autora z databáze: " + ex.Message);
+            }
         }
 
         private void attachmentDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)

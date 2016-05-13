@@ -30,8 +30,11 @@ namespace GUI
 
         public ConferenceArticleUserControl(APublicationModel conferenceArticleModel) : base()
         {
-            InitializeComponent();
             this.conferenceArticleModel = conferenceArticleModel as ConferenceArticleModel;
+
+            InitializeComponent();
+            pageSingleRadioButton.IsChecked = true;
+            isbnRadioButton.IsChecked = true;
         }
 
         public void ViewPublication(Publication publication)

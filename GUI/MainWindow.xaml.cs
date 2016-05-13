@@ -51,34 +51,37 @@ namespace GUI
         /// pro jednotlivé typy publikací a objektů datové vrstvy pro jejich obsluhu.
         /// </summary>
         private List<PublicationType> publicationTypes;
-
-        private ObservableCollection<Publication> publications;
         
         /// <summary>
         /// Provede inicializaci datových objektů a grafických komponent.
         /// </summary>
-        public MainWindow()
+        public MainWindow(PublicationModel publicationModel, AuthorModel authorModel, 
+            AttachmentModel attachmentModel, List<PublicationType> publicationTypes)
         {
-            try
-            {
-                PublicationModelFactory factory = new PublicationModelFactory();
-                publicationModel = factory.PublicationModel;
-                authorModel = factory.AuthorModel;
-                attachmentModel = factory.AttachmentModel;
-                publicationTypes = factory.PublicationTypes;
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message, "Chyba při inicializaci");
-            }
-            
+            this.publicationModel = publicationModel;
+            this.authorModel = authorModel;
+            this.attachmentModel = attachmentModel;
+            this.publicationTypes = publicationTypes;
+
             InitializeComponent();
 
-            publications = new ObservableCollection<Publication>(publicationModel.GetPublications());
-            publicationDataGrid.ItemsSource = publications;
-
-            authorFilterListView.ItemsSource = authorModel.GetAuthors();
+            refreshPublications();
+            refreshAuthors();
             typeFilterListView.ItemsSource = publicationTypes;
+        }
+
+        private void refreshPublications(
+            HashSet<int> authorFilter = null, HashSet<int> yearFilter = null, HashSet<string> publicationTypeFilter = null)
+        {
+            publicationDataGrid.ItemsSource = null;
+            publicationDataGrid.ItemsSource = publicationModel.
+                GetPublications(authorFilter, yearFilter, publicationTypeFilter);
+        }
+
+        private void refreshAuthors()
+        {
+            authorFilterListView.ItemsSource = null;
+            authorFilterListView.ItemsSource = authorModel.GetAuthors();
         }
 
         /// <summary>
@@ -92,20 +95,6 @@ namespace GUI
         }
 
         /// <summary>
-        /// Zobrazí potvrzovací dialog při pokusu o ukončení aplikace.
-        /// </summary>
-        /// <param name="sender">původce události</param>
-        /// <param name="e">data události</param>
-        private void window_Closing(object sender, CancelEventArgs e)
-        {
-            if (MessageBox.Show("Opravdu chcete ukončit aplikaci?", "Ukončení aplikace",
-                MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
-            {
-                e.Cancel = true;
-            }
-        }
-
-        /// <summary>
         /// Provede obsluhu stisku položky menu pro zobrazení okna pro správu
         /// seznamu uložených autorů.
         /// </summary>
@@ -114,6 +103,8 @@ namespace GUI
         private void manageAuthorsMenuItem_Click(object sender, RoutedEventArgs e)
         {
             new AuthorWindow(authorModel).ShowDialog();
+
+            refreshAuthors();
         }
 
         /// <summary>
@@ -130,6 +121,9 @@ namespace GUI
         private void insertPublicationMenuItem_Click(object sender, RoutedEventArgs e)
         {
             new PublicationWindow(authorModel, attachmentModel, publicationTypes).ShowDialog();
+
+            refreshPublications();
+            refreshAuthors();
         }
 
         private void viewPublicationMenuItem_Click(object sender, RoutedEventArgs e)
@@ -141,6 +135,9 @@ namespace GUI
 
             new PublicationWindow(authorModel, attachmentModel, publicationTypes,
                 publicationDataGrid.SelectedItem as Publication).ShowDialog();
+
+            refreshPublications();
+            refreshAuthors();
         }
 
         private void exportPublicationMenuItem_Click(object sender, RoutedEventArgs e)
@@ -225,14 +222,7 @@ namespace GUI
                 publicationTypeFilter.Add(type.Name);
             }
 
-            List<Publication> publicationList = publicationModel.GetPublications(
-                authorFilter, yearFilter, publicationTypeFilter);
-            publications.Clear();
-
-            foreach (Publication publication in publicationList)
-            {
-                publications.Add(publication);
-            }
+            refreshPublications(authorFilter, yearFilter, publicationTypeFilter);
         }
         
         private void setButtonsEnabled(bool enabled)
@@ -248,6 +238,9 @@ namespace GUI
             if (publicationDataGrid.SelectedItem == null)
             {
                 setButtonsEnabled(false);
+                publicationCitationTextBox.Text = "";
+                publicationBibtexTextBox.Text = "";
+
                 return;
             }
 
@@ -257,6 +250,20 @@ namespace GUI
                 .Model.GeneratePublicationIsoCitation(publication);
             publicationBibtexTextBox.Text = PublicationType.GetTypeByName(publicationTypes, publication.Type)
                 .Model.GeneratePublicationBibtexEntry(publication);
+        }
+
+        /// <summary>
+        /// Zobrazí potvrzovací dialog při pokusu o ukončení aplikace.
+        /// </summary>
+        /// <param name="sender">původce události</param>
+        /// <param name="e">data události</param>
+        private void window_Closing(object sender, CancelEventArgs e)
+        {
+            if (MessageBox.Show("Opravdu chcete ukončit aplikaci?", "Ukončení aplikace",
+                MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+            {
+                e.Cancel = true;
+            }
         }
     }
 }

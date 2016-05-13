@@ -24,6 +24,24 @@ namespace Core
             this.context = context;
         }
 
+        private IQueryable<Author> getAuthorsFromIds(HashSet<int> authorFilter)
+        {
+            return from a in context.Author
+                   where authorFilter.Contains(a.Id)
+                   select a;
+        }
+        
+        private IOrderedQueryable<Publication> getFilteredPublications(
+            IQueryable<Author> authors, HashSet<int> yearFilter, HashSet<string> publicationTypeFilter)
+        {
+            return from p in context.Publication
+                   where ((authors.Count() == 0) ? true : authors.Intersect(p.Author).Any())
+                   && ((yearFilter.Count() == 0) ? true : yearFilter.Contains(p.Year))
+                   && ((publicationTypeFilter.Count()) == 0 ? true : publicationTypeFilter.Contains(p.Type))
+                   orderby p.Id
+                   select p;
+        }
+        
         /// <summary>
         /// Vrátí seznam evidovaných publikací filtrovaný podle předaných množin údajů
         /// (tedy vrátí pouze publikace s údaji, které jsou obsaženy v příslušných množinách).
@@ -33,40 +51,18 @@ namespace Core
         /// <param name="publicationTypeFilter">množina požadovaných typů publikací</param>
         /// <returns>filtrovaný seznam publikací</returns>
         public List<Publication> GetPublications(
-            HashSet<int> authorFilter = null, HashSet<int> yearFilter = null, HashSet<string> publicationTypeFilter = null)
+            HashSet<int> authorFilter, HashSet<int> yearFilter, HashSet<string> publicationTypeFilter)
         {
-            if (authorFilter == null)
-            {
-                authorFilter = new HashSet<int>();
-            }
-
-            if (yearFilter == null)
-            {
-                yearFilter = new HashSet<int>();
-            }
-
-            if (publicationTypeFilter == null)
-            {
-                publicationTypeFilter = new HashSet<string>();
-            }
+            authorFilter = authorFilter ?? new HashSet<int>();
+            yearFilter = yearFilter ?? new HashSet<int>();
+            publicationTypeFilter = publicationTypeFilter ?? new HashSet<string>();
 
             // výběr autorů ze seznamu evidovaných podle ID autorů ze zadané množiny
-            var authors = from a in context.Author
-                            where authorFilter.Contains(a.Id)
-                            select a;
-            
+            var authors = getAuthorsFromIds(authorFilter);
             // výběr publikací s filtrováním podle množin (pokud je některá množina prázdná, příslušná položka se nefiltruje)
-            var publications = from p in context.Publication
-                                where ((authors.Count() == 0) ? true : authors.Intersect(p.Author).Any())
-                                && ((yearFilter.Count() == 0) ? true : yearFilter.Contains(p.Year))
-                                && ((publicationTypeFilter.Count()) == 0 ? true : publicationTypeFilter.Contains(p.Type))
-                                orderby p.Title
-                                select p;
-
-            List<Publication> publicationList = publications.ToList();
-            publicationList.Sort(new IdEntityComparer());
-
-            return publicationList;
+            var publications = getFilteredPublications(authors, yearFilter, publicationTypeFilter);
+            
+            return publications.ToList();
         }
         
         /// <summary>
