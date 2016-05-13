@@ -91,14 +91,14 @@
                 </Grid>
             </GroupBox>
             <Button x:Name="addAttachmentButton" Content="Přidat přílohu" Margin="10,10,0,10" Grid.Row="2" HorizontalAlignment="Left" Padding="5,1" ToolTip="Otevře dialogové okno výběru souboru pro připojení jako přílohy k publikaci." Click="addAttachmentButton_Click" IsEnabled="False" Height="30" FontSize="14"/>
-            <Button x:Name="removeAttachmentButton" Content="Odebrat přílohu" Margin="218,10,0,10" Grid.Row="2" HorizontalAlignment="Left" IsEnabled="False" Padding="5,1" ToolTip="Odebere ze seznamu vybranou přílohu z publikace." Click="removeAttachmentButton_Click" Height="30" FontSize="14"/>
+            <Button x:Name="removeAttachmentButton" Content="Odebrat přílohu" Margin="231,10,0,10" Grid.Row="2" HorizontalAlignment="Left" IsEnabled="False" Padding="5,1" ToolTip="Odebere ze seznamu vybranou přílohu z publikace." Click="removeAttachmentButton_Click" Height="30" FontSize="14"/>
             <Button x:Name="closeButton" Content="Zavřít" Margin="0,10,10,10" Grid.Row="2" HorizontalAlignment="Right" Click="closeButton_Click" Padding="5,1" RenderTransformOrigin="0.143,-0.4" Height="30" FontSize="14"/>
             <Grid Margin="6,10,6,6">
                 <GroupBox x:Name="typeSpecificBibliographyGroupBox" Header="Podrobné bibliografické údaje podle typu" Margin="0,-10,-6,-6">
                     <Grid x:Name="typeSpecificBibliographyGrid" Margin="0,0,0,0"/>
                 </GroupBox>
             </Grid>
-            <Button x:Name="copyAttachmentButton" Content="Otevřít přílohu" HorizontalAlignment="Left" Margin="111,10,0,10" Grid.Row="2" IsEnabled="False" Padding="5,1" ToolTip="Otevře přílohu publikace vybranou ze seznamu." Height="30" FontSize="14" Click="copyAttachmentButton_Click"/>
+            <Button x:Name="copyAttachmentButton" Content="Stáhnout přílohu" HorizontalAlignment="Left" Margin="111,10,0,10" Grid.Row="2" IsEnabled="False" Padding="5,1" ToolTip="Otevře přílohu publikace vybranou ze seznamu." Height="30" FontSize="14" Click="copyAttachmentButton_Click"/>
         </Grid>
     </Grid>
 </Window>

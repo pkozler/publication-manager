@@ -294,7 +294,8 @@ namespace GUI
             }
             catch (DbEntityValidationException ex)
             {
-                MessageBox.Show("Chyba při vkládání záznamu publikace do databáze: " + ex.Message);
+                MessageBox.Show("Chyba při vkládání záznamu publikace do databáze: " + ex.Message,
+                    "Chyba v databázi", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             
             Close();
@@ -316,7 +317,8 @@ namespace GUI
             }
             catch (DbEntityValidationException ex)
             {
-                MessageBox.Show("Chyba při editaci záznamu publikace v databázi: " + ex.Message);
+                MessageBox.Show("Chyba při editaci záznamu publikace v databázi: " + ex.Message,
+                    "Chyba v databázi", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
             Close();
@@ -336,7 +338,8 @@ namespace GUI
             }
             catch (DbEntityValidationException ex)
             {
-                MessageBox.Show("Chyba při odstraňování záznamu publikace z databáze: " + ex.Message);
+                MessageBox.Show("Chyba při odstraňování záznamu publikace z databáze: " + ex.Message,
+                    "Chyba v databázi", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
             Close();
@@ -361,15 +364,21 @@ namespace GUI
             {
                 return;
             }
-            
+
             try
             {
                 attachmentModel.AddAttachmentToPublication(originalPublication, openFile.FileName);
-                statusLabel.Content = "Soubor připojen." + openFile.FileName;
+                refreshAttachments();
+                statusLabel.Content = "Soubor připojen: " + openFile.FileName;
             }
-            catch (IOException)
+            catch (DbEntityValidationException ex)
             {
-                MessageBox.Show("Chyba při připojování nového souboru.",
+                MessageBox.Show("Chyba při vkládání záznamu přílohy do databáze: " + ex.Message,
+                    "Chyba v databázi", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (IOException ex)
+            {
+                MessageBox.Show("Chyba při připojování nového souboru: " + ex.Message,
                     "Chyba při čtení", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -393,12 +402,18 @@ namespace GUI
             try
             {
                 attachmentModel.CopyAttachmentOfPublication(originalPublication, saveFile.FileName, attachment.Id);
-                statusLabel.Content = "Soubor zkopírován." + saveFile.FileName;
+                refreshAttachments();
+                statusLabel.Content = "Soubor zkopírován: " + saveFile.FileName;
             }
-            catch (IOException)
+            catch (DbEntityValidationException ex)
             {
-                MessageBox.Show("Chyba při kopírování připojeného souboru.",
-                    "Chyba při čtení", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Chyba při načítání záznamu přílohy z databáze: " + ex.Message,
+                    "Chyba v databázi", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (IOException ex)
+            {
+                MessageBox.Show("Chyba při kopírování připojeného souboru: " + ex.Message,
+                    "Chyba při zápisu", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -421,10 +436,17 @@ namespace GUI
             {
                 attachmentModel.RemoveAttachmentFromPublication(originalPublication, attachment.Id);
                 refreshAttachments();
+                statusLabel.Content = "Soubor odstraněn: " + attachment.Path;
             }
             catch (DbEntityValidationException ex)
             {
-                MessageBox.Show("Chyba při odstraňování záznamu autora z databáze: " + ex.Message);
+                MessageBox.Show("Chyba při odstraňování záznamu přílohy z databáze: " + ex.Message,
+                    "Chyba v databázi", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (IOException ex)
+            {
+                MessageBox.Show("Chyba při odstraňování připojeného souboru: " + ex.Message,
+                    "Chyba při zápisu", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

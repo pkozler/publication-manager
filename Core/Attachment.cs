@@ -12,8 +12,9 @@ namespace Core
     using System;
     using System.Collections.Generic;
     
-    public partial class Attachment : IdEntity
+    public partial class Attachment
     {
+        public int Id { get; set; }
         public int PublicationId { get; set; }
         public string Path { get; set; }
     

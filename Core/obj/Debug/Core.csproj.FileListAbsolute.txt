@@ -15,3 +15,4 @@ C:\Users\pkout\Dropbox\cs\NET\Core\bin\Debug\EntityFramework.xml
 C:\Users\pkout\Dropbox\cs\NET\Core\bin\Debug\EntityFramework.SqlServer.xml
 C:\Users\pkout\Dropbox\cs\NET\Core\obj\Debug\PMCore.dll
 C:\Users\pkout\Dropbox\cs\NET\Core\obj\Debug\PMCore.pdb
+C:\Users\pkout\Dropbox\cs\NET\Core\obj\Debug\Core.csprojResolveAssemblyReference.cache

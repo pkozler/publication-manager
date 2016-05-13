@@ -79,13 +79,11 @@
     </Compile>
     <Compile Include="AuthorModel.cs" />
     <Compile Include="Entities\ASpecificPublication.cs" />
-    <Compile Include="Entities\IdEntityComparer.cs" />
     <Compile Include="ConferenceArticle.cs">
       <DependentUpon>DbPublicationModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Exceptions\AttachmentException.cs" />
     <Compile Include="Exceptions\AuthorException.cs" />
-    <Compile Include="Entities\AIdEntity.cs" />
     <Compile Include="Entities\DbPublicationEntities.SaveChanges.cs" />
     <Compile Include="DbPublicationModel.Context.cs">
       <AutoGen>True</AutoGen>
@@ -180,9 +178,7 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="data\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

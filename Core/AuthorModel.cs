@@ -30,13 +30,10 @@ namespace Core
         {
             // výběr všech autorů
             var authors = from a in context.Author
-                            orderby a.Name
+                            orderby a.Id
                             select a;
-
-            List<Author> authorList = authors.ToList();
-            authorList.Sort(new IdEntityComparer());
-
-            return authorList;
+            
+            return authors.ToList();
         }
 
         /// <summary>

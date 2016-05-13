@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.IO;
+using System;
 
 namespace Core
 {
@@ -14,7 +15,9 @@ namespace Core
         /// </summary>
         protected DbPublicationEntities context;
 
-        private const string DATA_DIRECTORY = "data/";
+        private const string DATA_ROOT_FOLDER_NAME = "data";
+
+        private readonly string DataRootFolderPath;
 
         /// <summary>
         /// Vytvoří instanci správce.
@@ -23,8 +26,25 @@ namespace Core
         public AttachmentModel(DbPublicationEntities context)
         {
             this.context = context;
+
+            DataRootFolderPath = $"{Path.GetFullPath(".")}{Path.DirectorySeparatorChar}{DATA_ROOT_FOLDER_NAME}{Path.DirectorySeparatorChar}";
         }
 
+        private int createNewAttachmentId(Publication publication)
+        {
+            if (publication.Attachment.Count < 1)
+            {
+                return 1;
+            }
+            
+            return (publication.Attachment.Max(a => a.Id) + 1);
+        }
+
+        private string getFullDataFolderPath(Publication publication, Attachment attachment)
+        {
+            return $"{DataRootFolderPath}{publication.Id}-{attachment.Id}{Path.DirectorySeparatorChar}";
+        }
+        
         /// <summary>
         /// Vrátí seznam příloh publikace se zadaným ID.
         /// </summary>
@@ -34,13 +54,10 @@ namespace Core
         {
             var attachments = from a in context.Attachment
                                 where a.PublicationId == publication.Id
-                                orderby a.Path
+                                orderby a.Id
                                 select a;
 
-            List<Attachment> attachmentList = attachments.ToList();
-            attachmentList.Sort(new IdEntityComparer());
-
-            return attachmentList;
+            return attachments.ToList();
         }
         
         /// <summary>
@@ -51,13 +68,15 @@ namespace Core
         public void AddAttachmentToPublication(Publication publication, string srcFileName)
         {
             Attachment attachment = new Attachment();
-            attachment.Path = DATA_DIRECTORY + Path.GetFileName(srcFileName);
-            File.Copy(srcFileName, attachment.Path);
+            attachment.Path = Path.GetFileName(srcFileName);
             
             attachment.Publication = publication;
-            List<Attachment> attachmentList = GetAttachmentsByPublication(publication);
-            // určení ID nové přílohy
-            attachment.Id = attachmentList.Count > 0 ? attachmentList.Last().Id + 1 : 1;
+            attachment.Id = createNewAttachmentId(attachment.Publication);
+
+            string fullDataPath = getFullDataFolderPath(publication, attachment);
+            Directory.CreateDirectory(fullDataPath);
+            File.Copy(srcFileName, getFullDataFolderPath(publication, attachment) + attachment.Path);
+
             publication.Attachment.Add(attachment);
             context.Attachment.Add(attachment);
             context.SaveChanges();
@@ -75,10 +94,10 @@ namespace Core
             if (attachment == null)
             {
                 throw new AttachmentException(string.Format(
-                    "Příloha s id {0} u publikace s id {1} neexistuje.", id, publication.Id));
+                    "Příloha s ID {0} u publikace s ID {1} neexistuje.", id, publication.Id));
             }
 
-            File.Copy(attachment.Path, destFileName);
+            File.Copy(getFullDataFolderPath(publication, attachment) + attachment.Path, destFileName);
         }
 
         /// <summary>
@@ -93,14 +112,16 @@ namespace Core
             if (attachment == null)
             {
                 throw new AttachmentException(string.Format(
-                    "Příloha s id {0} u publikace s id {1} neexistuje.", id, publication.Id));
+                    "Příloha s ID {0} u publikace s ID {1} neexistuje.", id, publication.Id));
             }
+
+            string fullDataPath = getFullDataFolderPath(publication, attachment);
+            File.Delete(getFullDataFolderPath(publication, attachment) + attachment.Path);
+            Directory.Delete(fullDataPath);
 
             publication.Attachment.Remove(attachment);
             context.Attachment.Remove(attachment);
             context.SaveChanges();
-
-            File.Delete(attachment.Path);
         }
     }
 }

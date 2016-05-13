@@ -104,7 +104,8 @@ namespace GUI
             }
             catch (DbEntityValidationException ex)
             {
-                MessageBox.Show("Chyba při odstraňování záznamu autora z databáze: " + ex.Message);
+                MessageBox.Show("Chyba při odstraňování záznamu autora z databáze: " + ex.Message,
+                    "Chyba v databázi", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
