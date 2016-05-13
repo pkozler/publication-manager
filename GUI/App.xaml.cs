@@ -11,7 +11,7 @@ namespace GUI
     /// </summary>
     public partial class App : Application
     {
-        private const string DIRECTORY = "../../resources/example-texts/";
+        private const string DIRECTORY = @"..\..\resources\example-texts\";
 
         private const string EXTENSION = ".txt";
 
@@ -20,17 +20,17 @@ namespace GUI
         /// </summary>
         private void ApplicationStart(object sender, StartupEventArgs e)
         {
-            string[] args = Environment.GetCommandLineArgs();
-
             try
             {
+                string[] args = Environment.GetCommandLineArgs();
+
                 // vytvoření databázového kontextu
                 DbPublicationEntities context = new DbPublicationEntities();
 
                 // vytvoření objektů pro správu dat společných pro všechny typy publikací
                 PublicationModel publicationModel = new PublicationModel(context);
                 AuthorModel authorModel = new AuthorModel(context);
-                AttachmentModel attachmentModel = new AttachmentModel(context);
+                AttachmentModel attachmentModel = new AttachmentModel(context, args[0]);
 
                 // vytvoření seznamu typů publikací s přidruženými dialogy a objekty pro správu dat
                 List<PublicationType> publicationTypes = initializeTypes(context);

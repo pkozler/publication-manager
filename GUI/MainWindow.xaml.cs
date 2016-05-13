@@ -120,10 +120,16 @@ namespace GUI
 
         private void insertPublicationMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            new PublicationWindow(authorModel, attachmentModel, publicationTypes).ShowDialog();
+            PublicationWindow publicationWindow = new PublicationWindow(
+                authorModel, attachmentModel, publicationTypes);
+            publicationWindow.ShowDialog();
 
-            refreshPublications();
-            refreshAuthors();
+            if (publicationWindow.DialogResult == true)
+            {
+                refreshPublications();
+                refreshAuthors();
+                statusLabel.Content = "Vytvořena nová publikace.";
+            }
         }
 
         private void viewPublicationMenuItem_Click(object sender, RoutedEventArgs e)
@@ -133,11 +139,18 @@ namespace GUI
                 return;
             }
 
-            new PublicationWindow(authorModel, attachmentModel, publicationTypes,
-                publicationDataGrid.SelectedItem as Publication).ShowDialog();
+            Publication publication = publicationDataGrid.SelectedItem as Publication;
 
-            refreshPublications();
-            refreshAuthors();
+            PublicationWindow publicationWindow = new PublicationWindow(
+                authorModel, attachmentModel, publicationTypes, publication);
+            publicationWindow.ShowDialog();
+
+            if (publicationWindow.DialogResult == true)
+            {
+                refreshPublications();
+                refreshAuthors();
+                statusLabel.Content = $"Dokončena úprava/odstranění publikace s ID {publication.Id}.";
+            }
         }
 
         private void exportPublicationMenuItem_Click(object sender, RoutedEventArgs e)
@@ -175,6 +188,7 @@ namespace GUI
             Publication publication = publicationDataGrid.SelectedItem as Publication;
             PublicationType.GetTypeByName(publicationTypes, publication.Type).Model
                 .ExportPublicationToHtmlDocument(publication, templatePath, htmlPath);
+            statusLabel.Content = $"Dokončen export publikace s ID {publication.Id} do HTML dokumentu.";
         }
 
         private void clearAuthorFilterButton_Click(object sender, RoutedEventArgs e)
@@ -223,6 +237,7 @@ namespace GUI
             }
 
             refreshPublications(authorFilter, yearFilter, publicationTypeFilter);
+            statusLabel.Content = "Obnoven seznam publikací se zadanými filtry.";
         }
         
         private void setButtonsEnabled(bool enabled)

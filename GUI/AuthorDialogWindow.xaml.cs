@@ -13,7 +13,7 @@ namespace GUI
         /// <summary>
         /// Uchovává zadané osobní údaje autora pro formulář publikace.
         /// </summary>
-        public Author Author { get; private set; }
+        public Author NewAuthor { get; private set; }
 
         /// <summary>
         /// Provede inicializaci komponent.
@@ -30,9 +30,15 @@ namespace GUI
         /// <param name="e">data události</param>
         private void okButton_Click(object sender, RoutedEventArgs e)
         {
-            Author = new Author();
-            Author.Name = nameTextBox.Text;
-            Author.Surname = surnameTextBox.Text;
+            if (string.IsNullOrWhiteSpace(nameTextBox.Text)
+                || string.IsNullOrWhiteSpace(surnameTextBox.Text))
+            {
+                return;
+            }
+
+            NewAuthor = new Author();
+            NewAuthor.Name = nameTextBox.Text;
+            NewAuthor.Surname = surnameTextBox.Text;
             DialogResult = true;
             Close();
         }

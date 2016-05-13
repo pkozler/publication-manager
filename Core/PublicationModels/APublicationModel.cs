@@ -15,7 +15,7 @@ namespace Core
         /// <summary>
         /// Uchovává adresář s výchozími šablonami pro vytváření HTML dokumentů.
         /// </summary>
-        private const string DEFAULT_TEMPLATE_DIRECTORY = "default-templates/";
+        private const string DEFAULT_TEMPLATE_DIRECTORY = @"default-templates\";
 
         /// <summary>
         /// Uchovává příponu výchozích šablon pro vytváření HTML dokumentů.
@@ -241,20 +241,20 @@ namespace Core
         /// <summary>
         /// Upraví zadanou publikaci zadanými údaji.
         /// </summary>
-        /// <param name="oldPublication">existující publikace</param>
+        /// <param name="originalPublication">existující publikace</param>
         /// <param name="publication">nové údaje</param>
-        protected void UpdatePublication(Publication oldPublication, Publication publication, List<Author> authors)
+        protected void UpdatePublication(Publication originalPublication, Publication publication, List<Author> authors)
         {
             // ponechání původního BibTeX klíče, pokud nový nebyl vyplněn
             if (publication.Entry != null)
             {
-                oldPublication.Entry = publication.Entry;
+                originalPublication.Entry = publication.Entry;
             }
 
             // ponechání původního názvu publikace, pokud nový nebyl vyplněn
             if (publication.Title != null)
             {
-                oldPublication.Title = publication.Title;
+                originalPublication.Title = publication.Title;
             }
 
             // ukončení úprav, pokud nebyl vyplněn nový seznam autorů
@@ -264,34 +264,34 @@ namespace Core
             }
             
             // odstranění stávajícího seznamu autorů
-            foreach (Author a in oldPublication.Author)
+            foreach (Author a in originalPublication.Author)
             {
-                a.Publication.Remove(oldPublication);
+                a.Publication.Remove(originalPublication);
             }
 
-            oldPublication.Author.Clear();
+            originalPublication.Author.Clear();
 
             // vytvoření nového seznamu autorů
             foreach (Author a in authors)
             {
-                publication.Author.Add(a);
-                a.Publication.Add(publication);
+                originalPublication.Author.Add(a);
+                a.Publication.Add(originalPublication);
             }
         }
 
         /// <summary>
         /// Odstraní zadanou publikaci.
         /// </summary>
-        /// <param name="oldPublication">existující publikace</param>
-        protected void DeletePublication(Publication oldPublication)
+        /// <param name="originalPublication">existující publikace</param>
+        protected void DeletePublication(Publication originalPublication)
         {
             // odstranění publikace u autorů
-            foreach (Author author in oldPublication.Author)
+            foreach (Author author in originalPublication.Author)
             {
-                author.Publication.Remove(oldPublication);
+                author.Publication.Remove(originalPublication);
             }
 
-            Context.Publication.Remove(oldPublication);
+            Context.Publication.Remove(originalPublication);
         }
     }
 }

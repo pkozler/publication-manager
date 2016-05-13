@@ -23,13 +23,13 @@ namespace Core
         /// Vytvoří instanci správce.
         /// </summary>
         /// <param name="context">databázový kontext</param>
-        public AttachmentModel(DbPublicationEntities context)
+        public AttachmentModel(DbPublicationEntities context, string executablePath)
         {
             this.context = context;
 
-            DataRootFolderPath = $"{Path.GetFullPath(".")}{Path.DirectorySeparatorChar}{DATA_ROOT_FOLDER_NAME}{Path.DirectorySeparatorChar}";
+            DataRootFolderPath = $"{Path.GetDirectoryName(executablePath)}{Path.DirectorySeparatorChar}{DATA_ROOT_FOLDER_NAME}{Path.DirectorySeparatorChar}";
         }
-
+        
         private int createNewAttachmentId(Publication publication)
         {
             if (publication.Attachment.Count < 1)

@@ -31,7 +31,7 @@ namespace GUI
         /// <summary>
         /// Uchovává vybraného autora pro formulář publikace.
         /// </summary>
-        public Author Author { get; private set; }
+        public Author SavedAuthor { get; private set; }
 
         /// <summary>
         /// Objekt datové vrstvy, který slouží jako správce záznamů autorů.
@@ -49,7 +49,6 @@ namespace GUI
             this.publication = publication;
 
             InitializeComponent();
-
             refreshAuthors();
         }
         
@@ -72,7 +71,7 @@ namespace GUI
                 return;
             }
 
-            Author = authorDataGrid.SelectedItem as Author;
+            SavedAuthor = authorDataGrid.SelectedItem as Author;
             DialogResult = true;
             Close();
         }
@@ -101,6 +100,7 @@ namespace GUI
             {
                 authorModel.DeleteAuthor(author.Id);
                 refreshAuthors();
+                statusLabel.Content = $"Odstraněn autor s ID {author.Id}.";
             }
             catch (DbEntityValidationException ex)
             {
@@ -137,14 +137,12 @@ namespace GUI
             if (authorDataGrid.SelectedItem == null)
             {
                 chooseAuthorButton.IsEnabled = false;
+                deleteAuthorButton.IsEnabled = false;
 
                 return;
             }
-
-            chooseAuthorButton.IsEnabled = publication != null;
-
+            
             Author author = authorDataGrid.SelectedItem as Author;
-            chooseAuthorButton.IsEnabled = true;
 
             if (author.Publication.Count > 0)
             {
@@ -157,6 +155,7 @@ namespace GUI
                 deleteAuthorButton.IsEnabled = true;
             }
 
+            chooseAuthorButton.IsEnabled = publication != null;
             refreshPublications(author);
         }
     }

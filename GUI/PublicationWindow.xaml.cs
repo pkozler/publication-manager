@@ -122,6 +122,7 @@ namespace GUI
         /// <param name="e">data události</param>
         private void closeButton_Click(object sender, RoutedEventArgs e)
         {
+            DialogResult = false;
             Close();
         }
         
@@ -138,11 +139,13 @@ namespace GUI
         private void copyTextButton_Click(object sender, RoutedEventArgs e)
         {
             Clipboard.SetText(contentTextBox.Text);
+            statusLabel.Content = "Text publikace byl zkopírován do schránky.";
         }
 
         private void pasteTextButton_Click(object sender, RoutedEventArgs e)
         {
             contentTextBox.Text = Clipboard.GetText();
+            statusLabel.Content = "Text publikace byl vložen ze schránky.";
         }
 
         private void newAuthorButton_Click(object sender, RoutedEventArgs e)
@@ -150,10 +153,13 @@ namespace GUI
             AuthorDialogWindow authorDialog = new AuthorDialogWindow();
             authorDialog.ShowDialog();
 
-            if (authorDialog.DialogResult == true)
+            if (authorDialog.DialogResult != true)
             {
-                publicationAuthorListView.Items.Add(authorDialog.Author);
+                return;
             }
+
+            publicationAuthorListView.Items.Add(authorDialog.NewAuthor);
+            statusLabel.Content = "Přidána nová osoba do seznamu autorů publikace.";
         }
 
         private void savedAuthorButton_Click(object sender, RoutedEventArgs e)
@@ -161,10 +167,14 @@ namespace GUI
             AuthorWindow authorDialog = new AuthorWindow(authorModel, originalPublication);
             authorDialog.ShowDialog();
 
-            if (authorDialog.DialogResult == true)
+            if (authorDialog.DialogResult != true
+                || publicationAuthorListView.Items.Contains(authorDialog.SavedAuthor))
             {
-                publicationAuthorListView.Items.Add(authorDialog.Author);
+                return;
             }
+            
+            publicationAuthorListView.Items.Add(authorDialog.SavedAuthor);
+            statusLabel.Content = "Přidána uložená osoba do seznamu autorů publikace.";
         }
 
         private void removeAuthorButton_Click(object sender, RoutedEventArgs e)
@@ -176,6 +186,7 @@ namespace GUI
 
             Author author = publicationAuthorListView.SelectedItem as Author;
             publicationAuthorListView.Items.Remove(author);
+            statusLabel.Content = "Odstraněna osoba ze seznamu autorů publikace.";
         }
 
         private void publicationAuthorListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -298,6 +309,7 @@ namespace GUI
                     "Chyba v databázi", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             
+            DialogResult = true;
             Close();
         }
 
@@ -321,6 +333,7 @@ namespace GUI
                     "Chyba v databázi", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
+            DialogResult = true;
             Close();
         }
 
@@ -342,6 +355,7 @@ namespace GUI
                     "Chyba v databázi", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
+            DialogResult = true;
             Close();
         }
 
