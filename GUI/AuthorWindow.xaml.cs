@@ -1,19 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using Core;
 using System.Data.Entity.Validation;
+using Core;
 
 namespace GUI
 {
@@ -37,18 +26,24 @@ namespace GUI
         /// Objekt datové vrstvy, který slouží jako správce záznamů autorů.
         /// </summary>
         private AuthorModel authorModel;
-        
-        private Publication publication;
 
         /// <summary>
-        /// Provede inicializaci komponent.
+        /// Indikuje, zda je zvolena publikace pro změnu seznamu autorů.
         /// </summary>
-        public AuthorWindow(AuthorModel authorModel, Publication publication = null)
+        private bool isPublicationChosen;
+
+        /// <summary>
+        /// Provede inicializaci datových objektů a grafických komponent.
+        /// </summary>
+        /// <param name="authorModel">správce autorů</param>
+        /// <param name="publication">TRUE při zobrazení z okna detailu publikace, jinak FALSE</param>
+        public AuthorWindow(AuthorModel authorModel, bool isPublicationChosen = false)
         {
             this.authorModel = authorModel;
-            this.publication = publication;
+            this.isPublicationChosen = isPublicationChosen;
 
             InitializeComponent();
+            // načtení aktuálního seznamu autorů
             refreshAuthors();
         }
         
@@ -64,9 +59,14 @@ namespace GUI
             Close();
         }
 
+        /// <summary>
+        /// Vybere autora pro přidání do seznamu autorů zobrazené publikace.
+        /// </summary>
+        /// <param name="sender">původce události</param>
+        /// <param name="e">data události</param>
         private void chooseAuthorButton_Click(object sender, RoutedEventArgs e)
         {
-            if (publication == null || authorDataGrid.SelectedItem == null)
+            if (!isPublicationChosen || authorDataGrid.SelectedItem == null)
             {
                 return;
             }
@@ -76,6 +76,13 @@ namespace GUI
             Close();
         }
 
+        /// <summary>
+        /// Odstraní záznam o vybraném autorovi ze seznamu použitých autorů.
+        /// Je možné použít pouze v případě, že k danému autorovi není
+        /// přiřazena žádná publikace.
+        /// </summary>
+        /// <param name="sender">původce události</param>
+        /// <param name="e">data události</param>
         private void deleteAuthorButton_Click(object sender, RoutedEventArgs e)
         {
             if (authorDataGrid.SelectedItem == null)
@@ -85,6 +92,7 @@ namespace GUI
 
             Author author = authorDataGrid.SelectedItem as Author;
 
+            // zrušení akce, pokud seznam publikací vybraného autora není prázdný
             if (author.Publication.Count > 0)
             {
                 return;
@@ -98,6 +106,7 @@ namespace GUI
 
             try
             {
+                // požadavek datové vrstvě na odstranění záznamu autora a obnova seznamu v komponentě GUI
                 authorModel.DeleteAuthor(author.Id);
                 refreshAuthors();
                 statusLabel.Content = $"Odstraněn autor s ID {author.Id}.";
@@ -109,8 +118,13 @@ namespace GUI
             }
         }
 
+        /// <summary>
+        /// Aktualizuje seznam autorů v příslušné komponentě GUI a informaci
+        /// o jejich počtu v jejím popisku.
+        /// </summary>
         private void refreshAuthors()
         {
+            // načtení aktuálního seznamu z datové vrstvy
             List<Author> authorList = authorModel.GetAuthors();
 
             if (authorList.Count > 0)
@@ -122,40 +136,62 @@ namespace GUI
                 authorListCountLabel.Content = "žádní";
             }
             
+            // propojení aktuálního seznamu s komponentou GUI
             authorDataGrid.ItemsSource = null;
             authorDataGrid.ItemsSource = authorList;
         }
 
+        /// <summary>
+        /// Aktualizuje seznam publikací vybraného autora v příslušné komponentě GUI a informaci
+        /// o jejich počtu v jejím popisku.
+        /// </summary>
+        /// <param name="publicationAuthor">vybraný autor</param>
         private void refreshPublications(Author publicationAuthor)
         {
+            // propojení seznamu aktuálně vybraného autora s komponentou GUI
             authorPublicationDataGrid.ItemsSource = null;
             authorPublicationDataGrid.ItemsSource = publicationAuthor.Publication;
         }
 
+        /// <summary>
+        /// Aktualizuje stav komponent GUI při změně výběru autora v seznamu.
+        /// </summary>
+        /// <param name="sender">původce události</param>
+        /// <param name="e">data události</param>
         private void authorDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            // deaktivace tlačítek a vyprázdnění seznamu publikací při prázdném výběru
             if (authorDataGrid.SelectedItem == null)
             {
                 chooseAuthorButton.IsEnabled = false;
                 deleteAuthorButton.IsEnabled = false;
+                authorPublicationDataGrid.ItemsSource = null;
+                authorPublicationCountLabel.Content = "žádné";
 
                 return;
             }
             
             Author author = authorDataGrid.SelectedItem as Author;
 
+            // deaktivace tlačítka odstranění autora, pokud nemá prázdný seznam publikací
             if (author.Publication.Count > 0)
             {
                 authorPublicationCountLabel.Content = author.Publication.Count + " celkem";
                 deleteAuthorButton.IsEnabled = false;
             }
+            // aktivace tlačítka odstranění autora, pokud má prázdný seznam publikací
             else
             {
                 authorPublicationCountLabel.Content = "žádné";
                 deleteAuthorButton.IsEnabled = true;
             }
 
-            chooseAuthorButton.IsEnabled = publication != null;
+            /*
+                aktivace tlačítka výběru autora, pokud je zvolena publikace k úpravě seznamu autorů
+                (okno je otevřeno z obrazovky detailu publikace) a obnova seznamu publikací autora
+                (výměna seznamu publikací předchozího vybraného autora za seznam aktuálně zvoleného).
+            */
+            chooseAuthorButton.IsEnabled = isPublicationChosen;
             refreshPublications(author);
         }
     }

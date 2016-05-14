@@ -36,9 +36,11 @@ namespace GUI
                 return;
             }
 
+            // vytvoření údajů nového autora
             NewAuthor = new Author();
             NewAuthor.Name = nameTextBox.Text;
             NewAuthor.Surname = surnameTextBox.Text;
+
             DialogResult = true;
             Close();
         }
@@ -54,6 +56,13 @@ namespace GUI
             Close();
         }
 
+        /// <summary>
+        /// Ověří, zda bylo vyplněno pole pro jméno i pro příjmení v případě změny obsahu některého
+        /// z těchto polí, a jsou-li obě pole vyplněna, aktivuje tlačítko pro potvrzení vytvoření autora
+        /// s uvedenými osobními údaji (v opačném případě je tlačítko opět deaktivováno).
+        /// </summary>
+        /// <param name="sender">původce události</param>
+        /// <param name="e">data události</param>
         private void textBoxes_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
             okButton.IsEnabled = !string.IsNullOrWhiteSpace(nameTextBox.Text)

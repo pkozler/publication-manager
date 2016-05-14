@@ -31,6 +31,7 @@ namespace Core
         /// Uloží novou publikaci příslušného typu a propojí záznam základních a specifických údajů.
         /// </summary>
         /// <param name="publication">základní údaje o publikaci</param>
+        /// <param name="authors">seznam autorů publikace</param>
         /// <param name="journalArticle">specifické údaje o publikaci</param>
         public void CreatePublication(Publication publication, List<Author> authors, JournalArticle journalArticle)
         {
@@ -51,6 +52,7 @@ namespace Core
         /// </summary>
         /// <param name="id">ID publikace</param>
         /// <param name="publication">základní údaje o publikaci</param>
+        /// <param name="authors">seznam autorů publikace</param>
         /// <param name="journalArticle">specifické údaje o publikaci</param>
         public void UpdatePublication(int id, Publication publication, List<Author> authors, JournalArticle journalArticle)
         {

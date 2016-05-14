@@ -94,17 +94,15 @@
     </Compile>
     <Compile Include="Containers\PublicationData.cs" />
     <Compile Include="Containers\PublicationType.cs" />
-    <Compile Include="ErrorWindow.xaml.cs">
-      <DependentUpon>ErrorWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Helpers\PageNumberHelper.cs" />
+    <Compile Include="Helpers\ErrorBoxGenerator.cs" />
+    <Compile Include="Helpers\PageNumberValidator.cs" />
     <Compile Include="PublicationWindow.xaml.cs">
       <DependentUpon>PublicationWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ConferenceArticleUserControl.xaml.cs">
       <DependentUpon>ConferenceArticleUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="IPublishableForm.cs" />
+    <Compile Include="IPublicationForm.cs" />
     <Compile Include="JournalArticleUserControl.xaml.cs">
       <DependentUpon>JournalArticleUserControl.xaml</DependentUpon>
     </Compile>
@@ -123,10 +121,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="AuthorWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ErrorWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -24,6 +24,11 @@ namespace Core
             this.context = context;
         }
 
+        /// <summary>
+        /// Vybere uložené autory podle ID ze zadané množiny.
+        /// </summary>
+        /// <param name="authorFilter">filtr autorů (množina ID)</param>
+        /// <returns>filtrovaná kolekce autorů</returns>
         private IQueryable<Author> getAuthorsFromIds(HashSet<int> authorFilter)
         {
             return from a in context.Author
@@ -31,12 +36,23 @@ namespace Core
                    select a;
         }
         
+        /// <summary>
+        /// Provede filtrování seznamu publikací podle zadaných filtrů představovaných
+        /// množinami povolených údajů publikací.
+        /// </summary>
+        /// <param name="authors">povolení autoři (kolekce sestavená podle filtru ID autorů)</param>
+        /// <param name="yearFilter">filtr letopočtů</param>
+        /// <param name="publicationTypeFilter">filtr typů publikací</param>
+        /// <returns></returns>
         private IOrderedQueryable<Publication> getFilteredPublications(
             IQueryable<Author> authors, HashSet<int> yearFilter, HashSet<string> publicationTypeFilter)
         {
             return from p in context.Publication
+                   // publikace je začleněna do kolekce, pokud mezi její autory patří alespoň jeden ze zadaných
                    where ((authors.Count() == 0) ? true : authors.Intersect(p.Author).Any())
+                   // rok vydání publikace musí patřit mezi zadané
                    && ((yearFilter.Count() == 0) ? true : yearFilter.Contains(p.Year))
+                   // typ publikace musí patřit mezi zadané
                    && ((publicationTypeFilter.Count()) == 0 ? true : publicationTypeFilter.Contains(p.Type))
                    orderby p.Id
                    select p;

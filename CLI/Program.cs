@@ -48,7 +48,7 @@ namespace CLI
             // vytvoření objektů pro správu dat společných pro všechny typy publikací
             PublicationModel publicationModel = new PublicationModel(context);
             AuthorModel authorModel = new AuthorModel(context);
-            AttachmentModel attachmentModel = new AttachmentModel(context);
+            AttachmentModel attachmentModel = new AttachmentModel(context, args[0]);
 
             // vytvoření seznamu typů publikací s přidruženými dialogy a objekty pro správu dat
             List<PublicationType> publicationTypes = initializePublicationTypes(context);

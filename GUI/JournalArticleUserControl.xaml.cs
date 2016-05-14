@@ -1,19 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Core;
-using System.Text.RegularExpressions;
 
 namespace GUI
 {
@@ -22,12 +10,22 @@ namespace GUI
     /// představující část formuláře okna pro zobrazení a úpravu bibliografických údajů
     /// publikací, která je specifická pro typ publikace "článek do časopisu".
     /// </summary>
-    public partial class JournalArticleUserControl : UserControl, IPublishableForm
+    public partial class JournalArticleUserControl : UserControl, IPublicationForm
     {
+        /// <summary>
+        /// Uchovává instanci správce článků do časopisu v datové vrstvě.
+        /// </summary>
         private JournalArticleModel journalArticleModel;
 
-        private PageNumberHelper pageNumberHelper = new PageNumberHelper();
+        /// <summary>
+        /// Uchovává instanci validátoru pro hodnoty čísel stran textu.
+        /// </summary>
+        private PageNumberValidator pageNumberValidator = new PageNumberValidator();
 
+        /// <summary>
+        /// Inicializuje komponenty.
+        /// </summary>
+        /// <param name="journalArticleModel">správce článků do časopisu</param>
         public JournalArticleUserControl(APublicationModel journalArticleModel) : base()
         {
             this.journalArticleModel = journalArticleModel as JournalArticleModel;
@@ -36,6 +34,7 @@ namespace GUI
             pageSingleRadioButton.IsChecked = true;
         }
 
+        /// <inheritDoc/>
         public void ViewPublication(Publication publication)
         {
             JournalArticle journalArticle = publication.JournalArticle;
@@ -57,6 +56,7 @@ namespace GUI
             issnTextBox.Text = journalArticle.ISSN;
         }
 
+        /// <inheritDoc/>
         public List<string> ValidatePublicationTypeSpecificBibliography(
             Publication publication, List<Author> authors, out ASpecificPublication specificPublication)
         {
@@ -82,9 +82,9 @@ namespace GUI
                 journalArticle.Number = numberTextBox.Text;
             }
 
-            journalArticle.FromPage = pageNumberHelper.
+            journalArticle.FromPage = pageNumberValidator.
                 validateFromPageNumber(errors, fromPageNumericUpDown);
-            journalArticle.ToPage = pageNumberHelper.
+            journalArticle.ToPage = pageNumberValidator.
                 validateToPageNumber(errors, toPageNumericUpDown, pageSingleRadioButton,
                 pageRangeRadioButton, journalArticle.FromPage);
 
@@ -100,24 +100,32 @@ namespace GUI
             return errors;
         }
 
+        /// <inheritDoc/>
         public void InsertPublication(Publication publication, List<Author> authors, ASpecificPublication specificPublication)
         {
             journalArticleModel.CreatePublication(publication, authors, specificPublication as JournalArticle);
         }
 
+        /// <inheritDoc/>
         public void EditPublication(int publicationId, Publication publication, List<Author> authors, ASpecificPublication specificPublication)
         {
             journalArticleModel.UpdatePublication(publicationId, publication, authors, specificPublication as JournalArticle);
         }
 
+        /// <inheritDoc/>
         public void DeletePublication(int publicationId)
         {
             journalArticleModel.DeletePublication(publicationId);
         }
 
+        /// <summary>
+        /// Nastaví způsob zadání čísel stran textu (jednostránkový nebo rozsah).
+        /// </summary>
+        /// <param name="sender">původce události</param>
+        /// <param name="e">data události</param>
         private void setPageInterval(object sender, RoutedEventArgs e)
         {
-            pageNumberHelper.SetNumericUpDownControls(
+            pageNumberValidator.SetNumericUpDownControls(
                 pageSingleRadioButton, pageRangeRadioButton, fromPageNumericUpDown, toPageNumericUpDown);
         }
     }

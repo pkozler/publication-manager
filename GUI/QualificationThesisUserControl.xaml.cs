@@ -1,17 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Collections.Generic;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Core;
 
 namespace GUI
@@ -21,10 +9,17 @@ namespace GUI
     /// představující část formuláře okna pro zobrazení a úpravu bibliografických údajů
     /// publikací, která je specifická pro typ publikace "kvalifikační práce".
     /// </summary>
-    public partial class QualificationThesisUserControl : UserControl, IPublishableForm
+    public partial class QualificationThesisUserControl : UserControl, IPublicationForm
     {
+        /// <summary>
+        /// Uchovává instanci správce kvalifikačních prací v datové vrstvě.
+        /// </summary>
         private QualificationThesisModel qualificationThesisModel;
-        
+
+        /// <summary>
+        /// Inicializuje komponenty.
+        /// </summary>
+        /// <param name="qualificationThesisModel">správce kvalifikačních prací</param>
         public QualificationThesisUserControl(APublicationModel qualificationThesisModel) : base()
         {
             this.qualificationThesisModel = qualificationThesisModel as QualificationThesisModel;
@@ -33,6 +28,7 @@ namespace GUI
             masterThesisRadioButton.IsChecked = true;
         }
 
+        /// <inheritDoc/>
         public void ViewPublication(Publication publication)
         {
             QualificationThesis qualificationThesis = publication.QualificationThesis;
@@ -50,6 +46,7 @@ namespace GUI
             }
         }
 
+        /// <inheritDoc/>
         public List<string> ValidatePublicationTypeSpecificBibliography(
             Publication publication, List<Author> authors, out ASpecificPublication specificPublication)
         {
@@ -96,16 +93,19 @@ namespace GUI
             return errors;
         }
 
+        /// <inheritDoc/>
         public void InsertPublication(Publication publication, List<Author> authors, ASpecificPublication specificPublication)
         {
             qualificationThesisModel.CreatePublication(publication, authors[0], specificPublication as QualificationThesis);
         }
 
+        /// <inheritDoc/>
         public void EditPublication(int publicationId, Publication publication, List<Author> authors, ASpecificPublication specificPublication)
         {
             qualificationThesisModel.UpdatePublication(publicationId, publication, authors[0], specificPublication as QualificationThesis);
         }
 
+        /// <inheritDoc/>
         public void DeletePublication(int publicationId)
         {
             qualificationThesisModel.DeletePublication(publicationId);

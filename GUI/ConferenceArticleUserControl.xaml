@@ -25,7 +25,7 @@
         </StackPanel>
         <StackPanel HorizontalAlignment="Left" Height="21" Margin="157,103,0,0" VerticalAlignment="Top" Orientation="Horizontal" ToolTip="Zvolte, zda bude zadána pouze jedna strana, nebo rozsah.">
             <RadioButton x:Name="pageSingleRadioButton" Content="Jedna" HorizontalAlignment="Right" VerticalAlignment="Top" GroupName="pageIntervalGroup" FontSize="14" Checked="setPageInterval"/>
-            <RadioButton x:Name="pageRangeRadioButton" Content="Interval" HorizontalAlignment="Right" VerticalAlignment="Top" GroupName="pageIntervalGroup" FontSize="14" Checked="setPageInterval"/>
+            <RadioButton x:Name="pageRangeRadioButton" Content="Rozsah" HorizontalAlignment="Right" VerticalAlignment="Top" GroupName="pageIntervalGroup" FontSize="14" Checked="setPageInterval"/>
         </StackPanel>
         <extra:NumericUpDown x:Name="fromPageNumericUpDown" Margin="157,129,0,0" Height="25" ToolTip="Zadejte číslo strany, na které začíná citovaný text." Maximum="99999999" VerticalAlignment="Top" Minimum="1" HorizontalAlignment="Left" Width="99" />
         <extra:NumericUpDown x:Name="toPageNumericUpDown" Margin="291,129,0,0" Height="25" ToolTip="Zadejte číslo strany, na které končí citovaný text." Maximum="99999999" VerticalAlignment="Top" Minimum="1" HorizontalAlignment="Left" Width="99" IsEnabled="False" />

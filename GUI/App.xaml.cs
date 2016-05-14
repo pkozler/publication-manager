@@ -62,10 +62,14 @@ namespace GUI
         private static List<PublicationType> initializeTypes(DbPublicationEntities context)
         {
             // vytvoření objektů pro správu dat specifických pro jednotlivé dostupné typy publikací
-            ConferenceArticleModel conferenceArticleModel = new ConferenceArticleModel(context, "Článek na konferenci");
-            JournalArticleModel journalArticleModel = new JournalArticleModel(context, "Článek do časopisu");
-            TechnicalReportModel technicalReportModel = new TechnicalReportModel(context, "Technická zpráva");
-            QualificationThesisModel qualificationThesisModel = new QualificationThesisModel(context, "Kvalifikační práce");
+            ConferenceArticleModel conferenceArticleModel
+                = new ConferenceArticleModel(context, "Článek na konferenci");
+            JournalArticleModel journalArticleModel
+                = new JournalArticleModel(context, "Článek do časopisu");
+            TechnicalReportModel technicalReportModel
+                = new TechnicalReportModel(context, "Technická zpráva");
+            QualificationThesisModel qualificationThesisModel
+                = new QualificationThesisModel(context, "Kvalifikační práce", "Diplomová práce", "Disertační práce");
 
             /*
                 přiřazení dialogů uživatelského rozhraní k jednotlivým dostupným typům publikací,
@@ -505,7 +509,7 @@ namespace GUI
             technicalReport = new TechnicalReport();
             technicalReport.Address = "Praha";
             technicalReport.Institution = "ČVUT v Praze, Fakulta stavební, Katedra materiálového inženýrství a chemie";
-            technicalReport.Number = "Research Report ME10112/1";
+            technicalReport.Number = "p. 51 Research Report ME10112/1";
             technicalReportModel.CreatePublication(publication, authors, technicalReport);
 
             // Měření charakteristik vzduchu po průchodu vodní clonou
@@ -526,7 +530,7 @@ namespace GUI
             technicalReport = new TechnicalReport();
             technicalReport.Address = "Praha";
             technicalReport.Institution = "České vysoké učení technické v Praze";
-            technicalReport.Number = "Výzkumná zpráva č. Z-271/11";
+            technicalReport.Number = "5 s. Výzkumná zpráva č. Z-271/11";
             technicalReportModel.CreatePublication(publication, authors, technicalReport);
 
             // Analýza prostorových a formálních vlastností středověkých obléhacích táborů
@@ -542,7 +546,7 @@ namespace GUI
             };
             qualificationThesis = new QualificationThesis();
             qualificationThesis.Address = "Plzeň";
-            qualificationThesis.School = "Západočeská univerzita v Plzni. Fakulta filozofická";
+            qualificationThesis.School = "Západočeská univerzita v Plzni. Fakulta filozofická. Vedoucí práce Karel NOVÁČEK";
             qualificationThesis.ThesisType = QualificationThesisModel.TYPE_MASTER_THESIS;
             qualificationThesisModel.CreatePublication(publication, authors[0], qualificationThesis);
 

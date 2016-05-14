@@ -1,19 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Core;
-using System.Text.RegularExpressions;
 
 namespace GUI
 {
@@ -22,12 +10,22 @@ namespace GUI
     /// představující část formuláře okna pro zobrazení a úpravu bibliografických údajů
     /// publikací, která je specifická pro typ publikace "článek na konferenci".
     /// </summary>
-    public partial class ConferenceArticleUserControl : UserControl, IPublishableForm
+    public partial class ConferenceArticleUserControl : UserControl, IPublicationForm
     {
+        /// <summary>
+        /// Uchovává instanci správce článků na konferenci v datové vrstvě.
+        /// </summary>
         private ConferenceArticleModel conferenceArticleModel;
 
-        private PageNumberHelper pageNumberHelper = new PageNumberHelper();
+        /// <summary>
+        /// Uchovává instanci validátoru pro hodnoty čísel stran textu.
+        /// </summary>
+        private PageNumberValidator pageNumberValidator = new PageNumberValidator();
 
+        /// <summary>
+        /// Inicializuje komponenty.
+        /// </summary>
+        /// <param name="conferenceArticleModel">správce článků na konferenci</param>
         public ConferenceArticleUserControl(APublicationModel conferenceArticleModel) : base()
         {
             this.conferenceArticleModel = conferenceArticleModel as ConferenceArticleModel;
@@ -37,6 +35,7 @@ namespace GUI
             isbnRadioButton.IsChecked = true;
         }
 
+        /// <inheritDoc/>
         public void ViewPublication(Publication publication)
         {
             ConferenceArticle conferenceArticle = publication.ConferenceArticle;
@@ -69,6 +68,7 @@ namespace GUI
             }
         }
 
+        /// <inheritDoc/>
         public List<string> ValidatePublicationTypeSpecificBibliography(
             Publication publication, List<Author> authors, out ASpecificPublication specificPublication)
         {
@@ -103,9 +103,9 @@ namespace GUI
                 conferenceArticle.Publisher = publisherTextBox.Text;
             }
 
-            conferenceArticle.FromPage = pageNumberHelper.
+            conferenceArticle.FromPage = pageNumberValidator.
                 validateFromPageNumber(errors, fromPageNumericUpDown);
-            conferenceArticle.ToPage = pageNumberHelper.
+            conferenceArticle.ToPage = pageNumberValidator.
                 validateToPageNumber(errors, toPageNumericUpDown, pageSingleRadioButton,
                 pageRangeRadioButton, conferenceArticle.FromPage);
             
@@ -132,24 +132,32 @@ namespace GUI
             return errors;
         }
 
+        /// <inheritDoc/>
         public void InsertPublication(Publication publication, List<Author> authors, ASpecificPublication specificPublication)
         {
             conferenceArticleModel.CreatePublication(publication, authors, specificPublication as ConferenceArticle);
         }
 
+        /// <inheritDoc/>
         public void EditPublication(int publicationId, Publication publication, List<Author> authors, ASpecificPublication specificPublication)
         {
             conferenceArticleModel.UpdatePublication(publicationId, publication, authors, specificPublication as ConferenceArticle);
         }
 
+        /// <inheritDoc/>
         public void DeletePublication(int publicationId)
         {
             conferenceArticleModel.DeletePublication(publicationId);
         }
-        
+
+        /// <summary>
+        /// Nastaví způsob zadání čísel stran textu (jednostránkový nebo rozsah).
+        /// </summary>
+        /// <param name="sender">původce události</param>
+        /// <param name="e">data události</param>
         private void setPageInterval(object sender, RoutedEventArgs e)
         {
-            pageNumberHelper.SetNumericUpDownControls(
+            pageNumberValidator.SetNumericUpDownControls(
                 pageSingleRadioButton, pageRangeRadioButton, fromPageNumericUpDown, toPageNumericUpDown);
         }
     }

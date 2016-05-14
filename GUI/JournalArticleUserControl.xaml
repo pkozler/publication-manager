@@ -18,7 +18,7 @@
         <TextBox x:Name="issnTextBox" Margin="199,129,8,0" Height="22" VerticalAlignment="Top" ToolTip="Zadejte identifikační číslo (ISSN) časopisu."/>
         <StackPanel HorizontalAlignment="Left" Height="21" Margin="199,74,0,0" VerticalAlignment="Top" Orientation="Horizontal" ToolTip="Zvolte, zda bude zadána pouze jedna strana, nebo rozsah.">
             <RadioButton x:Name="pageSingleRadioButton" Content="Jedna" HorizontalAlignment="Right" VerticalAlignment="Top" GroupName="pageIntervalGroup" FontSize="14" Checked="setPageInterval"/>
-            <RadioButton x:Name="pageRangeRadioButton" Content="Interval" HorizontalAlignment="Right" VerticalAlignment="Top" GroupName="pageIntervalGroup" FontSize="14" Checked="setPageInterval"/>
+            <RadioButton x:Name="pageRangeRadioButton" Content="Rozsah" HorizontalAlignment="Right" VerticalAlignment="Top" GroupName="pageIntervalGroup" FontSize="14" Checked="setPageInterval"/>
         </StackPanel>
         <extra:NumericUpDown x:Name="fromPageNumericUpDown" Margin="199,98,0,0" Height="25" ToolTip="Zadejte číslo strany, na které začíná citovaný text." Maximum="99999999" VerticalAlignment="Top" Minimum="1" HorizontalAlignment="Left" Width="78" />
         <extra:NumericUpDown x:Name="toPageNumericUpDown" Margin="312,98,0,0" Height="25" ToolTip="Zadejte číslo strany, na které končí citovaný text." Maximum="99999999" VerticalAlignment="Top" Minimum="1" HorizontalAlignment="Left" Width="78" IsEnabled="False" />

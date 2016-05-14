@@ -3,7 +3,13 @@ using Core;
 
 namespace GUI
 {
-    public delegate IPublishableForm CreatePublicationUserControl(APublicationModel model);
+    /// <summary>
+    /// Delegát představující metodu pro vytváření formuláře v GUI pro zadání
+    /// specifických bibliografických údajů, odpovídajícího danému typu publikace.
+    /// </summary>
+    /// <param name="model">správce údajů publikace daného typu</param>
+    /// <returns>instance formuláře pro zadání údajů</returns>
+    public delegate IPublicationForm CreatePublicationUserControl(APublicationModel model);
 
     /// <summary>
     /// Třída slouží k uchování informací o podporovaném typu publikace
@@ -22,23 +28,28 @@ namespace GUI
         /// </summary>
         public readonly APublicationModel Model;
 
+        /// <summary>
+        /// Uchovává metodu pro vytvoření odpovídajícího formuláře v GUI pro zadání specifických údajů.
+        /// </summary>
         public readonly CreatePublicationUserControl CreateForm;
 
         /// <summary>
         /// Vytvoří přepravku pro informace o typu publikace.
         /// </summary>
-        /// <param name="dialog">objekt datové vrstvy pro správu bibliografických údajů</param>
+        /// <param name="name">název typu v databázi</param>
+        /// <param name="model">objekt pro správu údajů daného typu publikace</param>
+        /// <param name="createForm">metoda pro vytvoření formuláře v GUI pro zadání údajů</param>
         public PublicationType(string name, APublicationModel model, CreatePublicationUserControl createForm)
         {
             Name = name;
             Model = model;
             CreateForm = createForm;
         }
-        
+
         /// <summary>
-        /// Vrátí název publikace.
+        /// Vrátí popis publikace pro zobrazení v uživatelském rozhraní.
         /// </summary>
-        /// <returns>název</returns>
+        /// <returns>popis publikace</returns>
         public override string ToString()
         {
             return Model.TypeDescription;

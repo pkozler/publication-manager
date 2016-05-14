@@ -14,33 +14,49 @@ namespace Core
         /// Uchovává název typu pro použití v databázi.
         /// </summary>
         public const string NAME = "QualificationThesis";
-        
-        /// <summary>
-        /// Uchovává název označení typu 'diplomová práce' pro použití v databázi.
-        /// </summary>
-        public const string TYPE_MASTER_THESIS = "MastersThesis";
-
-        /// <summary>
-        /// Uchovává název označení typu 'disertační práce' pro použití v databázi.
-        /// </summary>
-        public const string TYPE_PHD_THESIS = "PhdThesis";
 
         /// <summary>
         /// Uchovává název souboru výchozí šablony.
         /// </summary>
         private const string TEMPLATE = "qualification-thesis";
 
+        /// <summary>
+        /// Uchovává název typu 'diplomová práce' pro použití v databázi.
+        /// </summary>
+        public const string TYPE_MASTER_THESIS = "MastersThesis";
+
+        /// <summary>
+        /// Uchovává název typu 'disertační práce' pro použití v databázi.
+        /// </summary>
+        public const string TYPE_PHD_THESIS = "PhdThesis";
+
+        /// <summary>
+        /// Uchovává popis typu 'diplomová práce' pro použití v uživatelském rozhraní.
+        /// </summary>
+        public string MastersThesisDescription { get; set; }
+
+        /// <summary>
+        /// Uchovává popis typu 'disertační práce' pro použití v uživatelském rozhraní.
+        /// </summary>
+        public string PhdThesisDescription { get; set; }
+
         /// <inheritDoc/>
-        public QualificationThesisModel(DbPublicationEntities context, string typeDescription)
+        public QualificationThesisModel(DbPublicationEntities context, string typeDescription,
+            string masterThesisDescription, string phdThesisDescription)
             : base(context, typeDescription)
         {
             DefaultTemplateFile = TEMPLATE;
+            // uložení popisu typu diplomové práce
+            MastersThesisDescription = masterThesisDescription;
+            // uložení popisu typu disertační práce
+            PhdThesisDescription = phdThesisDescription;
         }
 
         /// <summary>
         /// Uloží novou publikaci příslušného typu a propojí záznam základních a specifických údajů.
         /// </summary>
         /// <param name="publication">základní údaje o publikaci</param>
+        /// <param name="author">autor publikace</param>
         /// <param name="qualificationThesis">specifické údaje o publikaci</param>
         public void CreatePublication(Publication publication, Author author, QualificationThesis qualificationThesis)
         {
@@ -62,6 +78,7 @@ namespace Core
         /// </summary>
         /// <param name="id">ID publikace</param>
         /// <param name="publication">základní údaje o publikaci</param>
+        /// <param name="author">autor publikace</param>
         /// <param name="qualificationThesis">specifické údaje o publikaci</param>
         public void UpdatePublication(int id, Publication publication, Author author, QualificationThesis qualificationThesis)
         {
@@ -139,7 +156,7 @@ namespace Core
             stringTemplate.SetAttribute("address", qualificationThesis.Address);
             stringTemplate.SetAttribute("school", qualificationThesis.School);
             stringTemplate.SetAttribute("type", qualificationThesis.ThesisType == TYPE_MASTER_THESIS ? 
-                "diplomová práce" : "disertační práce");
+                MastersThesisDescription : PhdThesisDescription);
 
             return SaveHtmlDocument(stringTemplate, htmlPath);
         }

@@ -85,7 +85,7 @@
                     <DataGrid x:Name="attachmentDataGrid" Margin="10" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" IsEnabled="False" ToolTip="Přílohy lze připojovat pouze k uložené publikaci." SelectionChanged="attachmentDataGrid_SelectionChanged">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
-                            <DataGridTextColumn Header="Cesta" Binding="{Binding Path}"/>
+                            <DataGridTextColumn Header="Soubor" Binding="{Binding Path}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>

@@ -1,8 +1,8 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using System.Collections.Generic;
 using Antlr3.ST;
 using System.IO;
-using System;
 
 namespace Core
 {
@@ -13,19 +13,24 @@ namespace Core
     public abstract class APublicationModel
     {
         /// <summary>
-        /// Uchovává adresář s výchozími šablonami pro vytváření HTML dokumentů.
-        /// </summary>
-        private const string DEFAULT_TEMPLATE_DIRECTORY = @"default-templates\";
-
-        /// <summary>
         /// Uchovává příponu výchozích šablon pro vytváření HTML dokumentů.
         /// </summary>
-        private const string DEFAULT_TEMPLATE_EXTENSION = ".st";
+        public const string DEFAULT_TEMPLATE_EXTENSION = "st";
 
+        /// <summary>
+        /// Uchovává příponu HTML dokumentů použitou pro vytváření ze šablon.
+        /// </summary>
+        public const string DEFAULT_HTML_EXTENSION = "html";
+
+        /// <summary>
+        /// Uchovává adresář s výchozími šablonami pro vytváření HTML dokumentů.
+        /// </summary>
+        private const string DEFAULT_TEMPLATE_DIRECTORY = "default-templates";
+        
         /// <summary>
         /// Uchovává stručný popis typu publikace pro výpis v uživatelském rozhraní.
         /// </summary>
-        public string TypeDescription { get; private set; }
+        public string TypeDescription { get; set; }
 
         /// <summary>
         /// Uchovává název souboru výchozí šablony pro daný typ publikace.
@@ -44,8 +49,8 @@ namespace Core
         /// <param name="typeDescription">popis typu publikace</param>
         public APublicationModel(DbPublicationEntities context, string typeDescription)
         {
-            TypeDescription = typeDescription;
             Context = context;
+            TypeDescription = typeDescription;
         }
         
         /// <summary>
@@ -145,8 +150,6 @@ namespace Core
         /// a vypíše do ní základní bibliografické údaje pro HTML export.
         /// </summary>
         /// <param name="publication">publikace</param>
-        /// <param name="publicationType">popis typu publikace</param>
-        /// <param name="defaultTemplate">výchozí HTML šablona typu publikace</param>
         /// <param name="templatePath">cesta k šabloně</param>
         /// <returns>připravená šablona</returns>
         protected StringTemplate LoadHtmlTemplate(Publication publication, string templatePath)
@@ -155,10 +158,10 @@ namespace Core
 
             try
             {
-                // načtení šablony ze souboru
+                // načtení šablony ze zadaného souboru nebo z výchozí šablony
                 template = File.ReadAllText(Path.GetFullPath(
                     string.IsNullOrWhiteSpace(templatePath) ? 
-                    (DEFAULT_TEMPLATE_DIRECTORY + DefaultTemplateFile + DEFAULT_TEMPLATE_EXTENSION) :
+                    (DEFAULT_TEMPLATE_DIRECTORY + Environment.NewLine + DefaultTemplateFile + "." + DEFAULT_TEMPLATE_EXTENSION) :
                     templatePath));
             }
             catch (Exception e)
@@ -221,6 +224,7 @@ namespace Core
         /// Vytvoří novou publikaci se zadanými údaji.
         /// </summary>
         /// <param name="publication">údaje publikace</param>
+        /// <param name="authors">seznam autorů</param>
         protected void CreatePublication(Publication publication, List<Author> authors)
         {
             Context.Publication.Add(publication);
@@ -239,10 +243,11 @@ namespace Core
         }
 
         /// <summary>
-        /// Upraví zadanou publikaci zadanými údaji.
+        /// Upraví publikaci podle zadaných údajů.
         /// </summary>
-        /// <param name="originalPublication">existující publikace</param>
+        /// <param name="originalPublication">publikace k úpravě</param>
         /// <param name="publication">nové údaje</param>
+        /// <param name="authors">nový seznam autorů</param>
         protected void UpdatePublication(Publication originalPublication, Publication publication, List<Author> authors)
         {
             // ponechání původního BibTeX klíče, pokud nový nebyl vyplněn
@@ -282,7 +287,7 @@ namespace Core
         /// <summary>
         /// Odstraní zadanou publikaci.
         /// </summary>
-        /// <param name="originalPublication">existující publikace</param>
+        /// <param name="originalPublication">publikace k odstranění</param>
         protected void DeletePublication(Publication originalPublication)
         {
             // odstranění publikace u autorů
