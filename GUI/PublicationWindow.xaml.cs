@@ -113,6 +113,7 @@ namespace GUI
             addAttachmentButton.IsEnabled = true;
 
             // výpis uložených bibliografických informací
+            Title = "Publikace č. " + originalPublication.Id;
             bibtexEntryTextBox.Text = originalPublication.Entry;
             titleTextBox.Text = originalPublication.Title;
             yearNumericUpDown.Value = originalPublication.Year;
@@ -323,16 +324,7 @@ namespace GUI
             {
                 publication.Year = year;
             }
-
-            if (string.IsNullOrWhiteSpace(contentTextBox.Text))
-            {
-                errors.Add("Obsah publikace nesmí být prázdný.");
-            }
-            else
-            {
-                publication.Text = contentTextBox.Text;
-            }
-
+            
             if (typeComboBox.SelectedItem == null)
             {
                 errors.Add("Musí být vybrán typ publikace.");
@@ -341,7 +333,9 @@ namespace GUI
             {
                 publication.Type = (typeComboBox.SelectedItem as PublicationType).Name;
             }
-            
+
+            publication.Text = contentTextBox.Text;
+
             return errors;
         }
 
@@ -516,6 +510,7 @@ namespace GUI
         private void addAttachmentButton_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFile = new OpenFileDialog();
+            openFile.Title = "Připojit přílohu";
 
             // zrušení akce, pokud není zvolena zdrojová cesta
             if (openFile.ShowDialog() != true)
@@ -555,15 +550,18 @@ namespace GUI
                 return;
             }
             
+            Attachment attachment = attachmentDataGrid.SelectedItem as Attachment;
+
             SaveFileDialog saveFile = new SaveFileDialog();
+            saveFile.Title = "Stáhnout přílohu";
+            saveFile.Filter = string.Format("Soubor ({0})|{0}", "*"
+                + Path.GetExtension(attachment.Path));
 
             // zrušení akce, pokud není zadána cílová cesta
             if (saveFile.ShowDialog() != true)
             {
                 return;
             }
-
-            Attachment attachment = attachmentDataGrid.SelectedItem as Attachment;
 
             try
             {

@@ -82,8 +82,8 @@
     <Compile Include="ConferenceArticle.cs">
       <DependentUpon>DbPublicationModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Exceptions\AttachmentException.cs" />
-    <Compile Include="Exceptions\AuthorException.cs" />
+    <Compile Include="EntityExceptions\AttachmentException.cs" />
+    <Compile Include="EntityExceptions\AuthorException.cs" />
     <Compile Include="ModelExtensions\DbPublicationEntities.SaveChanges.cs" />
     <Compile Include="DbPublicationModel.Context.cs">
       <AutoGen>True</AutoGen>
@@ -111,7 +111,7 @@
     <Compile Include="PublicationModels\JournalArticleModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PublicationModel.cs" />
-    <Compile Include="Exceptions\PublicationException.cs" />
+    <Compile Include="EntityExceptions\PublicationException.cs" />
     <Compile Include="PublicationModels\QualificationThesisModel.cs" />
     <Compile Include="PublicationModels\TechnicalReportModel.cs" />
     <Compile Include="QualificationThesis.cs">

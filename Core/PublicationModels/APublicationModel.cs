@@ -115,7 +115,7 @@ namespace Core
             // výpis posledního jména
             author = authors.Dequeue();
             sb.Append(" a ").Append(author.Surname.ToUpper()).Append(", ").Append(author.Name);
-
+            
             return sb.ToString();
         }
 
@@ -146,6 +146,21 @@ namespace Core
         }
 
         /// <summary>
+        /// Přidá tečku za položku citace, pokud tato položka sama nekončí tečkou.
+        /// </summary>
+        /// <param name="str">položka citace</param>
+        /// <returns>položka citace s přidanou tečkou (pokud je potřebná)</returns>
+        protected string AddTrailingDot(string str)
+        {
+            if (str.EndsWith("."))
+            {
+                return str.Remove(str.Length - 1);
+            }
+
+            return str;
+        }
+
+        /// <summary>
         /// Načte šablonu ze souboru na zadané cestě (nebo z výchozího souboru, pokud nebyla zadána)
         /// a vypíše do ní základní bibliografické údaje pro HTML export.
         /// </summary>
@@ -159,10 +174,10 @@ namespace Core
             try
             {
                 // načtení šablony ze zadaného souboru nebo z výchozí šablony
-                template = File.ReadAllText(Path.GetFullPath(
-                    string.IsNullOrWhiteSpace(templatePath) ? 
-                    (DEFAULT_TEMPLATE_DIRECTORY + Environment.NewLine + DefaultTemplateFile + "." + DEFAULT_TEMPLATE_EXTENSION) :
-                    templatePath));
+                string path = string.IsNullOrWhiteSpace(templatePath) ?
+                    (DEFAULT_TEMPLATE_DIRECTORY + Path.DirectorySeparatorChar + DefaultTemplateFile + "." + DEFAULT_TEMPLATE_EXTENSION) :
+                    templatePath;
+                template = File.ReadAllText(Path.GetFullPath(path));
             }
             catch (Exception e)
             {
@@ -176,7 +191,7 @@ namespace Core
             stringTemplate.SetAttribute("authors", GenerateAuthorCitationString(publication));
             stringTemplate.SetAttribute("year", publication.Year);
             stringTemplate.SetAttribute("type", TypeDescription);
-            stringTemplate.SetAttribute("text", publication.Text.Replace(Environment.NewLine, "<br/>"));
+            stringTemplate.SetAttribute("text", publication.Text.Replace("\n", "<br/>"));
 
             return stringTemplate;
         }
@@ -227,6 +242,12 @@ namespace Core
         /// <param name="authors">seznam autorů</param>
         protected void CreatePublication(Publication publication, List<Author> authors)
         {
+            if (publication.Text == null)
+            {
+                publication.Text = "";
+            }
+            
+            // uložení záznamu publikace
             Context.Publication.Add(publication);
 
             if (authors == null || authors.Count == 0)
@@ -260,6 +281,12 @@ namespace Core
             if (publication.Title != null)
             {
                 originalPublication.Title = publication.Title;
+            }
+
+            // ponechání původního textu, pokud nový nebyl vyplněn
+            if (publication.Text != null)
+            {
+                originalPublication.Text = publication.Text;
             }
 
             // ukončení úprav, pokud nebyl vyplněn nový seznam autorů

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -59,12 +58,13 @@ namespace GUI
             InitializeComponent();
 
             /*
-                načtení aktuálního nefiltrovaného seznamu publikací, aktuálního seznamu autorů
-                a seznamu podporovaných typů publikací (seznam autorů a seznam typů spolu
-                s textovým polem pro zadání roků slouží k nastavení filtrů výpisu publikací)
+                načtení aktuálního nefiltrovaného seznamu publikací, aktuálního seznamu autorů,
+                seznamu použitých letopočtů a seznamu podporovaných typů publikací (seznamy autorů,
+                letopočtů a typů slouží k nastavení filtrů výpisu publikací)
             */
             refreshPublications();
             refreshAuthors();
+            refreshYears();
             typeFilterListView.ItemsSource = publicationTypes;
         }
 
@@ -84,13 +84,23 @@ namespace GUI
         }
 
         /// <summary>
-        /// Aktualizuje seznam autorů pro filtrování publikací v příslušné komponentě GUI.
+        /// Aktualizuje seznam uložených autorů pro filtrování publikací v příslušné komponentě GUI.
         /// </summary>
         private void refreshAuthors()
         {
             // načtení aktuálního seznamu autorů z datové vrstvy a propojení s komponentou GUI
             authorFilterListView.ItemsSource = null;
             authorFilterListView.ItemsSource = authorModel.GetAuthors();
+        }
+
+        /// <summary>
+        /// Aktualizuje seznam použitých letopočtů pro filtrování publikací v příslušné komponentě GUI.
+        /// </summary>
+        private void refreshYears()
+        {
+            // načtení aktuálního seznamu roků vydání publikací z datové vrstvy a propojení s komponentou GUI
+            yearFilterListView.ItemsSource = null;
+            yearFilterListView.ItemsSource = publicationModel.GetYears();
         }
 
         /// <summary>
@@ -145,9 +155,10 @@ namespace GUI
                 return;
             }
 
-            // obnova nefiltrovaného seznamu publikací a seznamu autorů pro filtrování
+            // obnova nefiltrovaného seznamu publikací a seznamu autorů a letopočtů pro filtrování
             refreshPublications();
             refreshAuthors();
+            refreshYears();
 
             if (publicationWindow.PerformedPublicationAction == PublicationAction.Insert)
             {
@@ -179,9 +190,10 @@ namespace GUI
                 return;
             }
 
-            // obnova nefiltrovaného seznamu publikací a seznamu autorů pro filtrování
+            // obnova nefiltrovaného seznamu publikací a seznamu autorů a letopočtů pro filtrování
             refreshPublications();
             refreshAuthors();
+            refreshYears();
 
             switch (publicationWindow.PerformedPublicationAction)
             {
@@ -280,13 +292,13 @@ namespace GUI
         }
 
         /// <summary>
-        /// Zruší zadání ve filtru letopočtů pro výpis publikací libovolného roku vydání.
+        /// Zruší výběr ve filtru letopočtů pro výpis publikací libovolného roku vydání.
         /// </summary>
         /// <param name="sender">původce události</param>
         /// <param name="e">data události</param>
         private void clearYearFilterButton_Click(object sender, RoutedEventArgs e)
         {
-            yearFilterTextbox.Clear();
+            yearFilterListView.SelectedItems.Clear();
         }
 
         /// <summary>
@@ -315,20 +327,11 @@ namespace GUI
             {
                 authorFilter.Add(author.Id);
             }
-
-            string[] lines = yearFilterTextbox.Text.Split(new string[]
+            
+            // vytvoření filtru letopočtů z vybraných položek seznamu
+            foreach (int year in yearFilterListView.SelectedItems)
             {
-                Environment.NewLine,
-            }, StringSplitOptions.RemoveEmptyEntries);
-
-            // vytvoření filtru letopočtů ze zadaných platných řádků v textovém poli
-            foreach (string line in lines)
-            {
-                int year;
-                if (int.TryParse(line, out year))
-                {
-                    yearFilter.Add(year);
-                }
+                yearFilter.Add(year);
             }
 
             // vytvoření filtru typů z vybraných položek seznamu

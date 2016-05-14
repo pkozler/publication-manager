@@ -97,5 +97,16 @@ namespace Core
 
             return publication;
         }
+
+        /// <summary>
+        /// Načte seznam všech roků vydání použitých v uložených záznamech publikací tak,
+        /// aby prvky seznamu byly jedinečné a vzestupně seřazené.
+        /// </summary>
+        /// <returns>seřazený seznam unikátních čísel představujících roky vydání</returns>
+        public List<int> GetYears()
+        {
+            // výběr sloupce publikací s odstraněním duplicit a seřazením
+            return context.Publication.OrderBy(p => p.Year).Select(p => p.Year).Distinct().ToList();
+        }
     }
 }

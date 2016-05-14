@@ -102,7 +102,7 @@
     <Compile Include="ConferenceArticleUserControl.xaml.cs">
       <DependentUpon>ConferenceArticleUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="IPublicationForm.cs" />
+    <Compile Include="Forms\IPublicationForm.cs" />
     <Compile Include="JournalArticleUserControl.xaml.cs">
       <DependentUpon>JournalArticleUserControl.xaml</DependentUpon>
     </Compile>
@@ -212,6 +212,7 @@
   <ItemGroup>
     <Resource Include="resources\icon-publication.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

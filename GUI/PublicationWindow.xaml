@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:GUI"
         xmlns:extra="clr-namespace:TAlex.WPF.Controls;assembly=TAlex.WPF.Controls"
         mc:Ignorable="d"
-        Title="Publikace" Height="768" Width="1034" Icon="resources/icon-publication.ico" WindowStartupLocation="CenterScreen">
+        Title="Nová publikace" Height="768" Width="1034" Icon="resources/icon-publication.ico" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -82,7 +82,7 @@
             </Grid.RowDefinitions>
             <GroupBox x:Name="publicationAttachmentListGroupBox" Header="Přílohy" Grid.Row="1">
                 <Grid Margin="0,0,0,0">
-                    <DataGrid x:Name="attachmentDataGrid" Margin="10" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" IsEnabled="False" ToolTip="Přílohy lze připojovat pouze k uložené publikaci." SelectionChanged="attachmentDataGrid_SelectionChanged">
+                    <DataGrid x:Name="attachmentDataGrid" Margin="10" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" IsEnabled="False" SelectionChanged="attachmentDataGrid_SelectionChanged">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
                             <DataGridTextColumn Header="Soubor" Binding="{Binding Path}"/>

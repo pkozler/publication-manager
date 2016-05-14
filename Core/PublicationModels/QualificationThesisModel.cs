@@ -122,12 +122,12 @@ namespace Core
         {
             QualificationThesis qualificationThesis = publication.QualificationThesis;
 
-            return new StringBuilder($"{GenerateAuthorCitationString(publication)}. ")
-                .Append($"{publication.Title}. ")
+            return new StringBuilder($"{AddTrailingDot(GenerateAuthorCitationString(publication))} ")
+                .Append($"{AddTrailingDot(publication.Title)} ")
                 .Append($"{qualificationThesis.Address}, ")
                 .Append($"{publication.Year}. ")
-                .Append($"{qualificationThesis.ThesisType}. ")
-                .Append($"{qualificationThesis.School}. ").ToString();
+                .Append($"{AddTrailingDot(qualificationThesis.ThesisType)} ")
+                .Append($"{AddTrailingDot(qualificationThesis.School)} ").ToString();
         }
 
         /// <inheritDoc/>

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.IO;
-using System;
 
 namespace Core
 {
@@ -18,7 +17,7 @@ namespace Core
         /// <summary>
         /// Představuje název složky pro ukládání souborů připojených jako přílohy publikací.
         /// </summary>
-        private const string DATA_ROOT_FOLDER_NAME = "data";
+        private const string DATA_ROOT_FOLDER_NAME = "attachments";
 
         /// <summary>
         /// Uchovává cestu ke složce pro přílohy.
@@ -103,7 +102,7 @@ namespace Core
             // zkopírování zadaného zdrojového souboru do datové složky aplikace
             string fullDataPath = getFullDataFolderPath(publication, attachment);
             Directory.CreateDirectory(fullDataPath);
-            File.Copy(srcFileName, getFullDataFolderPath(publication, attachment) + attachment.Path);
+            File.Copy(srcFileName, getFullDataFolderPath(publication, attachment) + attachment.Path, true);
 
             // propojení záznamu s publikací a uložení změn
             publication.Attachment.Add(attachment);
@@ -128,7 +127,7 @@ namespace Core
             }
 
             // zkopírování souboru přílohy v datové složce aplikace do zadaného cílového souboru
-            File.Copy(getFullDataFolderPath(publication, attachment) + attachment.Path, destFileName);
+            File.Copy(getFullDataFolderPath(publication, attachment) + attachment.Path, destFileName, true);
         }
 
         /// <summary>

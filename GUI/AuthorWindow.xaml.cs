@@ -43,6 +43,12 @@ namespace GUI
             this.isPublicationChosen = isPublicationChosen;
 
             InitializeComponent();
+
+            if (isPublicationChosen)
+            {
+                Title = "Seznam autorů dostupných pro přiřazení k publikaci";
+            }
+
             // načtení aktuálního seznamu autorů
             refreshAuthors();
         }

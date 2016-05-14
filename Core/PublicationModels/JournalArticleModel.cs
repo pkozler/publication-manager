@@ -103,13 +103,13 @@ namespace Core
                 $"{journalArticle.FromPage}" :
                 $"{journalArticle.FromPage}-{journalArticle.ToPage}";
 
-            return new StringBuilder($"{GenerateAuthorCitationString(publication)}. ")
-                .Append($"{publication.Title}. ")
-                .Append($"{journalArticle.JournalTitle}. ")
+            return new StringBuilder($"{AddTrailingDot(GenerateAuthorCitationString(publication))} ")
+                .Append($"{AddTrailingDot(publication.Title)} ")
+                .Append($"{AddTrailingDot(journalArticle.JournalTitle)} ")
                 .Append($"{publication.Year}, ")
                 .Append($"{journalArticle.Number}, ")
-                .Append($"{pages}. ")
-                .Append($"ISSN {journalArticle.ISSN}.").ToString();
+                .Append($"{AddTrailingDot(pages)} ")
+                .Append($"ISSN {AddTrailingDot(journalArticle.ISSN)}").ToString();
         }
 
         /// <inheritDoc/>

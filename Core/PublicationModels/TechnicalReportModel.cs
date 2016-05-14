@@ -91,12 +91,12 @@ namespace Core
         {
             TechnicalReport technicalReport = publication.TechnicalReport;
 
-            return new StringBuilder($"{GenerateAuthorCitationString(publication)}. ")
-                .Append($"{publication.Title}. ")
+            return new StringBuilder($"{AddTrailingDot(GenerateAuthorCitationString(publication))} ")
+                .Append($"{AddTrailingDot(publication.Title)} ")
                 .Append($"{technicalReport.Address}: ")
                 .Append($"{technicalReport.Institution}, ")
                 .Append($"{publication.Year}. ")
-                .Append($"{technicalReport.Number}.").ToString();
+                .Append($"{AddTrailingDot(technicalReport.Number)}").ToString();
         }
 
         /// <inheritDoc/>

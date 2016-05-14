@@ -122,16 +122,16 @@ namespace Core
             string identification = (string.IsNullOrEmpty(conferenceArticle.ISBN) ?
                 "" : $"ISBN {conferenceArticle.ISBN}")
                 + (string.IsNullOrEmpty(conferenceArticle.ISSN) ?
-                "" : $" ISSN {conferenceArticle.ISSN}");
+                "" : $"ISSN {conferenceArticle.ISSN}");
 
-            return new StringBuilder($"{GenerateAuthorCitationString(publication)}. ")
-                .Append($"{publication.Title}. ")
-                .Append($"In: {conferenceArticle.BookTitle}. ")
+            return new StringBuilder($"{AddTrailingDot(GenerateAuthorCitationString(publication))} ")
+                .Append($"{AddTrailingDot(publication.Title)} ")
+                .Append($"In: {AddTrailingDot(conferenceArticle.BookTitle)} ")
                 .Append($"{conferenceArticle.Address}: ")
                 .Append($"{conferenceArticle.Publisher}, ")
                 .Append($"{publication.Year}, ")
-                .Append($"s. {pages}. ")
-                .Append($"{identification}.").ToString();
+                .Append($"s. {AddTrailingDot(pages)} ")
+                .Append($"{AddTrailingDot(identification)}").ToString();
         }
 
         /// <inheritDoc/>
