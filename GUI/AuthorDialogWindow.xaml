@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
-        Title="Nový autor publikace" Height="160" Width="320" ResizeMode="NoResize" Icon="resources/window-icons/icon-publication.ico" WindowStartupLocation="CenterScreen">
+        Title="Nový autor publikace" Height="160" Width="320" ResizeMode="NoResize" Icon="resources/icon-publication.ico" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="90"/>

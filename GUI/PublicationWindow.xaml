@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:GUI"
         xmlns:extra="clr-namespace:TAlex.WPF.Controls;assembly=TAlex.WPF.Controls"
         mc:Ignorable="d"
-        Title="Publikace" Height="768" Width="1034" Icon="resources/window-icons/icon-publication.ico" WindowStartupLocation="CenterScreen">
+        Title="Publikace" Height="768" Width="1034" Icon="resources/icon-publication.ico" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>

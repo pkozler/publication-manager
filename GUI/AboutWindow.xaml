@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
-        Title="O programu" Height="160" Width="320" ResizeMode="NoResize" Icon="resources/window-icons/icon-publication.ico" WindowStartupLocation="CenterScreen">
+        Title="O programu" Height="160" Width="320" ResizeMode="NoResize" Icon="resources/icon-publication.ico" WindowStartupLocation="CenterScreen">
     <Grid>
         <TextBlock x:Name="titleTextBlock" Margin="10,10,8,0" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold" Height="20"><Run Text="Seznam publikací (Verze 2.0)"/></TextBlock>
         <TextBlock x:Name="descriptionTextBlock" TextWrapping="Wrap" VerticalAlignment="Top" Height="40" Margin="10,35,8,0"><Run Text="Vytvořeno jako semestrální práce z předmětu"/><LineBreak/><Run Text="&quot;Programování v prostředí .NET&quot; (KIV/NET)."/></TextBlock>

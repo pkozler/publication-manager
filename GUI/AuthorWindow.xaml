@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
-        Title="Seznam autorů" Height="480" Width="640" Icon="resources/window-icons/icon-publication.ico" WindowStartupLocation="CenterScreen">
+        Title="Seznam autorů" Height="480" Width="640" Icon="resources/icon-publication.ico" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
