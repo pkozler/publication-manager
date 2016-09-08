@@ -1,4 +1,5 @@
-# publication-manager
-Správce vědeckých textů
+# Správa vědeckých publikací
 
-Vytvořeno jako semestrální práce z předmětu Programování v prostředí .NET na FAV ZČU v ak. roce 2015/16.
+C# aplikace pro evidenci vědeckých textů v databázi a jejich export do formátu HTML.
+
+Vytvořeno jako semestrální práce z předmětu Programování v prostředí .NET na FAV ZČU.
