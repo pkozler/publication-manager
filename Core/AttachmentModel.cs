@@ -18,24 +18,14 @@ namespace Core
         /// Představuje název složky pro ukládání souborů připojených jako přílohy publikací.
         /// </summary>
         private const string DATA_ROOT_FOLDER_NAME = "attachments";
-
-        /// <summary>
-        /// Uchovává cestu ke složce pro přílohy.
-        /// </summary>
-        private readonly string DataRootFolderPath;
-
+        
         /// <summary>
         /// Vytvoří instanci správce.
         /// </summary>
         /// <param name="context">databázový kontext</param>
-        /// <param name="executablePath">cesta ke spustitelnému souboru aplikace</param>
-        public AttachmentModel(DbPublicationEntities context, string executablePath)
+        public AttachmentModel(DbPublicationEntities context)
         {
             this.context = context;
-
-            // sestavení cesty ke složce s přílohami podle cesty ke spustitelnému souboru
-            DataRootFolderPath = 
-                $"{Path.GetDirectoryName(executablePath)}{Path.DirectorySeparatorChar}{DATA_ROOT_FOLDER_NAME}{Path.DirectorySeparatorChar}";
         }
         
         /// <summary>
@@ -68,7 +58,7 @@ namespace Core
         private string getFullDataFolderPath(Publication publication, Attachment attachment)
         {
             // sestavení cesty včetně podsložky pojmenované podle ID publikace a ID přílohy
-            return $"{DataRootFolderPath}{publication.Id}-{attachment.Id}{Path.DirectorySeparatorChar}";
+            return $"{DATA_ROOT_FOLDER_NAME}{Path.DirectorySeparatorChar}{publication.Id}-{attachment.Id}{Path.DirectorySeparatorChar}";
         }
         
         /// <summary>

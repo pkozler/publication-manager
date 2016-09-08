@@ -23,9 +23,9 @@ namespace Core
         public const string DEFAULT_HTML_EXTENSION = "html";
 
         /// <summary>
-        /// Uchovává adresář s výchozími šablonami pro vytváření HTML dokumentů.
+        /// Uchovává název složky s výchozími šablonami pro vytváření HTML dokumentů.
         /// </summary>
-        private const string DEFAULT_TEMPLATE_DIRECTORY = "default-templates";
+        private const string DEFAULT_TEMPLATE_FOLDER_NAME = "default-templates";
         
         /// <summary>
         /// Uchovává stručný popis typu publikace pro výpis v uživatelském rozhraní.
@@ -154,10 +154,10 @@ namespace Core
         {
             if (str.EndsWith("."))
             {
-                return str.Remove(str.Length - 1);
+                return str;
             }
 
-            return str;
+            return str + ".";
         }
 
         /// <summary>
@@ -175,7 +175,7 @@ namespace Core
             {
                 // načtení šablony ze zadaného souboru nebo z výchozí šablony
                 string path = string.IsNullOrWhiteSpace(templatePath) ?
-                    (DEFAULT_TEMPLATE_DIRECTORY + Path.DirectorySeparatorChar + DefaultTemplateFile + "." + DEFAULT_TEMPLATE_EXTENSION) :
+                    (DEFAULT_TEMPLATE_FOLDER_NAME + Path.DirectorySeparatorChar + DefaultTemplateFile + "." + DEFAULT_TEMPLATE_EXTENSION) :
                     templatePath;
                 template = File.ReadAllText(Path.GetFullPath(path));
             }

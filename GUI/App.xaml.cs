@@ -8,7 +8,7 @@ namespace GUI
     /// <summary>
     /// Tato třída obsahuje interakční logiku pro App.xaml
     /// a obsahuje metodu, která představuje vstupní bod programu
-    /// a slouží k propojení datové vrstvy s uživatelským rozhraním.
+    /// a slouží k propojení datové vrstvy s grafickým uživatelským rozhraním.
     /// </summary>
     public partial class App : Application
     {
@@ -20,15 +20,13 @@ namespace GUI
         {
             try
             {
-                string[] args = Environment.GetCommandLineArgs();
-
                 // vytvoření databázového kontextu
                 DbPublicationEntities context = new DbPublicationEntities();
 
                 // vytvoření objektů pro správu dat společných pro všechny typy publikací
                 PublicationModel publicationModel = new PublicationModel(context);
                 AuthorModel authorModel = new AuthorModel(context);
-                AttachmentModel attachmentModel = new AttachmentModel(context, args[0]);
+                AttachmentModel attachmentModel = new AttachmentModel(context);
 
                 // vytvoření seznamu typů publikací s přidruženými dialogy a objekty pro správu dat
                 List<PublicationType> publicationTypes = initializeTypes(context);

@@ -6,7 +6,8 @@ using System.IO;
 namespace CLI
 {
     /// <summary>
-    /// Spouštěcí třída konzolového uživatelského rozhraní.
+    /// Spouštěcí třída provizorního konzolového uživatelského rozhraní
+    /// pro otestování jádra aplikace před vytvořením GUI.
     /// </summary>
     class Program
     {
@@ -21,7 +22,8 @@ namespace CLI
             ConferenceArticleModel conferenceArticleModel = new ConferenceArticleModel(context, "Článek na konferenci");
             JournalArticleModel journalArticleModel = new JournalArticleModel(context, "Článek do časopisu");
             TechnicalReportModel technicalReportModel = new TechnicalReportModel(context, "Technická zpráva");
-            QualificationThesisModel qualificationThesisModel = new QualificationThesisModel(context, "Kvalifikační práce");
+            QualificationThesisModel qualificationThesisModel = new QualificationThesisModel(context, "Kvalifikační práce",
+                "Diplomová práce", "Disertační práce");
 
             /*
                 přiřazení dialogů uživatelského rozhraní k jednotlivým dostupným typům publikací,
@@ -48,7 +50,7 @@ namespace CLI
             // vytvoření objektů pro správu dat společných pro všechny typy publikací
             PublicationModel publicationModel = new PublicationModel(context);
             AuthorModel authorModel = new AuthorModel(context);
-            AttachmentModel attachmentModel = new AttachmentModel(context, args[0]);
+            AttachmentModel attachmentModel = new AttachmentModel(context);
 
             // vytvoření seznamu typů publikací s přidruženými dialogy a objekty pro správu dat
             List<PublicationType> publicationTypes = initializePublicationTypes(context);
